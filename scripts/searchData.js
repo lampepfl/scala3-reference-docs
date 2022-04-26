@@ -107,6 +107,7 @@ pages = [{"l":"index.html#","e":false,"n":"Scala 3 Reference","t":"Scala 3 Refer
 {"l":"experimental/named-typeargs-spec.html#","e":false,"n":"Named Type Arguments - More Details","t":"Named Type Arguments - More Details","d":"","k":"static"},
 {"l":"experimental/numeric-literals.html#","e":false,"n":"Numeric Literals","t":"Numeric Literals","d":"","k":"static"},
 {"l":"experimental/explicit-nulls.html#","e":false,"n":"Explicit Nulls","t":"Explicit Nulls","d":"","k":"static"},
+{"l":"experimental/main-annotation.html#","e":false,"n":"MainAnnotation","t":"MainAnnotation","d":"","k":"static"},
 {"l":"experimental/cc.html#","e":false,"n":"Capture Checking","t":"Capture Checking","d":"","k":"static"},
 {"l":"syntax.html#","e":false,"n":"Scala 3 Syntax Summary","t":"Scala 3 Syntax Summary","d":"","k":"static"},
 {"l":"language-versions/index.html#","e":false,"n":"Language Versions","t":"Language Versions","d":"","k":"static"},
