@@ -116,5 +116,10 @@ pages = [{"l":"index.html#","e":false,"n":"Scala 3 Reference","t":"Scala 3 Refer
 {"l":"soft-modifier.html#","e":false,"n":"Soft Keywords","t":"Soft Keywords","d":"","k":"static"},
 {"l":"features-classification.html#","e":false,"n":"A Classification of Proposed Language Features","t":"A Classification of Proposed Language Features","d":"","k":"static"},
 {"l":"overview.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
+{"l":"contextual.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
+{"l":"metaprogramming.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
+{"l":"other-new-features.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
+{"l":"changed-features.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
+{"l":"dropped-features.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
 {"l":"experimental/overview.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"},
 {"l":"docs/reference/other-new-features/named-typeargs.html#","e":false,"n":"redirect","t":"redirect","d":"","k":"static"}];
