@@ -25,7 +25,7 @@
     <main> 
      <header> 
       <h1>How to write a type class `derived` method using macros</h1> 
-      <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/d7c3fa42e25011cb4cca94ae14705d6eb125ff9e/docs/_docs/reference/contextual/derivation-macro.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
+      <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/contextual/derivation-macro.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
       </div> 
      </header> 
      <p>In the main <a href="derivation.html">derivation</a> documentation page, we explained the details behind <code>Mirror</code>s and type class derivation. Here we demonstrate how to implement a type class <code>derived</code> method using macros only. We follow the same example of deriving <code>Eq</code> instances and for simplicity we support a <code>Product</code> type e.g., a case class <code>Person</code>. The low-level method we will use to implement the <code>derived</code> method exploits quotes, splices of both expressions and types and the <code>scala.quoted.Expr.summon</code> method which is the equivalent of <code>summonFrom</code>. The former is suitable for use in a quote context, used within macros.</p> 

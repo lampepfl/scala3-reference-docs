@@ -25,7 +25,7 @@
     <main> 
      <header> 
       <h1>Runtime Multi-Stage Programming</h1> 
-      <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/d7c3fa42e25011cb4cca94ae14705d6eb125ff9e/docs/_docs/reference/metaprogramming/staging.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
+      <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/metaprogramming/staging.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
       </div> 
      </header> 
      <p>The framework expresses at the same time compile-time metaprogramming and multi-stage programming. We can think of compile-time metaprogramming as a two stage compilation process: one that we write the code in top-level splices, that will be used for code generation (macros) and one that will perform all necessary evaluations at compile-time and an object program that we will run as usual. What if we could synthesize code at run-time and offer one extra stage to the programmer? Then we can have a value of type <code>Expr[T]</code> at run-time that we can essentially treat as a typed-syntax tree that we can either <em>show</em> as a string (pretty-print) or compile and run. If the number of quotes exceeds the number of splices by more than one (effectively handling at run-time values of type <code>Expr[Expr[T]]</code>, <code>Expr[Expr[Expr[T]]]</code>, ...) then we talk about Multi-Stage Programming.</p> 
