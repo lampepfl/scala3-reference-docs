@@ -109,10 +109,10 @@
 </span><span id="37" class=""><span class="tooltip-container"></span>  def run(program: () =&gt; Int): Unit =
 </span><span id="38" class=""><span class="tooltip-container"></span>    println("executing program")
 </span><span id="39" class=""><span class="tooltip-container"></span>
-</span><span id="40" class=""><span class="tooltip-container"></span>    try {
-</span><span id="41" class=""><span class="tooltip-container"></span>      val result = program()
-</span><span id="42" class=""><span class="tooltip-container"></span>      println("result: " + result)
-</span><span id="43" class=""><span class="tooltip-container"></span>      println("executed program")
+</span><span id="40" class=""><span class="tooltip-container"></span>    val result = program()
+</span><span id="41" class=""><span class="tooltip-container"></span>    println("result: " + result)
+</span><span id="42" class=""><span class="tooltip-container"></span>    println("executed program")
+</span><span id="43" class=""><span class="tooltip-container"></span>    
 </span><span id="44" class=""><span class="tooltip-container"></span>end myMain
 </span></code></pre>
      </div> 
