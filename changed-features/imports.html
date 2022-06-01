@@ -72,7 +72,8 @@
       <h3><a href="#syntax" class="anchor"></a>Syntax</h3> 
       <div class="snippet"> 
        <pre><code>Import            ::=  ‘import’ ImportExpr {‘,’ ImportExpr}
-ImportExpr        ::=  { SimpleRef {‘.’ id} ‘.’ } ImportSpec
+ImportExpr        ::= SimpleRef {‘.’ id} ‘.’ ImportSpec
+                    | SimpleRef `as` id
 ImportSpec        ::=  NamedSelector
                     |  WildcardSelector
                     | ‘{’ ImportSelectors) ‘}’
