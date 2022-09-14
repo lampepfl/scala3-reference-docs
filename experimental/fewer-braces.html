@@ -76,11 +76,11 @@
       <p>Braces can also be omitted around multiple line function value arguments:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val xs = elems.map x =&gt;
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val xs = List.range(1, 10).map: x =&gt;
 </span><span id="1" class=""><span class="tooltip-container"></span>  val y = x - 1
 </span><span id="2" class=""><span class="tooltip-container"></span>  y * y
-</span><span id="3" class=""><span class="tooltip-container"></span>xs.foldLeft (x, y) =&gt;
-</span><span id="4" class=""><span class="tooltip-container"></span>  x + y
+</span><span id="3" class=""><span class="tooltip-container"></span>xs.foldLeft(0): (x, y) =&gt;
+</span><span id="4" class=""><span class="tooltip-container"></span>  x + y * 8
 </span></code></pre>
       </div> 
       <p>Braces can be omitted if the lambda starts with a parameter list and <code>=&gt;</code> or <code>=&gt;?</code> at the end of one line and it has an indented body on the following lines.</p> 
