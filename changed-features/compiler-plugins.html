@@ -28,17 +28,17 @@
       <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/compiler-plugins.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
       </div> 
      </header> 
-     <p>Compiler plugins are supported by Dotty (and Scala 3) since 0.9. There are two notable changes compared to <code>scalac</code>:</p> 
+     <p>Compiler plugins are supported in Scala 3 since Dotty 0.9. There are two notable changes compared to Scala 2:</p> 
      <ul> 
       <li>No support for analyzer plugins</li> 
       <li>Added support for research plugins</li> 
      </ul> 
-     <p><a href="https://github.com/scala/scala/blob/2.13.x/src/compiler/scala/tools/nsc/typechecker/AnalyzerPlugins.scala">Analyzer plugins</a> in <code>scalac</code> run during type checking and may influence normal type checking. This is a very powerful feature but for production usages, a predictable and consistent type checker is more important.</p> 
-     <p>For experimentation and research, Scala 3 introduces <em>research plugin</em>. Research plugins are more powerful than <code>scalac</code> analyzer plugins as they let plugin authors customize the whole compiler pipeline. One can easily replace the standard typer by a custom one or create a parser for a domain-specific language. However, research plugins are only enabled for nightly or snaphot releases of Scala 3.</p> 
+     <p><a href="https://github.com/scala/scala/blob/2.13.x/src/compiler/scala/tools/nsc/typechecker/AnalyzerPlugins.scala">Analyzer plugins</a> run in Scala 2 during type checking and may influence normal type checking. This is a very powerful feature but for production usages, a predictable and consistent type checker is more important.</p> 
+     <p>For experimentation and research, Scala 3 introduces <em>research plugin</em>. Research plugins are more powerful than Scala 2 analyzer plugins as they let plugin authors customize the whole compiler pipeline. One can easily replace the standard typer by a custom one or create a parser for a domain-specific language. However, research plugins are only enabled for nightly or snaphot releases of Scala 3.</p> 
      <p>Common plugins that add new phases to the compiler pipeline are called <em>standard plugins</em> in Scala 3. In terms of features, they are similar to <code>scalac</code> plugins, despite minor changes in the API.</p> 
      <section id="using-compiler-plugins"> 
       <h2><a href="#using-compiler-plugins" class="anchor"></a>Using Compiler Plugins</h2> 
-      <p>Both standard and research plugins can be used with <code>scalac</code> by adding the <code>-Xplugin:</code> option:</p> 
+      <p>In Scala 3, both standard and research plugins can be used with <code>scalac</code> by adding the <code>-Xplugin:</code> option:</p> 
       <div class="snippet"> 
        <pre><code class="language-shell">scalac -Xplugin:pluginA.jar -Xplugin:pluginB.jar Test.scala
 </code></pre> 
@@ -48,7 +48,7 @@
        <pre><code class="language-properties">pluginClass=dividezero.DivideZero
 </code></pre> 
       </div> 
-      <p>This is different from <code>scalac</code> plugins that required a <code>scalac-plugin.xml</code> file.</p> 
+      <p>This is different from Scala 2 plugins that require a <code>scalac-plugin.xml</code> file.</p> 
       <p>Starting from 1.1.5, <code>sbt</code> also supports Scala 3 compiler plugins. Please refer to the <a href="https://www.scala-sbt.org/1.x/docs/Compiler-Plugins.html"><code>sbt</code> documentation</a> for more information.</p> 
      </section>
      <section id="writing-a-standard-compiler-plugin"> 

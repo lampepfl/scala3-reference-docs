@@ -77,13 +77,14 @@
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>xs.map(combiner.tupled)
 </span></code></pre>
      </div> 
-     <p>A conversion may be provided in user code:</p> 
+     <p>Though strongly discouraged, to have the same effect, an implicit conversion may be provided in user code:</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>import scala.language.implicitConversions
-</span><span id="1" class=""><span class="tooltip-container"></span>transparent inline implicit def `fallback untupling`(f: (Int, Int) =&gt; Int): ((Int, Int)) =&gt; Int =
-</span><span id="2" class=""><span class="tooltip-container"></span>  p =&gt; f(p._1, p._2)     // use specialized apply instead of unspecialized `tupled`
-</span><span id="3" class=""><span class="tooltip-container"></span>xs.map(combiner)
+</span><span id="1" class=""><span class="tooltip-container"></span>
+</span><span id="2" class=""><span class="tooltip-container"></span>transparent inline given `fallback untupling`: Conversion[(Int, Int) =&gt; Int, ((Int, Int)) =&gt; Int] = _.tupled
+</span><span id="3" class=""><span class="tooltip-container"></span>
+</span><span id="4" class=""><span class="tooltip-container"></span>xs.map(combiner)
 </span></code></pre>
      </div> 
      <p>Parameter untupling is attempted before conversions are applied, so that a conversion in scope cannot subvert untupling.</p> 

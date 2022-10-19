@@ -69,7 +69,7 @@
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val s = summon[Test.Codec[Option[Int]]](
-</span><span id="1" class=""><span class="tooltip-container"></span>  optionCodec[Int](using intCodec)
+</span><span id="1" class=""><span class="tooltip-container"></span>  using optionCodec[Int](using intCodec)
 </span><span id="2" class=""><span class="tooltip-container"></span>)
 </span></code></pre>
      </div> 

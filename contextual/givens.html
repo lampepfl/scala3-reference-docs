@@ -33,22 +33,23 @@
       <div class="buttons"></div>
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>trait Ord[T]:
 </span><span id="1" class=""><span class="tooltip-container"></span>  def compare(x: T, y: T): Int
-</span><span id="2" class=""><span class="tooltip-container"></span>  extension (x: T) def &lt; (y: T) = compare(x, y) &lt; 0
-</span><span id="3" class=""><span class="tooltip-container"></span>  extension (x: T) def &gt; (y: T) = compare(x, y) &gt; 0
-</span><span id="4" class=""><span class="tooltip-container"></span>
-</span><span id="5" class=""><span class="tooltip-container"></span>given intOrd: Ord[Int] with
-</span><span id="6" class=""><span class="tooltip-container"></span>  def compare(x: Int, y: Int) =
-</span><span id="7" class=""><span class="tooltip-container"></span>    if x &lt; y then -1 else if x &gt; y then +1 else 0
-</span><span id="8" class=""><span class="tooltip-container"></span>
-</span><span id="9" class=""><span class="tooltip-container"></span>given listOrd[T](using ord: Ord[T]): Ord[List[T]] with
-</span><span id="10" class=""><span class="tooltip-container"></span>
-</span><span id="11" class=""><span class="tooltip-container"></span>  def compare(xs: List[T], ys: List[T]): Int = (xs, ys) match
-</span><span id="12" class=""><span class="tooltip-container"></span>    case (Nil, Nil) =&gt; 0
-</span><span id="13" class=""><span class="tooltip-container"></span>    case (Nil, _) =&gt; -1
-</span><span id="14" class=""><span class="tooltip-container"></span>    case (_, Nil) =&gt; +1
-</span><span id="15" class=""><span class="tooltip-container"></span>    case (x :: xs1, y :: ys1) =&gt;
-</span><span id="16" class=""><span class="tooltip-container"></span>      val fst = ord.compare(x, y)
-</span><span id="17" class=""><span class="tooltip-container"></span>      if fst != 0 then fst else compare(xs1, ys1)
+</span><span id="2" class=""><span class="tooltip-container"></span>  extension (x: T) 
+</span><span id="3" class=""><span class="tooltip-container"></span>    def &lt; (y: T) = compare(x, y) &lt; 0
+</span><span id="4" class=""><span class="tooltip-container"></span>    def &gt; (y: T) = compare(x, y) &gt; 0
+</span><span id="5" class=""><span class="tooltip-container"></span>
+</span><span id="6" class=""><span class="tooltip-container"></span>given intOrd: Ord[Int] with
+</span><span id="7" class=""><span class="tooltip-container"></span>  def compare(x: Int, y: Int) =
+</span><span id="8" class=""><span class="tooltip-container"></span>    if x &lt; y then -1 else if x &gt; y then +1 else 0
+</span><span id="9" class=""><span class="tooltip-container"></span>
+</span><span id="10" class=""><span class="tooltip-container"></span>given listOrd[T](using ord: Ord[T]): Ord[List[T]] with
+</span><span id="11" class=""><span class="tooltip-container"></span>
+</span><span id="12" class=""><span class="tooltip-container"></span>  def compare(xs: List[T], ys: List[T]): Int = (xs, ys) match
+</span><span id="13" class=""><span class="tooltip-container"></span>    case (Nil, Nil) =&gt; 0
+</span><span id="14" class=""><span class="tooltip-container"></span>    case (Nil, _) =&gt; -1
+</span><span id="15" class=""><span class="tooltip-container"></span>    case (_, Nil) =&gt; +1
+</span><span id="16" class=""><span class="tooltip-container"></span>    case (x :: xs1, y :: ys1) =&gt;
+</span><span id="17" class=""><span class="tooltip-container"></span>      val fst = ord.compare(x, y)
+</span><span id="18" class=""><span class="tooltip-container"></span>      if fst != 0 then fst else compare(xs1, ys1)
 </span></code></pre>
      </div> 
      <p>This code defines a trait <code>Ord</code> with two given instances. <code>intOrd</code> defines a given for the type <code>Ord[Int]</code> whereas <code>listOrd[T]</code> defines givens for <code>Ord[List[T]]</code> for all types <code>T</code> that come with a given instance for <code>Ord[T]</code> themselves. The <code>using</code> clause in <code>listOrd</code> defines a condition: There must be a given of type <code>Ord[T]</code> for a given of type <code>Ord[List[T]]</code> to exist. Such conditions are expanded by the compiler to <a href="using-clauses.html">context parameters</a>.</p> 
@@ -64,7 +65,7 @@
 </span></code></pre>
       </div> 
       <p>If the name of a given is missing, the compiler will synthesize a name from the implemented type(s).</p> 
-      <p><strong>Note</strong> The name synthesized by the compiler is chosen to be readable and reasonably concise. For instance, the two instances above would get the names:</p> 
+      <p><strong>Note:</strong> The name synthesized by the compiler is chosen to be readable and reasonably concise. For instance, the two instances above would get the names:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given_Ord_Int
@@ -72,7 +73,7 @@
 </span></code></pre>
       </div> 
       <p>The precise rules for synthesizing names are found <a href="relationship-implicits.html#anonymous-given-instances">here</a>. These rules do not guarantee absence of name conflicts between given instances of types that are "too similar". To avoid conflicts one can use named instances.</p> 
-      <p><strong>Note</strong> To ensure robust binary compatibility, publicly available libraries should prefer named instances.</p> 
+      <p><strong>Note:</strong> To ensure robust binary compatibility, publicly available libraries should prefer named instances.</p> 
      </section>
      <section id="alias-givens"> 
       <h2><a href="#alias-givens" class="anchor"></a>Alias Givens</h2> 

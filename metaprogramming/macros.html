@@ -126,22 +126,17 @@
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object Expr:
 </span><span id="1" class=""><span class="tooltip-container"></span>  ...
-</span><span id="2" class=""><span class="tooltip-container"></span>  def betaReduce[...](...)(...): ... = ...
+</span><span id="2" class=""><span class="tooltip-container"></span>  def betaReduce[T](expr: Expr[T])(using Quotes): Expr[T]
 </span></code></pre>
       </div> 
-      <p>The definition of <code>Expr.betaReduce(f)(x)</code> is assumed to be functionally the same as <code>'{($f)($x)}</code>, however it should optimize this call by returning the result of beta-reducing <code>f(x)</code> if <code>f</code> is a known lambda expression. <code>Expr.betaReduce</code> distributes applications of <code>Expr</code> over function arrows:</p> 
-      <div class="snippet" scala-snippet="">
-       <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>Expr.betaReduce(_): Expr[(T1, ..., Tn) =&gt; R] =&gt; ((Expr[T1], ..., Expr[Tn]) =&gt; Expr[R])
-</span></code></pre>
-      </div>
+      <p><code>Expr.betaReduce</code> returns an expression that is functionally equivalent to e, however if e is of the form <code>((y1, ..., yn) =&gt; e2)(e1, ..., en)</code> then it optimizes the top most call by returning the result of beta-reducing the application. Otherwise returns expr.</p> 
      </section>
      <section id="lifting-types"> 
       <h2><a href="#lifting-types" class="anchor"></a>Lifting Types</h2> 
       <p>Types are not directly affected by the phase consistency principle. It is possible to use types defined at any level in any other level. But, if a type is used in a subsequent stage it will need to be lifted to a <code>Type</code>. Indeed, the definition of <code>to</code> above uses <code>T</code> in the next stage, there is a quote but no splice between the parameter binding of <code>T</code> and its usage. But the code can be rewritten by adding an explicit binding of a <code>Type[T]</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def to[T, R](f: Expr[T] =&gt; Expr[R])(using t: Type[T])(using Type[R], Quotes): Expr[T =&gt; R] =
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def to[T, R](f: Expr[T] =&gt; Expr[R])(using t: Type[T], r: Type[R])(using Quotes): Expr[T =&gt; R] =
 </span><span id="1" class=""><span class="tooltip-container"></span>  '{ (x: t.Underlying) =&gt; ${ f('x) } }
 </span></code></pre>
       </div> 
@@ -160,12 +155,12 @@
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def to[T, R](f: Expr[T] =&gt; Expr[R])(using t: Type[T], r: Type[R])(using Quotes): Expr[T =&gt; R] =
 </span><span id="1" class=""><span class="tooltip-container"></span>  '{
-</span><span id="2" class=""><span class="tooltip-container"></span>    type T = t.Underlying
+</span><span id="2" class=""><span class="tooltip-container"></span>    type T = summon[Type[T]].Underlying
 </span><span id="3" class=""><span class="tooltip-container"></span>    (x: T) =&gt; ${ f('x) }
 </span><span id="4" class=""><span class="tooltip-container"></span>  }
 </span></code></pre>
       </div> 
-      <p>The <code>summon</code> query succeeds because there is a given instance of type <code>Type[T]</code> available (namely the given parameter corresponding to the context bound <code>: Type</code>), and the reference to that value is phase-correct. If that was not the case, the phase inconsistency for <code>T</code> would be reported as an error.</p> 
+      <p>The <code>summon</code> query succeeds because there is a using parameter of type <code>Type[T]</code>, and the reference to that value is phase-correct. If that was not the case, the phase inconsistency for <code>T</code> would be reported as an error.</p> 
      </section>
      <section id="lifting-expressions"> 
       <h2><a href="#lifting-expressions" class="anchor"></a>Lifting Expressions</h2> 
@@ -367,7 +362,7 @@
      </section>
      <section id="example-expansion"> 
       <h2><a href="#example-expansion" class="anchor"></a>Example Expansion</h2> 
-      <p>Assume we have two methods, one <code>map</code> that takes an <code>Expr[Array[T]]</code> and a function <code>f</code> and one <code>sum</code> that performs a sum by delegating to <code>map</code>.</p> 
+      <p>Assume we have two methods, <code>map</code> that takes an <code>Expr[Array[T]]</code> and a function <code>f</code>, and <code>sum</code> that performs a sum by delegating to <code>map</code>.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object Macros:
@@ -392,38 +387,66 @@
 </span><span id="19" class=""><span class="tooltip-container"></span>end Macros
 </span></code></pre>
       </div> 
-      <p>A call to <code>sum_m(Array(1,2,3))</code> will first inline <code>sum_m</code>:</p> 
+      <p>A call to <code>sum_m(Array(1, 2, 3))</code> will first inline <code>sum_m</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, [2,3 : Int]:Int*)
-</span><span id="1" class=""><span class="tooltip-container"></span>${_root_.Macros.sum('arr)}
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
+</span><span id="1" class=""><span class="tooltip-container"></span>${ _root_.Macros.sum('arr) }
 </span></code></pre>
       </div> 
-      <p>then it will splice <code>sum</code>:</p> 
+      <p>then it will call <code>sum</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, [2,3 : Int]:Int*)
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
+</span><span id="1" class=""><span class="tooltip-container"></span>${ '{
+</span><span id="2" class=""><span class="tooltip-container"></span>  var sum = 0
+</span><span id="3" class=""><span class="tooltip-container"></span>  ${ map('arr, x =&gt; '{sum += $x}) }
+</span><span id="4" class=""><span class="tooltip-container"></span>  sum
+</span><span id="5" class=""><span class="tooltip-container"></span>} }
+</span></code></pre>
+      </div> 
+      <p>and cancel the <code>${'{...}}</code>:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span id="1" class=""><span class="tooltip-container"></span>
 </span><span id="2" class=""><span class="tooltip-container"></span>var sum = 0
 </span><span id="3" class=""><span class="tooltip-container"></span>${ map('arr, x =&gt; '{sum += $x}) }
 </span><span id="4" class=""><span class="tooltip-container"></span>sum
 </span></code></pre>
       </div> 
-      <p>then it will inline <code>map</code>:</p> 
+      <p>then it will extract <code>x =&gt; '{sum += $x}</code> into <code>f</code>, to have a value:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, [2,3 : Int]:Int*)
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span id="1" class=""><span class="tooltip-container"></span>
 </span><span id="2" class=""><span class="tooltip-container"></span>var sum = 0
 </span><span id="3" class=""><span class="tooltip-container"></span>val f = x =&gt; '{sum += $x}
-</span><span id="4" class=""><span class="tooltip-container"></span>${ _root_.Macros.map('arr, 'f)(Type.of[Int])}
+</span><span id="4" class=""><span class="tooltip-container"></span>${ _root_.Macros.map('arr, 'f)(Type.of[Int]) }
 </span><span id="5" class=""><span class="tooltip-container"></span>sum
 </span></code></pre>
       </div> 
-      <p>then it will expand and splice inside quotes <code>map</code>:</p> 
+      <p>and then call <code>map</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, [2,3 : Int]:Int*)
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
+</span><span id="1" class=""><span class="tooltip-container"></span>
+</span><span id="2" class=""><span class="tooltip-container"></span>var sum = 0
+</span><span id="3" class=""><span class="tooltip-container"></span>val f = x =&gt; '{sum += $x}
+</span><span id="4" class=""><span class="tooltip-container"></span>${ '{
+</span><span id="5" class=""><span class="tooltip-container"></span>  var i: Int = 0
+</span><span id="6" class=""><span class="tooltip-container"></span>  while i &lt; arr.length do
+</span><span id="7" class=""><span class="tooltip-container"></span>    val element: Int = (arr)(i)
+</span><span id="8" class=""><span class="tooltip-container"></span>    sum += element
+</span><span id="9" class=""><span class="tooltip-container"></span>    i += 1
+</span><span id="10" class=""><span class="tooltip-container"></span>  sum
+</span><span id="11" class=""><span class="tooltip-container"></span>} }
+</span></code></pre>
+      </div> 
+      <p>and cancel the <code>${'{...}}</code> again:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span id="1" class=""><span class="tooltip-container"></span>
 </span><span id="2" class=""><span class="tooltip-container"></span>var sum = 0
 </span><span id="3" class=""><span class="tooltip-container"></span>val f = x =&gt; '{sum += $x}
@@ -438,7 +461,7 @@
       <p>Finally cleanups and dead code elimination:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, [2,3 : Int]:Int*)
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span id="1" class=""><span class="tooltip-container"></span>var sum = 0
 </span><span id="2" class=""><span class="tooltip-container"></span>var i: Int = 0
 </span><span id="3" class=""><span class="tooltip-container"></span>while i &lt; arr.length do
@@ -493,7 +516,7 @@
       <p>It is possible to deconstruct or extract values out of <code>Expr</code> using pattern matching.</p> 
       <p><code>scala.quoted</code> contains objects that can help extracting values from <code>Expr</code>.</p> 
       <ul> 
-       <li><code>scala.quoted.Expr</code>/<code>scala.quoted.Exprs</code>: matches an expression of a value (or list of values) and returns the value (or list of values).</li> 
+       <li><code>scala.quoted.Expr</code>/<code>scala.quoted.Exprs</code>: matches an expression of a value (resp. list of values) and returns the value (resp. list of values).</li> 
        <li><code>scala.quoted.Const</code>/<code>scala.quoted.Consts</code>: Same as <code>Expr</code>/<code>Exprs</code> but only works on primitive values.</li> 
        <li><code>scala.quoted.Varargs</code>: matches an explicit sequence of expressions and returns them. These sequences are useful to get individual <code>Expr[T]</code> out of a varargs expression of type <code>Expr[Seq[T]]</code>.</li> 
       </ul> 
@@ -513,6 +536,11 @@
 </span><span id="10" class=""><span class="tooltip-container"></span>      dynamicSum.foldLeft(Expr(staticSum))((acc, arg) =&gt; '{ $acc + $arg })
 </span><span id="11" class=""><span class="tooltip-container"></span>    case _ =&gt;
 </span><span id="12" class=""><span class="tooltip-container"></span>      '{ $argsExpr.sum }
+</span><span id="13" class=""><span class="tooltip-container"></span>
+</span><span id="14" class=""><span class="tooltip-container"></span>sum(1, 2, 3) // gets matched by Varargs
+</span><span id="15" class=""><span class="tooltip-container"></span>
+</span><span id="16" class=""><span class="tooltip-container"></span>val xs = List(1, 2, 3)
+</span><span id="17" class=""><span class="tooltip-container"></span>sum(xs*) // doesn't get matched by Varargs
 </span></code></pre>
       </div>
      </section>

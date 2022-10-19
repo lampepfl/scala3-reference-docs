@@ -101,7 +101,7 @@
 </span><span id="2" class=""><span class="tooltip-container"></span>    x.map(f) // List already has a `map` method
 </span></code></pre>
       </div> 
-      <p>With this <code>given</code> instance in scope, everywhere a <code>Functor</code> is expected, the compiler will accept a <code>List</code> to be used.</p> 
+      <p>With this <code>given</code> instance in scope, everywhere a type with a <code>Functor</code> context bound is expected, the compiler will accept a <code>List</code> to be used.</p> 
       <p>For instance, we may write such a testing method:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
@@ -222,7 +222,7 @@
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>show(compute(i)(config))(config)
 </span></code></pre>
       </div> 
-      <p>Let's define this m then. First, we are going to define a type named <code>ConfigDependent</code> representing a function that when passed a <code>Config</code> produces a <code>Result</code>.</p> 
+      <p>Let's define this <code>flatMap</code> then. First, we are going to define a type named <code>ConfigDependent</code> representing a function that when passed a <code>Config</code> produces a <code>Result</code>.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>type ConfigDependent[Result] = Config =&gt; Result

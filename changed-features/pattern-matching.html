@@ -35,24 +35,32 @@
       <p>Extractors are objects that expose a method <code>unapply</code> or <code>unapplySeq</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapply[A](x: T)(implicit x: B): U
-</span><span id="1" class=""><span class="tooltip-container"></span>def unapplySeq[A](x: T)(implicit x: B): U
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapply(x: T): U
+</span><span id="1" class=""><span class="tooltip-container"></span>def unapplySeq(x: T): U
+</span></code></pre>
+      </div> 
+      <p>Where <code>T</code> is an arbitrary type, if it is a subtype of the scrutinee's type <code>Scrut</code>, a <a href="../other-new-features/type-test.html">type test</a> is performed before calling the method. <code>U</code> follows rules described in <a href="#fixed-arity-extractors">Fixed Arity Extractors</a> and <a href="#variadic-extractors">Variadic Extractors</a>.</p> 
+      <p><strong>Note:</strong> <code>U</code> can be the type of the extractor object.</p> 
+      <p><code>unapply</code> and <code>unapplySeq</code> can actually have a more general signature, allowing for a leading type clause, as well as arbitrarily many using clauses, both before and after the regular term clause, and at most one implicit clause at the end, for example:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapply[A, B](using C)(using D)(x: T)(using E)(using F)(implicit y: G): U = ???
 </span></code></pre>
       </div> 
       <p>Extractors that expose the method <code>unapply</code> are called fixed-arity extractors, which work with patterns of fixed arity. Extractors that expose the method <code>unapplySeq</code> are called variadic extractors, which enables variadic patterns.</p> 
      </section>
      <section id="fixed-arity-extractors"> 
-      <h3><a href="#fixed-arity-extractors" class="anchor"></a>Fixed-Arity Extractors</h3> 
-      <p>Fixed-arity extractors expose the following signature:</p> 
+      <h2><a href="#fixed-arity-extractors" class="anchor"></a>Fixed-Arity Extractors</h2> 
+      <p>Fixed-arity extractors expose the following signature (with potential type, using and implicit clauses):</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapply[A](x: T)(implicit x: B): U
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapply(x: T): U
 </span></code></pre>
       </div> 
       <p>The type <code>U</code> conforms to one of the following matches:</p> 
       <ul> 
-       <li>Boolean match</li> 
-       <li>Product match</li> 
+       <li><a href="#boolean-match">Boolean match</a></li> 
+       <li><a href="#product-match">Product match</a></li> 
       </ul> 
       <p>Or <code>U</code> conforms to the type <code>R</code>:</p> 
       <div class="snippet" scala-snippet="">
@@ -65,51 +73,22 @@
       </div> 
       <p>and <code>S</code> conforms to one of the following matches:</p> 
       <ul> 
-       <li>single match</li> 
-       <li>name-based match</li> 
+       <li><a href="#single-match">single match</a></li> 
+       <li><a href="#name-based-match">name-based match</a></li> 
       </ul> 
       <p>The former form of <code>unapply</code> has higher precedence, and <em>single match</em> has higher precedence over <em>name-based match</em>.</p> 
+      <p><strong>Note:</strong> the <code>S</code> in <code>R</code> can be <code>U</code>.</p> 
       <p>A usage of a fixed-arity extractor is irrefutable if one of the following condition holds:</p> 
       <ul> 
        <li><code>U = true</code></li> 
        <li>the extractor is used as a product match</li> 
-       <li><code>U = Some[T]</code> (for Scala 2 compatibility)</li> 
        <li><code>U &lt;: R</code> and <code>U &lt;: { def isEmpty: false }</code></li> 
+       <li><code>U = Some[T]</code></li> 
       </ul> 
-     </section>
-     <section id="variadic-extractors"> 
-      <h3><a href="#variadic-extractors" class="anchor"></a>Variadic Extractors</h3> 
-      <p>Variadic extractors expose the following signature:</p> 
-      <div class="snippet" scala-snippet="">
-       <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapplySeq[A](x: T)(implicit x: B): U
-</span></code></pre>
-      </div> 
-      <p>The type <code>U</code> conforms to one of the following matches:</p> 
-      <ul> 
-       <li>sequence match</li> 
-       <li>product-sequence match</li> 
-      </ul> 
-      <p>Or <code>U</code> conforms to the type <code>R</code>:</p> 
-      <div class="snippet" scala-snippet="">
-       <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>type R = {
-</span><span id="1" class=""><span class="tooltip-container"></span>  def isEmpty: Boolean
-</span><span id="2" class=""><span class="tooltip-container"></span>  def get: S
-</span><span id="3" class=""><span class="tooltip-container"></span>}
-</span></code></pre>
-      </div> 
-      <p>and <code>S</code> conforms to one of the two matches above.</p> 
-      <p>The former form of <code>unapplySeq</code> has higher priority, and <em>sequence match</em> has higher precedence over <em>product-sequence match</em>.</p> 
-      <p>A usage of a variadic extractor is irrefutable if one of the following conditions holds:</p> 
-      <ul> 
-       <li>the extractor is used directly as a sequence match or product-sequence match</li> 
-       <li><code>U = Some[T]</code> (for Scala 2 compatibility)</li> 
-       <li><code>U &lt;: R</code> and <code>U &lt;: { def isEmpty: false }</code></li> 
-      </ul> 
+      <p><strong>Note:</strong> The last rule is necessary because, for compatibility reasons, <code>isEmpty</code> on <code>Some</code> has return type <code>Boolean</code> rather than <code>false</code>, even though it always returns <code>false</code>.</p> 
      </section>
      <section id="boolean-match"> 
-      <h2><a href="#boolean-match" class="anchor"></a>Boolean Match</h2> 
+      <h3><a href="#boolean-match" class="anchor"></a>Boolean Match</h3> 
       <ul> 
        <li><code>U =:= Boolean</code></li> 
        <li>Pattern-matching on exactly <code>0</code> patterns</li> 
@@ -129,10 +108,10 @@
       </div>
      </section>
      <section id="product-match"> 
-      <h2><a href="#product-match" class="anchor"></a>Product Match</h2> 
+      <h3><a href="#product-match" class="anchor"></a>Product Match</h3> 
       <ul> 
        <li><code>U &lt;: Product</code></li> 
-       <li><code>N &gt; 0</code> is the maximum number of consecutive (parameterless <code>def</code> or <code>val</code>) <code>_1: P1</code> ... <code>_N: PN</code> members in <code>U</code></li> 
+       <li><code>N &gt; 0</code> is the maximum number of consecutive (<code>val</code> or parameterless <code>def</code>) <code>_1: P1</code> ... <code>_N: PN</code> members in <code>U</code></li> 
        <li>Pattern-matching on exactly <code>N</code> patterns with types <code>P1, P2, ..., PN</code></li> 
       </ul> 
       <p>For example:</p> <!-- To be kept in sync with tests/new/patmat-spec.scala --> 
@@ -159,10 +138,11 @@
       </div>
      </section>
      <section id="single-match"> 
-      <h2><a href="#single-match" class="anchor"></a>Single Match</h2> 
+      <h3><a href="#single-match" class="anchor"></a>Single Match</h3> 
       <ul> 
-       <li>If there is exactly <code>1</code> pattern, pattern-matching on <code>1</code> pattern with type <code>U</code></li> 
-      </ul> <!-- To be kept in sync with tests/new/patmat-spec.scala --> 
+       <li>Pattern-matching on <code>1</code> pattern with type <code>S</code></li> 
+      </ul> 
+      <p>For example, where <code>Nat &lt;: R</code>, <code>S = Int</code>:</p> <!-- To be kept in sync with tests/new/patmat-spec.scala --> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class Nat(val x: Int):
@@ -181,30 +161,78 @@
       </div>
      </section>
      <section id="name-based-match"> 
-      <h2><a href="#name-based-match" class="anchor"></a>Name-based Match</h2> 
+      <h3><a href="#name-based-match" class="anchor"></a>Name-based Match</h3> 
       <ul> 
-       <li><code>N &gt; 1</code> is the maximum number of consecutive (parameterless <code>def</code> or <code>val</code>) <code>_1: P1 ... _N: PN</code> members in <code>U</code></li> 
+       <li><code>S</code> has <code>N &gt; 1</code> members such that they are each <code>val</code>s or parameterless <code>def</code>s, and named from <code>_1</code> with type <code>P1</code> to <code>_N</code> with type <code>PN</code></li> 
+       <li><code>S</code> doesn't have <code>N+1</code> members satisfying the previous point, i.e. <code>N</code> is maximal</li> 
        <li>Pattern-matching on exactly <code>N</code> patterns with types <code>P1, P2, ..., PN</code></li> 
       </ul> 
+      <p>For example, where <code>U = AlwaysEmpty.type &lt;: R</code>, <code>S = NameBased</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object ProdEmpty:
-</span><span id="1" class=""><span class="tooltip-container"></span>  def _1: Int = ???
-</span><span id="2" class=""><span class="tooltip-container"></span>  def _2: String = ???
-</span><span id="3" class=""><span class="tooltip-container"></span>  def isEmpty = true
-</span><span id="4" class=""><span class="tooltip-container"></span>  def unapply(s: String): this.type = this
-</span><span id="5" class=""><span class="tooltip-container"></span>  def get = this
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object MyPatternMatcher:
+</span><span id="1" class=""><span class="tooltip-container"></span>  def unapply(s: String) = AlwaysEmpty
+</span><span id="2" class=""><span class="tooltip-container"></span>
+</span><span id="3" class=""><span class="tooltip-container"></span>object AlwaysEmpty:
+</span><span id="4" class=""><span class="tooltip-container"></span>  def isEmpty = true
+</span><span id="5" class=""><span class="tooltip-container"></span>  def get = NameBased
 </span><span id="6" class=""><span class="tooltip-container"></span>
-</span><span id="7" class=""><span class="tooltip-container"></span>"" match
-</span><span id="8" class=""><span class="tooltip-container"></span>  case ProdEmpty(_, _) =&gt; ???
-</span><span id="9" class=""><span class="tooltip-container"></span>  case _ =&gt; ()
+</span><span id="7" class=""><span class="tooltip-container"></span>object NameBased:
+</span><span id="8" class=""><span class="tooltip-container"></span>  def _1: Int = ???
+</span><span id="9" class=""><span class="tooltip-container"></span>  def _2: String = ???
+</span><span id="10" class=""><span class="tooltip-container"></span>
+</span><span id="11" class=""><span class="tooltip-container"></span>"" match
+</span><span id="12" class=""><span class="tooltip-container"></span>  case MyPatternMatcher(_, _) =&gt; ???
+</span><span id="13" class=""><span class="tooltip-container"></span>  case _ =&gt; ()
 </span></code></pre>
       </div>
      </section>
-     <section id="sequence-match"> 
-      <h2><a href="#sequence-match" class="anchor"></a>Sequence Match</h2> 
+     <section id="variadic-extractors"> 
+      <h2><a href="#variadic-extractors" class="anchor"></a>Variadic Extractors</h2> 
+      <p>Variadic extractors expose the following signature (with potential type, using and implicit clauses):</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def unapplySeq(x: T): U
+</span></code></pre>
+      </div> 
+      <p>Where <code>U</code> has to fullfill the following:</p> 
+      <ol> 
+       <li>Set <code>V := U</code></li> 
+       <li><code>V</code> is valid if <code>V</code> conforms to one of the following matches:</li> 
+      </ol> 
       <ul> 
-       <li><code>U &lt;: X</code>, <code>T2</code> and <code>T3</code> conform to <code>T1</code></li> 
+       <li><a href="#sequence-match">sequence match</a></li> 
+       <li><a href="#product-sequence-match">product-sequence match</a></li> 
+      </ul> 
+      <ol start="3"> 
+       <li>Otherwise <code>U</code> has to conform to the type <code>R</code>:</li> 
+      </ol> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>type R = {
+</span><span id="1" class=""><span class="tooltip-container"></span>  def isEmpty: Boolean
+</span><span id="2" class=""><span class="tooltip-container"></span>  def get: S
+</span><span id="3" class=""><span class="tooltip-container"></span>}
+</span></code></pre>
+      </div> 
+      <ol start="4"> 
+       <li>Set <code>V := S</code>, and reattempt 2., if it fails <code>U</code> is not valid.</li> 
+      </ol> 
+      <p>The <code>V := U</code> form of <code>unapplySeq</code> has higher priority, and <em>sequence match</em> has higher precedence over <em>product-sequence match</em>.</p> 
+      <p><strong>Note:</strong> This means <code>isEmpty</code> is disregarded if the <code>V := U</code> form is valid</p> 
+      <p>A usage of a variadic extractor is irrefutable if one of the following conditions holds:</p> 
+      <ul> 
+       <li>the extractor is used directly as a sequence match or product-sequence match</li> 
+       <li><code>U &lt;: R</code> and <code>U &lt;: { def isEmpty: false }</code></li> 
+       <li><code>U = Some[T]</code></li> 
+      </ul> 
+      <p><strong>Note:</strong> The last rule is necessary because, for compatibility reasons, <code>isEmpty</code> on <code>Some</code> has return type <code>Boolean</code> rather than <code>false</code>, even though it always returns <code>false</code>.</p> 
+      <p><strong>Note:</strong> Be careful, by the first condition and the note above, it is possible to define an irrefutable extractor with a <code>def isEmpty: true</code>. This is strongly discouraged and, if found in the wild, is almost certainly a bug.</p> 
+     </section>
+     <section id="sequence-match"> 
+      <h3><a href="#sequence-match" class="anchor"></a>Sequence Match</h3> 
+      <ul> 
+       <li><code>V &lt;: X</code></li> 
       </ul> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
@@ -217,9 +245,11 @@
 </span></code></pre>
       </div> 
       <ul> 
+       <li><code>T2</code> and <code>T3</code> conform to <code>T1</code></li> 
        <li>Pattern-matching on <em>exactly</em> <code>N</code> simple patterns with types <code>T1, T1, ..., T1</code>, where <code>N</code> is the runtime size of the sequence, or</li> 
        <li>Pattern-matching on <code>&gt;= N</code> simple patterns and <em>a vararg pattern</em> (e.g., <code>xs: _*</code>) with types <code>T1, T1, ..., T1, Seq[T1]</code>, where <code>N</code> is the minimum size of the sequence.</li> 
-      </ul> <!-- To be kept in sync with tests/new/patmat-spec.scala --> 
+      </ul> 
+      <p>For example, where <code>V = S</code>, <code>U = Option[S] &lt;: R</code>, <code>S = Seq[Char]</code></p> <!-- To be kept in sync with tests/new/patmat-spec.scala --> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object CharList:
@@ -236,13 +266,14 @@
       </div>
      </section>
      <section id="product-sequence-match"> 
-      <h2><a href="#product-sequence-match" class="anchor"></a>Product-Sequence Match</h2> 
+      <h3><a href="#product-sequence-match" class="anchor"></a>Product-Sequence Match</h3> 
       <ul> 
-       <li><code>U &lt;: Product</code></li> 
-       <li><code>N &gt; 0</code> is the maximum number of consecutive (parameterless <code>def</code> or <code>val</code>) <code>_1: P1</code> ... <code>_N: PN</code> members in <code>U</code></li> 
+       <li><code>V &lt;: Product</code></li> 
+       <li><code>N &gt; 0</code> is the maximum number of consecutive (<code>val</code> or parameterless <code>def</code>) <code>_1: P1</code> ... <code>_N: PN</code> members in <code>V</code></li> 
        <li><code>PN</code> conforms to the signature <code>X</code> defined in Seq Pattern</li> 
        <li>Pattern-matching on exactly <code>&gt;= N</code> patterns, the first <code>N - 1</code> patterns have types <code>P1, P2, ... P(N-1)</code>, the type of the remaining patterns are determined as in Seq Pattern.</li> 
       </ul> 
+      <p>For example, where <code>V = S</code>, <code>U = Option[S] &lt;: R</code>, <code>S = (String, PN) &lt;: Product</code>, <code>PN = Seq[Int]</code></p> 
       <div class="snippet"> 
        <pre><code class="language-Scala">class Foo(val name: String, val children: Int*)
 object Foo:
@@ -251,7 +282,7 @@ object Foo:
 
 def foo(f: Foo) = f match
   case Foo(name, x, y, ns*) =&gt; "&gt;= two children."
-  case Foo(name, ns*) =&gt;    =&gt; "&lt; two children."
+  case Foo(name, ns*)       =&gt; "&lt; two children."
 </code></pre> 
       </div> 
       <p>There are plans for further simplification, in particular to factor out <em>product match</em> and <em>name-based match</em> into a single type of extractor.</p> 
@@ -274,4 +305,4 @@ def foo(f: Foo) = f match
    </div> 
   </div>
  </body>
-</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#extractors">Extractors</a><ul><li><a href="#fixed-arity-extractors">Fixed-Arity Extractors</a></li><li><a href="#variadic-extractors">Variadic Extractors</a></li></ul></li><li><a href="#boolean-match">Boolean Match</a></li><li><a href="#product-match">Product Match</a></li><li><a href="#single-match">Single Match</a></li><li><a href="#name-based-match">Name-based Match</a></li><li><a href="#sequence-match">Sequence Match</a></li><li><a href="#product-sequence-match">Product-Sequence Match</a></li><li><a href="#type-testing">Type testing</a></li></ul></li></ul></nav></div></div></body></html>
+</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#extractors">Extractors</a></li><li><a href="#fixed-arity-extractors">Fixed-Arity Extractors</a><ul><li><a href="#boolean-match">Boolean Match</a></li><li><a href="#product-match">Product Match</a></li><li><a href="#single-match">Single Match</a></li><li><a href="#name-based-match">Name-based Match</a></li></ul></li><li><a href="#variadic-extractors">Variadic Extractors</a><ul><li><a href="#sequence-match">Sequence Match</a></li><li><a href="#product-sequence-match">Product-Sequence Match</a></li></ul></li><li><a href="#type-testing">Type testing</a></li></ul></li></ul></nav></div></div></body></html>

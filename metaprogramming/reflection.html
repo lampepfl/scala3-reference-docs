@@ -100,7 +100,9 @@
      <section id="tree-utilities"> 
       <h3><a href="#tree-utilities" class="anchor"></a>Tree Utilities</h3> 
       <p><code>quotes.reflect</code> contains three facilities for tree traversal and transformation.</p> 
-      <p><code>TreeAccumulator</code> ties the knot of a traversal. By calling <code>foldOver(x, tree)(owner)</code> we can dive into the <code>tree</code> node and start accumulating values of type <code>X</code> (e.g., of type <code>List[Symbol]</code> if we want to collect symbols). The code below, for example, collects the <code>val</code> definitions in the tree.</p> 
+      <p><code>TreeAccumulator[X]</code> allows you to traverse the tree and aggregate data of type <code>X</code> along the way, by overriding its method <code>foldTree(x: X, tree: Tree)(owner: Symbol): X</code>.</p> 
+      <p><code>foldOverTree(x: X, tree: Tree)(owner: Symbol): X</code> calls <code>foldTree</code> on each children of <code>tree</code> (using <code>fold</code> to give each call the value of the previous one).</p> 
+      <p>The code below, for example, collects the <code>val</code> definitions in the tree.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def collectPatternVariables(tree: Tree)(using ctx: Context): List[Symbol] =
@@ -114,11 +116,12 @@
 </span><span id="8" class=""><span class="tooltip-container"></span>  acc(Nil, tree)
 </span></code></pre>
       </div> 
-      <p>A <code>TreeTraverser</code> extends a <code>TreeAccumulator</code> and performs the same traversal but without returning any value. Finally, a <code>TreeMap</code> performs a transformation.</p> 
+      <p>A <code>TreeTraverser</code> extends a <code>TreeAccumulator[Unit]</code> and performs the same traversal but without returning any value.</p> 
+      <p><code>TreeMap</code> transforms trees along the traversal, through overloading its methods it is possible to transform only trees of specific types, for example <code>transformStatement</code> only transforms <code>Statement</code>s.</p> 
      </section>
      <section id="valdeflet"> 
       <h4><a href="#valdeflet" class="anchor"></a>ValDef.let</h4> 
-      <p><code>quotes.reflect.ValDef</code> also offers a method <code>let</code> that allows us to bind the <code>rhs</code> (right-hand side) to a <code>val</code> and use it in <code>body</code>. Additionally, <code>lets</code> binds the given <code>terms</code> to names and allows to use them in the <code>body</code>. Their type definitions are shown below:</p> 
+      <p>The object <code>quotes.reflect.ValDef</code> also offers a method <code>let</code> that allows us to bind the <code>rhs</code> (right-hand side) to a <code>val</code> and use it in <code>body</code>. Additionally, <code>lets</code> binds the given <code>terms</code> to names and allows to use them in the <code>body</code>. Their type definitions are shown below:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def let(rhs: Term)(body: Ident =&gt; Term): Term = ...

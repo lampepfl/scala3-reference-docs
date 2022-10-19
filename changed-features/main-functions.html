@@ -84,7 +84,7 @@ Illegal command line: java.lang.NumberFormatException: For input string: "sixty"
 </span><span id="9" class=""><span class="tooltip-container"></span>      case error: CLP.ParseError =&gt; CLP.showError(error)
 </span></code></pre>
      </div> 
-     <p><strong>Note</strong>: The <code>&lt;static&gt;</code> modifier above expresses that the <code>main</code> method is generated as a static method of class <code>happyBirthday</code>. It is not available for user programs in Scala. Regular "static" members are generated in Scala using objects instead.</p> 
+     <p><strong>Note:</strong> The <code>&lt;static&gt;</code> modifier above expresses that the <code>main</code> method is generated as a static method of class <code>happyBirthday</code>. It is not available for user programs in Scala. Regular "static" members are generated in Scala using objects instead.</p> 
      <p><a href="https://scala-lang.org/api/3.x/scala/main.html"><code>@main</code></a> methods are the recommended scheme to generate programs that can be invoked from the command line in Scala 3. They replace the previous scheme to write program as objects with a special <code>App</code> parent class. In Scala 2, <code>happyBirthday</code> could be written also like this:</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>

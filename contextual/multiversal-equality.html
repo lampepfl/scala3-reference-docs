@@ -44,6 +44,9 @@
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class T derives CanEqual
 </span></code></pre>
      </div> 
+     <blockquote> 
+      <p>Normally a <a href="derivation.html">derives clause</a> accepts only type classes with one parameter, however there is a special case for <code>CanEqual</code>.</p> 
+     </blockquote> 
      <p>Alternatively, one can also provide a <code>CanEqual</code> given instance directly, like this:</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
@@ -79,7 +82,7 @@
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>def canEqualAny[L, R]: CanEqual[L, R] = CanEqual.derived
 </span></code></pre>
      </div> 
-     <p>Even though <code>canEqualAny</code> is not declared as <code>given</code>, the compiler will still construct an <code>canEqualAny</code> instance as answer to an implicit search for the type <code>CanEqual[L, R]</code>, unless <code>L</code> or <code>R</code> have <code>CanEqual</code> instances defined on them, or the language feature <code>strictEquality</code> is enabled.</p> 
+     <p>Even though <code>canEqualAny</code> is not declared as <code>given</code>, the compiler will still construct a <code>canEqualAny</code> instance as answer to an implicit search for the type <code>CanEqual[L, R]</code>, unless <code>L</code> or <code>R</code> have <code>CanEqual</code> instances defined on them, or the language feature <code>strictEquality</code> is enabled.</p> 
      <p>The primary motivation for having <code>canEqualAny</code> is backwards compatibility. If this is of no concern, one can disable <code>canEqualAny</code> by enabling the language feature <code>strictEquality</code>. As for all language features this can be either done with an import</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
@@ -141,8 +144,8 @@
        <li>Primitive numeric types can be compared with subtypes of <code>java.lang.Number</code> (and <em>vice versa</em>).</li> 
        <li><code>Boolean</code> can be compared with <code>java.lang.Boolean</code> (and <em>vice versa</em>).</li> 
        <li><code>Char</code> can be compared with <code>java.lang.Character</code> (and <em>vice versa</em>).</li> 
-       <li>Two sequences (of arbitrary subtypes of <code>scala.collection.Seq</code>) can be compared with each other if their element types can be compared. The two sequence types need not be the same.</li> 
-       <li>Two sets (of arbitrary subtypes of <code>scala.collection.Set</code>) can be compared with each other if their element types can be compared. The two set types need not be the same.</li> 
+       <li>Two sequences (arbitrary subtypes of <code>scala.collection.Seq</code>) can be compared with each other if their element types can be compared. The two sequence types need not be the same.</li> 
+       <li>Two sets (arbitrary subtypes of <code>scala.collection.Set</code>) can be compared with each other if their element types can be compared. The two set types need not be the same.</li> 
        <li>Any subtype of <code>AnyRef</code> can be compared with <code>Null</code> (and <em>vice versa</em>).</li> 
       </ul> 
      </section>

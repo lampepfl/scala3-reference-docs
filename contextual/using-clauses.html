@@ -63,27 +63,38 @@
      </section>
      <section id="class-context-parameters"> 
       <h2><a href="#class-context-parameters" class="anchor"></a>Class Context Parameters</h2> 
-      <p>If a class context parameter is made a member by adding a <code>val</code> or <code>var</code> modifier, then that member is available as a given instance.</p> 
-      <p>Compare the following examples, where the attempt to supply an explicit <code>given</code> member induces an ambiguity:</p> 
+      <p>To make a class context parameter visible from outside the class body, it can be made into a member by adding a <code>val</code> or <code>var</code> modifier.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class GivenIntBox(using val givenInt: Int):
-</span><span id="1" class=""><span class="tooltip-container"></span>  def n = summon[Int]
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class GivenIntBox(using val usingParameter: Int):
+</span><span id="1" class=""><span class="tooltip-container"></span>  def myInt = summon[Int]
 </span><span id="2" class=""><span class="tooltip-container"></span>
-</span><span id="3" class=""><span class="tooltip-container"></span>class GivenIntBox2(using givenInt: Int):
-</span><span id="4" class=""><span class="tooltip-container"></span>  given Int = givenInt
-</span><span id="5" class=""><span class="tooltip-container"></span>  //def n = summon[Int]     // ambiguous
+</span><span id="3" class=""><span class="tooltip-container"></span>val b = GivenIntBox(using 23)
+</span><span id="4" class=""><span class="tooltip-container"></span>import b.usingParameter
+</span><span id="5" class=""><span class="tooltip-container"></span>summon[Int]  // 23
 </span></code></pre>
       </div> 
-      <p>The <code>given</code> member is importable as explained in the section on <a href="given-imports.html">importing <code>given</code>s</a>:</p> 
+      <p>This is preferable to creating an explicit <code>given</code> member, as the latter creates ambiguity inside the class body:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class GivenIntBox2(using usingParameter: Int):
+</span><span id="1" class=""><span class="tooltip-container"></span>  given givenMember: Int = usingParameter
+</span><span id="2" class=""><span class="tooltip-container"></span>  def n = summon[Int]  // ambiguous given instances: both usingParameter and givenMember match type Int
+</span></code></pre>
+      </div> 
+      <p>From the outside of <code>GivenIntBox</code>, <code>usingParameter</code> appears as if it were defined in the class as <code>given usingParameter: Int</code>, in particular it must be imported as described in the section on <a href="given-imports.html">importing <code>given</code>s</a>.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val b = GivenIntBox(using 23)
-</span><span id="1" class=""><span class="tooltip-container"></span>import b.given
-</span><span id="2" class=""><span class="tooltip-container"></span>summon[Int]  // 23
-</span><span id="3" class=""><span class="tooltip-container"></span>
-</span><span id="4" class=""><span class="tooltip-container"></span>import b.*
-</span><span id="5" class=""><span class="tooltip-container"></span>//givenInt   // Not found
+</span><span id="1" class=""><span class="tooltip-container"></span>// Works:
+</span><span id="2" class=""><span class="tooltip-container"></span>import b.given
+</span><span id="3" class=""><span class="tooltip-container"></span>summon[Int]  // 23
+</span><span id="4" class=""><span class="tooltip-container"></span>usingParameter  // 23
+</span><span id="5" class=""><span class="tooltip-container"></span>
+</span><span id="6" class=""><span class="tooltip-container"></span>// Fails:
+</span><span id="7" class=""><span class="tooltip-container"></span>import b.*
+</span><span id="8" class=""><span class="tooltip-container"></span>summon[Int]      // No given instance found
+</span><span id="9" class=""><span class="tooltip-container"></span>usingParameter   // Not found
 </span></code></pre>
       </div>
      </section>

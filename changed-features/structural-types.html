@@ -40,28 +40,41 @@
       <p>Here's an example of a structural type <code>Person</code>:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class Record(elems: (String, Any)*) extends Selectable:
-</span><span id="1" class=""><span class="tooltip-container"></span>    private val fields = elems.toMap
-</span><span id="2" class=""><span class="tooltip-container"></span>    def selectDynamic(name: String): Any = fields(name)
-</span><span id="3" class=""><span class="tooltip-container"></span>
-</span><span id="4" class=""><span class="tooltip-container"></span>  type Person = Record { val name: String; val age: Int }
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>type Person = Record { val name: String; val age: Int }
 </span></code></pre>
       </div> 
-      <p>The type <code>Person</code> adds a <em>refinement</em> to its parent type <code>Record</code> that defines the two fields <code>name</code> and <code>age</code>. We say the refinement is <em>structural</em> since <code>name</code> and <code>age</code> are not defined in the parent type. But they exist nevertheless as members of class <code>Person</code>. For instance, the following program would print "Emma is 42 years old.":</p> 
+      <p>The type <code>Person</code> adds a <em>refinement</em> to its parent type <code>Record</code> that defines the two fields <code>name</code> and <code>age</code>. We say the refinement is <em>structural</em> since <code>name</code> and <code>age</code> are not defined in the parent type. But they exist nevertheless as members of type <code>Person</code>.</p> 
+      <p>This allows us to check at compiletime if accesses are valid:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val person = Record("name" -&gt; "Emma", "age" -&gt; 42).asInstanceOf[Person]
-</span><span id="1" class=""><span class="tooltip-container"></span>  println(s"${person.name} is ${person.age} years old.")
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val person: Person = ???
+</span><span id="1" class=""><span class="tooltip-container"></span>println(s"${person.name} is ${person.age} years old.") // works
+</span><span id="2" class=""><span class="tooltip-container"></span>println(person.email) // error: value email is not a member of Person
 </span></code></pre>
       </div> 
-      <p>The parent type <code>Record</code> in this example is a generic class that can represent arbitrary records in its <code>elems</code> argument. This argument is a sequence of pairs of labels of type <code>String</code> and values of type <code>Any</code>. When we create a <code>Person</code> as a <code>Record</code> we have to assert with a typecast that the record defines the right fields of the right types. <code>Record</code> itself is too weakly typed so the compiler cannot know this without help from the user. In practice, the connection between a structural type and its underlying generic representation would most likely be done by a database layer, and therefore would not be a concern of the end user.</p> 
-      <p><code>Record</code> extends the marker trait <a href="https://scala-lang.org/api/3.x/scala/Selectable.html"><code>scala.Selectable</code></a> and defines a method <code>selectDynamic</code>, which maps a field name to its value. Selecting a structural type member is done by calling this method. The <code>person.name</code> and <code>person.age</code> selections are translated by the Scala compiler to:</p> 
+      <p>How is <code>Record</code> defined, and how does <code>person.name</code> resolve ?</p> 
+      <p><code>Record</code> is a class that extends the marker trait <a href="https://scala-lang.org/api/3.x/scala/Selectable.html"><code>scala.Selectable</code></a> and defines a method <code>selectDynamic</code>, which maps a field name to its value. Selecting a member of a structural type is syntactic sugar for a call to this method. The selections <code>person.name</code> and <code>person.age</code> are translated by the Scala compiler to:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>person.selectDynamic("name").asInstanceOf[String]
-</span><span id="1" class=""><span class="tooltip-container"></span>  person.selectDynamic("age").asInstanceOf[Int]
+</span><span id="1" class=""><span class="tooltip-container"></span>person.selectDynamic("age").asInstanceOf[Int]
 </span></code></pre>
       </div> 
+      <p>For example, <code>Record</code> could be defined as follows:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class Record(elems: (String, Any)*) extends Selectable:
+</span><span id="1" class=""><span class="tooltip-container"></span>  private val fields = elems.toMap
+</span><span id="2" class=""><span class="tooltip-container"></span>  def selectDynamic(name: String): Any = fields(name)
+</span></code></pre>
+      </div> 
+      <p>Which allows us to create instances of <code>Person</code> like so:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>val person = Record("name" -&gt; "Emma", "age" -&gt; 42).asInstanceOf[Person]
+</span></code></pre>
+      </div> 
+      <p>The parent type <code>Record</code> in this example is a generic class that can represent arbitrary records in its <code>elems</code> argument. This argument is a sequence of pairs of labels of type <code>String</code> and values of type <code>Any</code>. When we create a <code>Person</code> as a <code>Record</code> we have to assert with a typecast that the record defines the right fields of the right types. <code>Record</code> itself is too weakly typed so the compiler cannot know this without help from the user. In practice, the connection between a structural type and its underlying generic representation would most likely be done by a database layer, and therefore would not be a concern of the end user.</p> 
       <p>Besides <code>selectDynamic</code>, a <code>Selectable</code> class sometimes also defines a method <code>applyDynamic</code>. This can then be used to translate function calls of structural members. So, if <code>a</code> is an instance of <code>Selectable</code>, a structural call like <code>a.f(b, c)</code> would translate to</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
@@ -71,41 +84,44 @@
      </section>
      <section id="using-java-reflection"> 
       <h2><a href="#using-java-reflection" class="anchor"></a>Using Java Reflection</h2> 
-      <p>Structural types can also be accessed using <a href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java reflection</a>. Example:</p> 
+      <p>Using <code>Selectable</code> and <a href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java reflection</a>, we can select a member from unrelated classes.</p> 
+      <blockquote> 
+       <p>Before resorting to structural calls with Java reflection one should consider alternatives. For instance, sometimes a more a modular <em>and</em> efficient architecture can be obtained using <a href="../contextual/type-classes.html">type classes</a>.</p> 
+      </blockquote> 
+      <p>For example, we would like to provide behavior for both <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.io.File)"><code>FileInputStream</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/channels/Channel.html"><code>Channel</code></a> classes by calling their <code>close</code> method, however, these classes are unrelated, i.e. have no common supertype with a <code>close</code> method. Therefore, below we define a structural type <code>Closeable</code> that defines a <code>close</code> method.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>type Closeable = { def close(): Unit }
 </span><span id="1" class=""><span class="tooltip-container"></span>
-</span><span id="2" class=""><span class="tooltip-container"></span>  class FileInputStream:
-</span><span id="3" class=""><span class="tooltip-container"></span>    def close(): Unit
+</span><span id="2" class=""><span class="tooltip-container"></span>class FileInputStream:
+</span><span id="3" class=""><span class="tooltip-container"></span>  def close(): Unit
 </span><span id="4" class=""><span class="tooltip-container"></span>
-</span><span id="5" class=""><span class="tooltip-container"></span>  class Channel:
-</span><span id="6" class=""><span class="tooltip-container"></span>    def close(): Unit
+</span><span id="5" class=""><span class="tooltip-container"></span>class Channel:
+</span><span id="6" class=""><span class="tooltip-container"></span>  def close(): Unit
 </span></code></pre>
       </div> 
-      <p>Here, we define a structural type <code>Closeable</code> that defines a <code>close</code> method. There are various classes that have <code>close</code> methods, we just list <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.io.File)"><code>FileInputStream</code></a> and <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/channels/Channel.html"><code>Channel</code></a> as two examples. It would be easiest if the two classes shared a common interface that factors out the <code>close</code> method. But such factorings are often not possible if different libraries are combined in one application. Yet, we can still have methods that work on all classes with a <code>close</code> method by using the <code>Closeable</code> type. For instance,</p> 
+      <p>Ideally we would add a common interface to both these classes to define the <code>close</code> method, however they are defined in libraries outside of our control. As a compromise we can use the structural type to define a single implementation for an <code>autoClose</code> method:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>import scala.reflect.Selectable.reflectiveSelectable
 </span><span id="1" class=""><span class="tooltip-container"></span>
-</span><span id="2" class=""><span class="tooltip-container"></span>  def autoClose(f: Closeable)(op: Closeable =&gt; Unit): Unit =
-</span><span id="3" class=""><span class="tooltip-container"></span>    try op(f) finally f.close()
+</span><span id="2" class=""><span class="tooltip-container"></span>def autoClose(f: Closeable)(op: Closeable =&gt; Unit): Unit =
+</span><span id="3" class=""><span class="tooltip-container"></span>  try op(f) finally f.close()
 </span></code></pre>
       </div> 
-      <p>The call <code>f.close()</code> has to use Java reflection to identify and call the <code>close</code> method in the receiver <code>f</code>. This needs to be enabled by an import of <code>reflectiveSelectable</code> shown above. What happens "under the hood" is then the following:</p> 
+      <p>The call <code>f.close()</code> requires <code>Closeable</code> to extend <code>Selectable</code> to identify and call the <code>close</code> method in the receiver <code>f</code>. A universal implicit conversion to <code>Selectable</code> is enabled by an import of <code>reflectiveSelectable</code> shown above, based on <a href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java reflection</a>. What happens "under the hood" is then the following:</p> 
       <ul> 
-       <li> <p>The import makes available an implicit conversion that turns any type into a <code>Selectable</code>. <code>f</code> is wrapped in this conversion.</p> </li> 
+       <li> <p>The implicit conversion wraps <code>f</code> in an instance of <code>scala.reflect.Selectable</code> (which is a subtype of <code>Selectable</code>).</p> </li> 
        <li> <p>The compiler then transforms the <code>close</code> call on the wrapped <code>f</code> to an <code>applyDynamic</code> call. The end result is:</p> 
         <div class="snippet" scala-snippet="">
          <div class="buttons"></div>
          <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>reflectiveSelectable(f).applyDynamic("close")()
 </span></code></pre>
         </div> </li> 
-       <li> <p>The implementation of <code>applyDynamic</code> in <code>reflectiveSelectable</code>'s result uses Java reflection to find and call a method <code>close</code> with zero parameters in the value referenced by <code>f</code> at runtime.</p> </li> 
+       <li> <p>The implementation of <code>applyDynamic</code> in <code>reflectiveSelectable</code>'s result uses <a href="https://www.oracle.com/technical-resources/articles/java/javareflection.html">Java reflection</a> to find and call a method <code>close</code> with zero parameters in the value referenced by <code>f</code> at runtime.</p> </li> 
       </ul> 
       <p>Structural calls like this tend to be much slower than normal method calls. The mandatory import of <code>reflectiveSelectable</code> serves as a signpost that something inefficient is going on.</p> 
       <p><strong>Note:</strong> In Scala 2, Java reflection is the only mechanism available for structural types and it is automatically enabled without needing the <code>reflectiveSelectable</code> conversion. However, to warn against inefficient dispatch, Scala 2 requires a language import <code>import scala.language.reflectiveCalls</code>.</p> 
-      <p>Before resorting to structural calls with Java reflection one should consider alternatives. For instance, sometimes a more a modular <em>and</em> efficient architecture can be obtained using type classes.</p> 
      </section>
      <section id="extensibility"> 
       <h2><a href="#extensibility" class="anchor"></a>Extensibility</h2> 
@@ -148,8 +164,8 @@
       <p>There are clearly some connections with <a href="https://scala-lang.org/api/3.x/scala/Dynamic.html"><code>scala.Dynamic</code></a> here, since both select members programmatically. But there are also some differences.</p> 
       <ul> 
        <li> <p>Fully dynamic selection is not typesafe, but structural selection is, as long as the correspondence of the structural type with the underlying value is as stated.</p> </li> 
-       <li> <p><a href="https://scala-lang.org/api/3.x/scala/Dynamic.html"><code>Dynamic</code></a> is just a marker trait, which gives more leeway where and how to define reflective access operations. By contrast <code>Selectable</code> is a trait which declares the access operations.</p> </li> 
-       <li> <p>Two access operations, <code>selectDynamic</code> and <code>applyDynamic</code> are shared between both approaches. In <code>Selectable</code>, <code>applyDynamic</code> also may also take <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html"><code>java.lang.Class</code></a> arguments indicating the method's formal parameter types. <a href="https://scala-lang.org/api/3.x/scala/Dynamic.html"><code>Dynamic</code></a> comes with <code>updateDynamic</code>.</p> </li> 
+       <li> <p>Two access operations, <code>selectDynamic</code> and <code>applyDynamic</code> are shared between both approaches. In <code>Selectable</code>, <code>applyDynamic</code> also may also take <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html"><code>java.lang.Class</code></a> arguments indicating the method's formal parameter types.</p> </li> 
+       <li> <p><code>updateDynamic</code> is unique to <a href="https://scala-lang.org/api/3.x/scala/Dynamic.html"><code>Dynamic</code></a> but as mentionned before, this fact is subject to change, and shouldn't be used as an assumption.</p> </li> 
       </ul> 
       <p><a href="structural-types-spec.html">More details</a></p> 
      </section> 

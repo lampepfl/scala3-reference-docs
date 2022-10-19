@@ -34,7 +34,7 @@
      </section>
      <section id="constvalue-and-constvalueopt"> 
       <h3><a href="#constvalue-and-constvalueopt" class="anchor"></a><code>constValue</code> and <code>constValueOpt</code></h3> 
-      <p><code>constValue</code> is a function that produces the constant value represented by a type.</p> 
+      <p><code>constValue</code> is a function that produces the constant value represented by a type, or a compile time error if the type is not a constant type.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>import scala.compiletime.constValue
@@ -49,6 +49,7 @@
 </span></code></pre>
       </div> 
       <p><code>constValueOpt</code> is the same as <code>constValue</code>, however returning an <code>Option[T]</code> enabling us to handle situations where a value is not present. Note that <code>S</code> is the type of the successor of some singleton type. For example the type <code>S[1]</code> is the singleton type <code>2</code>.</p> 
+      <p>Since tuples are not constant types, even if their constituants are, there is <code>constValueTuple</code>, which given a tuple type <code>(X1, ..., Xn)</code>, returns a tuple value <code>(constValue[X1], ..., constValue[Xn])</code>.</p> 
      </section>
      <section id="erasedvalue"> 
       <h3><a href="#erasedvalue" class="anchor"></a><code>erasedValue</code></h3> 
@@ -165,23 +166,9 @@
 </span></code></pre>
       </div>
      </section>
-     <section id="summoning-implicits-selectively"> 
-      <h2><a href="#summoning-implicits-selectively" class="anchor"></a>Summoning Implicits Selectively</h2> 
-      <p>It is foreseen that many areas of typelevel programming can be done with rewrite methods instead of implicits. But sometimes implicits are unavoidable. The problem so far was that the Prolog-like programming style of implicit search becomes viral: Once some construct depends on implicit search it has to be written as a logic program itself. Consider for instance the problem of creating a <code>TreeSet[T]</code> or a <code>HashSet[T]</code> depending on whether <code>T</code> has an <code>Ordering</code> or not. We can create a set of implicit definitions like this:</p> 
-      <div class="snippet" scala-snippet="">
-       <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>trait SetFor[T, S &lt;: Set[T]]
-</span><span id="1" class=""><span class="tooltip-container"></span>
-</span><span id="2" class=""><span class="tooltip-container"></span>class LowPriority:
-</span><span id="3" class=""><span class="tooltip-container"></span>  implicit def hashSetFor[T]: SetFor[T, HashSet[T]] = ...
-</span><span id="4" class=""><span class="tooltip-container"></span>
-</span><span id="5" class=""><span class="tooltip-container"></span>object SetsFor extends LowPriority:
-</span><span id="6" class=""><span class="tooltip-container"></span>  implicit def treeSetFor[T: Ordering]: SetFor[T, TreeSet[T]] = ...
-</span></code></pre>
-      </div> 
-      <p>Clearly, this is not pretty. Besides all the usual indirection of implicit search, we face the problem of rule prioritization where we have to ensure that <code>treeSetFor</code> takes priority over <code>hashSetFor</code> if the element type has an ordering. This is solved (clumsily) by putting <code>hashSetFor</code> in a superclass <code>LowPriority</code> of the object <code>SetsFor</code> where <code>treeSetFor</code> is defined. Maybe the boilerplate would still be acceptable if the crufty code could be contained. However, this is not the case. Every user of the abstraction has to be parameterized itself with a <code>SetFor</code> implicit. Considering the simple task <em>"I want a <code>TreeSet[T]</code> if <code>T</code> has an ordering and a <code>HashSet[T]</code> otherwise"</em>, this seems like a lot of ceremony.</p> 
-      <p>There are some proposals to improve the situation in specific areas, for instance by allowing more elaborate schemes to specify priorities. But they all keep the viral nature of implicit search programs based on logic programming.</p> 
-      <p>By contrast, the new <code>summonFrom</code> construct makes implicit search available in a functional context. To solve the problem of creating the right set, one would use it as follows:</p> 
+     <section id="summoning-givens-selectively"> 
+      <h2><a href="#summoning-givens-selectively" class="anchor"></a>Summoning Givens Selectively</h2> 
+      <p>The new <code>summonFrom</code> construct makes implicit search available in a functional context. To solve the problem of creating the right set, one would use it as follows:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>import scala.compiletime.summonFrom
@@ -193,7 +180,7 @@
 </span></code></pre>
       </div> 
       <p>A <code>summonFrom</code> call takes a pattern matching closure as argument. All patterns in the closure are type ascriptions of the form <code>identifier : Type</code>.</p> 
-      <p>Patterns are tried in sequence. The first case with a pattern <code>x: T</code> such that an implicit value of type <code>T</code> can be summoned is chosen.</p> 
+      <p>Patterns are tried in sequence. The first case with a pattern <code>x: T</code> such that a contextual value of type <code>T</code> can be summoned is chosen.</p> 
       <p>Alternatively, one can also use a pattern-bound given instance, which avoids the explicit using clause. For instance, <code>setFor</code> could also be formulated as follows:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
@@ -206,15 +193,15 @@
 </span></code></pre>
       </div> 
       <p><code>summonFrom</code> applications must be reduced at compile time.</p> 
-      <p>Consequently, if we summon an <code>Ordering[String]</code> the code above will return a new instance of <code>TreeSet[String]</code>.</p> 
+      <p>Consequently, if a given instance of <code>Ordering[String]</code> is in the implicit scope, the code above will return a new instance of <code>TreeSet[String]</code>. Such an instance is defined in <code>Ordering</code>'s companion object, so there will always be one.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
-       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>summon[Ordering[String]]
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>summon[Ordering[String]] // Proves that an Ordering[String] is in scope
 </span><span id="1" class=""><span class="tooltip-container"></span>
 </span><span id="2" class=""><span class="tooltip-container"></span>println(setFor[String].getClass) // prints class scala.collection.immutable.TreeSet
 </span></code></pre>
       </div> 
-      <p><strong>Note</strong> <code>summonFrom</code> applications can raise ambiguity errors. Consider the following code with two givens in scope of type <code>A</code>. The pattern match in <code>f</code> will raise an ambiguity error of <code>f</code> is applied.</p> 
+      <p><strong>Note:</strong> <code>summonFrom</code> applications can raise ambiguity errors. Consider the following code with two givens in scope of type <code>A</code>. The pattern match in <code>f</code> will raise an ambiguity error if <code>f</code> is applied.</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class A
@@ -269,4 +256,4 @@
    </div> 
   </div>
  </body>
-</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#the-scalacompiletime-package">The scala.compiletime Package</a><ul><li><a href="#constvalue-and-constvalueopt">constValue and constValueOpt</a></li><li><a href="#erasedvalue">erasedValue</a></li><li><a href="#error">error</a></li><li><a href="#the-scalacompiletimeops-package">The scala.compiletime.ops package</a></li></ul></li><li><a href="#summoning-implicits-selectively">Summoning Implicits Selectively</a></li><li><a href="#summoninline">summonInline</a></li><li><a href="#reference">Reference</a></li></ul></li></ul></nav></div></div></body></html>
+</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#the-scalacompiletime-package">The scala.compiletime Package</a><ul><li><a href="#constvalue-and-constvalueopt">constValue and constValueOpt</a></li><li><a href="#erasedvalue">erasedValue</a></li><li><a href="#error">error</a></li><li><a href="#the-scalacompiletimeops-package">The scala.compiletime.ops package</a></li></ul></li><li><a href="#summoning-givens-selectively">Summoning Givens Selectively</a></li><li><a href="#summoninline">summonInline</a></li><li><a href="#reference">Reference</a></li></ul></li></ul></nav></div></div></body></html>

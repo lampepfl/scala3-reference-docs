@@ -161,7 +161,7 @@
 </span><span id="3" class=""><span class="tooltip-container"></span>catch ...
 </span></code></pre>
       </div> 
-      <p>Note that the right-hand side of the synthesized given is <code>???</code> (undefined). This is OK since this given is erased; it will not be executed at runtime.</p> 
+      <p>Note that the right-hand side of the synthesized given is <code>compiletime.erasedValue</code>. This is OK since this given is erased; it will not be executed at runtime.</p> 
       <p><strong>Note 1:</strong> The <a href="https://scala-lang.org/api/3.x/scala/runtime/stdLibPatches/language$$experimental$$saferExceptions$.html"><code>saferExceptions</code></a> feature is designed to work only with checked exceptions. An exception type is <em>checked</em> if it is a subtype of <code>Exception</code> but not of <code>RuntimeException</code>. The signature of <code>CanThrow</code> still admits <code>RuntimeException</code>s since <code>RuntimeException</code> is a proper subtype of its bound, <code>Exception</code>. But no capabilities will be generated for <code>RuntimeException</code>s. Furthermore, <code>throws</code> clauses also may not refer to <code>RuntimeException</code>s.</p> 
       <p><strong>Note 2:</strong> To keep things simple, the compiler will currently only generate capabilities for catch clauses of the form</p> 
       <div class="snippet" scala-snippet="">

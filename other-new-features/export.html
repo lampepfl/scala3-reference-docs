@@ -209,15 +209,15 @@ ImportSelectors   ::=  NamedSelector [‘,’ ImportSelectors]
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class B { val c: Int }
-</span><span id="1" class=""><span class="tooltip-container"></span>object a { val b = new B }
-</span><span id="2" class=""><span class="tooltip-container"></span>export a.*
+</span><span id="1" class=""><span class="tooltip-container"></span>object A { val b = new B }
+</span><span id="2" class=""><span class="tooltip-container"></span>export A.*
 </span><span id="3" class=""><span class="tooltip-container"></span>export b.*
 </span></code></pre>
       </div> 
-      <p>Is the <code>export b.*</code> clause legal? If yes, what does it export? Is it equivalent to <code>export a.b.*</code>? What about if we swap the last two clauses?</p> 
+      <p>Is the <code>export b.*</code> clause legal? If yes, what does it export? Is it equivalent to <code>export A.b.*</code>? What about if we swap the last two clauses?</p> 
       <div class="snippet"> 
        <pre><code>export b.*
-export a.*
+export A.*
 </code></pre> 
       </div> 
       <p>To avoid tricky questions like these, we fix the elaboration order of exports as follows.</p> 
