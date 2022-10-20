@@ -28,7 +28,7 @@
       <div class="byline"> <a href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/contextual/derivation.md"> <i class="far fa-edit"></i> Edit this page on GitHub </a> 
       </div> 
      </header> 
-     <p>Type class derivation is a way to automatically generate given instances for type classes which satisfy some simple conditions. A type class in this sense is any trait or class with a type parameter determining the type being operated on. Common examples are <code>Eq</code>, <code>Ordering</code>, or <code>Show</code>. For example, given the following <code>Tree</code> algebraic data type (ADT):</p> 
+     <p>Type class derivation is a way to automatically generate given instances for type classes which satisfy some simple conditions. A type class in this sense is any trait or class with a single type parameter determining the type being operated on, and the special case <code>CanEqual</code>. Common examples are <code>Eq</code>, <code>Ordering</code>, or <code>Show</code>. For example, given the following <code>Tree</code> algebraic data type (ADT):</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>enum Tree[T] derives Eq, Ordering, Show:
@@ -45,15 +45,133 @@
 </span></code></pre>
      </div> 
      <p>We say that <code>Tree</code> is the <em>deriving type</em> and that the <code>Eq</code>, <code>Ordering</code> and <code>Show</code> instances are <em>derived instances</em>.</p> 
-     <p><strong>Note:</strong> The access to <code>derived</code> above is a normal access, therefore if there are multiple definitions of <code>derived</code> in the type class, overloading resolution applies.</p> 
-     <p><strong>Note:</strong> <code>derived</code> can be used manually, this is useful when you do not have control over the definition. For example we can implement an <code>Ordering</code> for <code>Option</code>s like so:</p> 
+     <p><strong>Note:</strong> <code>derived</code> can be used manually, this is useful when you do not have control over the definition. For example we can implement <code>Ordering</code> for <code>Option</code>s like so:</p> 
      <div class="snippet" scala-snippet="">
       <div class="buttons"></div>
       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [T: Ordering]: Ordering[Option[T]] = Ordering.derived
 </span></code></pre>
      </div> 
      <p>It is discouraged to directly refer to the <code>derived</code> member if you can use a <code>derives</code> clause instead.</p> 
-     <p>All data types can have a <code>derives</code> clause. This document focuses primarily on data types which also have a given instance of the <code>Mirror</code> type class available.</p> 
+     <section id="exact-mechanism"> 
+      <h2><a href="#exact-mechanism" class="anchor"></a>Exact mechanism</h2> 
+      <p>In the following, when type arguments are enumerated and the first index evaluates to a larger value than the last, then there are actually no arguments, for example: <code>A[T_2, ..., T_1]</code> means <code>A</code>.</p> 
+      <p>For a class/trait/object/enum <code>DerivingType[T_1, ..., T_N] derives TC</code>, a derived instance is created in <code>DerivingType</code>'s companion object (or <code>DerivingType</code> itself if it is an object).</p> 
+      <p>The general "shape" of the derived instance is as follows:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [...](using ...): TC[ ... DerivingType[...] ... ] = TC.derived
+</span></code></pre>
+      </div> 
+      <p><code>TC.derived</code> should be an expression that conforms to the expected type on the left, potentially elaborated using term and/or type inference.</p> 
+      <p><strong>Note:</strong> <code>TC.derived</code> is a normal access, therefore if there are multiple definitions of <code>TC.derived</code>, overloading resolution applies.</p> 
+      <p>What the derived instance precisely looks like depends on the specifics of <code>DerivingType</code> and <code>TC</code>, we first examine <code>TC</code>:</p> 
+     </section>
+     <section id="tc-takes-1-parameter-f"> 
+      <h3><a href="#tc-takes-1-parameter-f" class="anchor"></a><code>TC</code> takes 1 parameter <code>F</code></h3> 
+      <p>Therefore <code>TC</code> is defined as <code>TC[F[A_1, ..., A_K]]</code> (<code>TC[F]</code> if <code>K == 0</code>) for some <code>F</code>. There are two further cases depending on the kinds of arguments:</p> 
+     </section>
+     <section id="f-and-all-arguments-of-derivingtype-have-kind-"> 
+      <h4><a href="#f-and-all-arguments-of-derivingtype-have-kind-" class="anchor"></a><code>F</code> and all arguments of <code>DerivingType</code> have kind <code>*</code></h4> 
+      <p><strong>Note:</strong> <code>K == 0</code> in this case.</p> 
+      <p>The generated instance is then:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [T_1: TC, ..., T_N: TC]: TC[DerivingType[T_1, ..., T_N]] = TC.derived
+</span></code></pre>
+      </div> 
+      <p>This is the most common case, and is the one that was highlighted in the introduction.</p> 
+      <p><strong>Note:</strong> The <code>[T_i: TC, ...]</code> introduces a <code>(using TC[T_i], ...)</code>, more information in <a href="context-bounds.html">Context Bounds</a>. This allows the <code>derived</code> member to access these evidences.</p> 
+      <p><strong>Note:</strong> If <code>N == 0</code> the above means:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given TC[DerivingType] = TC.derived
+</span></code></pre>
+      </div> 
+      <p>For example, the class</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>case class Point(x: Int, y: Int) derives Ordering
+</span></code></pre>
+      </div> 
+      <p>generates the instance</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object Point:
+</span><span id="1" class=""><span class="tooltip-container"></span>  ...
+</span><span id="2" class=""><span class="tooltip-container"></span>  given Ordering[Point] = Ordering.derived
+</span></code></pre>
+      </div>
+     </section>
+     <section id="f-and-derivingtype-have-parameters-of-matching-kind-on-the-right"> 
+      <h4><a href="#f-and-derivingtype-have-parameters-of-matching-kind-on-the-right" class="anchor"></a><code>F</code> and <code>DerivingType</code> have parameters of matching kind on the right</h4> 
+      <p>This section covers cases where you can pair arguments of <code>F</code> and <code>DerivingType</code> starting from the right such that they have the same kinds pairwise, and all arguments of <code>F</code> or <code>DerivingType</code> (or both) are used up. <code>F</code> must also have at least one parameter.</p> 
+      <p>The general shape will then be:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [...]: TC[ [...] =&gt;&gt; DerivingType[...] ] = TC.derived
+</span></code></pre>
+      </div> 
+      <p>Where of course <code>TC</code> and <code>DerivingType</code> are applied to types of the correct kind.</p> 
+      <p>To make this work, we split it into 3 cases:</p> 
+      <p>If <code>F</code> and <code>DerivingType</code> take the same number of arguments (<code>N == K</code>):</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given TC[DerivingType] = TC.derived
+</span><span id="1" class=""><span class="tooltip-container"></span>// simplified form of:
+</span><span id="2" class=""><span class="tooltip-container"></span>given TC[ [A_1, ..., A_K] =&gt; DerivingType[A_1, ..., A_K] ] = TC.derived
+</span></code></pre>
+      </div> 
+      <p>If <code>DerivingType</code> takes less arguments than <code>F</code> (<code>N &lt; K</code>), we use only the rightmost parameters from the type lambda:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given TC[ [A_1, ..., A_K] =&gt;&gt; DerivingType[A_(K-N+1), ..., A_K] ] = TC.derived
+</span><span id="1" class=""><span class="tooltip-container"></span>
+</span><span id="2" class=""><span class="tooltip-container"></span>// if DerivingType takes no arguments (N == 0), the above simplifies to:
+</span><span id="3" class=""><span class="tooltip-container"></span>given TC[ [A_1, ..., A_K] =&gt;&gt; DerivingType ] = TC.derived
+</span></code></pre>
+      </div> 
+      <p>If <code>F</code> takes less arguments than <code>DerivingType</code> (<code>K &lt; N</code>), we fill in the remaining leftmost slots with type parameters of the given:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [T_1, ... T_(N-K)]: TC[[A_1, ..., A_K] =&gt;&gt; DerivingType[T_1, ... T_(N-K), A_1, ..., A_K]] = TC.derived
+</span></code></pre>
+      </div>
+     </section>
+     <section id="tc-is-the-canequal-type-class"> 
+      <h3><a href="#tc-is-the-canequal-type-class" class="anchor"></a><code>TC</code> is the <code>CanEqual</code> type class</h3> 
+      <p>We have therefore: <code>DerivingType[T_1, ..., T_N] derives CanEqual</code>.</p> 
+      <p>Let <code>U_1</code>, ..., <code>U_M</code> be the parameters of <code>DerivingType</code> of kind <code>*</code>. (These are a subset of the <code>T_i</code>s)</p> 
+      <p>The generated instance is then:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>given [T_1L, T_1R, ..., T_NL, T_NR]                            // every parameter of DerivingType twice
+</span><span id="1" class=""><span class="tooltip-container"></span>      (using CanEqual[U_1L, U_1R], ..., CanEqual[U_ML, U_MR]): // only parameters of DerivingType with kind *
+</span><span id="2" class=""><span class="tooltip-container"></span>        CanEqual[DerivingType[T_1L, ..., T_NL], DerivingType[T_1R, ..., T_NR]] = // again, every parameter
+</span><span id="3" class=""><span class="tooltip-container"></span>          CanEqual.derived
+</span></code></pre>
+      </div> 
+      <p>The bounds of <code>T_i</code>s are handled correctly, for example: <code>T_2 &lt;: T_1</code> becomes <code>T_2L &lt;: T_1L</code>.</p> 
+      <p>For example, the class</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>class MyClass[A, G[_]](a: A, b: G[B]) derives CanEqual
+</span></code></pre>
+      </div> 
+      <p>generates the following given instance:</p> 
+      <div class="snippet" scala-snippet="">
+       <div class="buttons"></div>
+       <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>object MyClass:
+</span><span id="1" class=""><span class="tooltip-container"></span>  ...
+</span><span id="2" class=""><span class="tooltip-container"></span>  given [A_L, A_R, G_L[_], G_R[_]](using CanEqual[A_L, A_R]): CanEqual[MyClass[A_L, G_L], MyClass[A_R, G_R]] = CanEqual.derived
+</span></code></pre>
+      </div>
+     </section>
+     <section id="tc-is-not-valid-for-automatic-derivation"> 
+      <h3><a href="#tc-is-not-valid-for-automatic-derivation" class="anchor"></a><code>TC</code> is not valid for automatic derivation</h3> 
+      <p>Throw an error.</p> 
+      <p>The exact error depends on which of the above conditions failed. As an example, if <code>TC</code> takes more than 1 parameter and is not <code>CanEqual</code>, the error is <code>DerivingType cannot be unified with the type argument of TC</code>.</p> 
+      <p>All data types can have a <code>derives</code> clause. The rest of this document focuses primarily on data types which also have a given instance of the <code>Mirror</code> type class available.</p> 
+     </section>
      <section id="mirror"> 
       <h2><a href="#mirror" class="anchor"></a><code>Mirror</code></h2> 
       <p><code>Mirror</code> type class instances provide information at the type level about the components and labelling of the type. They also provide minimal term level infrastructure to allow higher level libraries to provide comprehensive derivation support.</p> 
@@ -374,4 +492,4 @@ ConstrApps        ::=  ConstrApp {‘with’ ConstrApp}
    </div> 
   </div>
  </body>
-</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#mirror">Mirror</a><ul><li><a href="#implementing-derived-with-mirror">Implementing derived with Mirror</a><ul><li><a href="#how-to-write-a-type-class-derived-method-using-low-level-mechanisms">How to write a type class derived method using low level mechanisms</a></li></ul></li><li><a href="#syntax">Syntax</a></li><li><a href="#discussion">Discussion</a></li></ul></li></ul></li></ul></nav></div></div></body></html>
+</html></div></main><footer><div id="generated-by"><span class="footer-text">Generated by</span><a href="https://github.com/lampepfl/dotty/tree/main/scaladoc"><img src="../images/scaladoc_logo.svg" alt="scaladoc" class="scaladoc_logo"></img><img src="../images/scaladoc_logo_dark.svg" alt="scaladoc" class="scaladoc_logo_dark"></img></a></div><span id="footer-text">Copyright (c) 2002-2022, LAMP/EPFL</span><div class="socials"><span class="footer-text">Social links</span><a href="https://github.com/lampepfl/dotty"><span class="social-icon" data-icon-path="github-icon-black.png"></span></a><a href="https://discord.com/invite/scala"><span class="social-icon" data-icon-path="discord-icon-black.png"></span></a><a href="https://twitter.com/scala_lang"><span class="social-icon" data-icon-path="twitter-icon-black.png"></span></a></div><div class="mode"><span class="footer-text">Mode</span><label id="theme-toggle" class="switch"><input type="checkbox"></input><span class="slider"></span></label></div><span class="go-to-top-icon"><a href="#container"><span class="icon-vertical_align_top"></span><span class="footer-text">Back to top</span></a></span></footer></div><div id="toc"><span class="toc-title">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><ul><li><a href="#exact-mechanism">Exact mechanism</a><ul><li><a href="#tc-takes-1-parameter-f">TC takes 1 parameter F</a><ul><li><a href="#f-and-all-arguments-of-derivingtype-have-kind-">F and all arguments of DerivingType have kind *</a></li><li><a href="#f-and-derivingtype-have-parameters-of-matching-kind-on-the-right">F and DerivingType have parameters of matching kind on the right</a></li></ul></li><li><a href="#tc-is-the-canequal-type-class">TC is the CanEqual type class</a></li><li><a href="#tc-is-not-valid-for-automatic-derivation">TC is not valid for automatic derivation</a></li></ul></li><li><a href="#mirror">Mirror</a><ul><li><a href="#implementing-derived-with-mirror">Implementing derived with Mirror</a><ul><li><a href="#how-to-write-a-type-class-derived-method-using-low-level-mechanisms">How to write a type class derived method using low level mechanisms</a></li></ul></li><li><a href="#syntax">Syntax</a></li><li><a href="#discussion">Discussion</a></li></ul></li></ul></li></ul></nav></div></div></body></html>
