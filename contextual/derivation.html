@@ -174,7 +174,7 @@
      </section>
      <section id="mirror"> 
       <h2><a href="#mirror" class="anchor"></a><code>Mirror</code></h2> 
-      <p><code>Mirror</code> type class instances provide information at the type level about the components and labelling of the type. They also provide minimal term level infrastructure to allow higher level libraries to provide comprehensive derivation support.</p> 
+      <p><code>scala.deriving.Mirror</code> type class instances provide information at the type level about the components and labelling of the type. They also provide minimal term level infrastructure to allow higher level libraries to provide comprehensive derivation support.</p> 
       <p>Instances of the <code>Mirror</code> type class are generated automatically by the compiler unconditionally for:</p> 
       <ul> 
        <li>enums and enum cases,</li> 
@@ -191,7 +191,7 @@
          <li>and where the compiler can generate a <code>Mirror</code> type class instance for each child case.</li> 
         </ul> </li> 
       </ul> 
-      <p>The <code>Mirror</code> type class definition is as follows:</p> 
+      <p>The <code>scala.deriving.Mirror</code> type class definition is as follows:</p> 
       <div class="snippet" scala-snippet="">
        <div class="buttons"></div>
        <pre><code class="language-scala"><span id="0" class=""><span class="tooltip-container"></span>sealed trait Mirror:
