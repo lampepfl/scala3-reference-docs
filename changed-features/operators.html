@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/operators.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Rules for Operators</h1> 
@@ -172,11 +159,18 @@
       <p>A unary operator must not have explicit parameter lists even if they are empty. A unary operator is a method named "unary_<code>op</code>" where <code>op</code> is one of <code>+</code>, <code>-</code>, <code>!</code>, or <code>~</code>.</p> 
      </section> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="structural-types-spec.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Programmatic Structural Types - More Details</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="wildcards.html" class="arrows next" aria-keyshortcuts="Right"> <span>Wildcard Arguments in Types</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="structural-types-spec.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Programmatic Structural Types - More Details</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="wildcards.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Wildcard Arguments in Types</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/operators.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

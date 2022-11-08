@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/contextual/derivation.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Type Class Derivation</h1> 
@@ -486,11 +473,18 @@
       <p>As mentioned, however, the compiler-provided mechanism is intentionally very low level and it is anticipated that higher level type class derivation and generic programming libraries will build on this and Scala 3's other metaprogramming facilities to hide these low-level details from type class authors and general users. Type class derivation in the style of both Shapeless and Magnolia are possible (a prototype of Shapeless 3, which combines aspects of both Shapeless 2 and Magnolia has been developed alongside this language feature) as is a more aggressively inlined style, supported by Scala 3's new quote/splice macro and inlining facilities.</p> 
      </section> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="type-classes.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Implementing Type classes</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="derivation-macro.html" class="arrows next" aria-keyshortcuts="Right"> <span>How to write a type class `derived` method using macros</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="type-classes.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Implementing Type classes</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="derivation-macro.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">How to write a type class `derived` method using macros</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/contextual/derivation.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

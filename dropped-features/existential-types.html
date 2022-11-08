@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/dropped-features/existential-types.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Dropped: Existential Types</h1> 
@@ -40,11 +27,18 @@
      <p>is treated as the type <code>Map</code>, where the first type parameter is upper-bounded by <code>AnyRef</code> and the second type parameter is an alias of <code>Int</code>.</p> 
      <p>When reading class files compiled with Scala 2, Scala 3 will do a best effort to approximate existential types with its own types. It will issue a warning that a precise emulation is not possible.</p> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="macros.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Dropped: Scala 2 Macros</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="type-projection.html" class="arrows next" aria-keyshortcuts="Right"> <span>Dropped: General Type Projection</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="macros.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Dropped: Scala 2 Macros</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="type-projection.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Dropped: General Type Projection</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/dropped-features/existential-types.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

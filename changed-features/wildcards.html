@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/wildcards.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Wildcard Arguments in Types</h1> 
@@ -58,11 +45,18 @@
       <p>To cross-compile with old Scala 2 sources, while using <code>_</code> a placeholder, you must use options <code>-Xsource:3 -P:kind-projector:underscore-placeholders</code> together with a recent version of kind-projector (<code>0.13</code> and higher) and most recent versions of Scala 2 (<code>2.13.5</code> and higher and <code>2.12.14</code> and higher)</p> 
      </section> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="operators.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Rules for Operators</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="imports.html" class="arrows next" aria-keyshortcuts="Right"> <span>Imports</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="operators.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Rules for Operators</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="imports.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Imports</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/wildcards.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

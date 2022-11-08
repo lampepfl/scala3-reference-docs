@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/dropped-features/macros.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Dropped: Scala 2 Macros</h1> 
@@ -33,11 +20,18 @@
       <li><a href="../metaprogramming/reflection.html">TASTy reflect</a> provides more complex tree based APIs to inspect or create quoted code.</li> 
      </ul> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="delayed-init.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Dropped: DelayedInit</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="existential-types.html" class="arrows next" aria-keyshortcuts="Right"> <span>Dropped: Existential Types</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="delayed-init.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Dropped: DelayedInit</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="existential-types.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Dropped: Existential Types</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/dropped-features/macros.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

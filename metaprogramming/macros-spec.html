@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/metaprogramming/macros-spec.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Macros Spec</h1> 
@@ -223,11 +210,18 @@
       <p>Metaprogramming has a reputation of being difficult and confusing. But with explicit <code>Expr/Type</code> types and quotes and splices it can become downright pleasant. A simple strategy first defines the underlying quoted or unquoted values using <code>Expr</code> and <code>Type</code> and then inserts quotes and splices to make the types line up. Phase consistency is at the same time a great guideline where to insert a splice or a quote and a vital sanity check that the result makes sense.</p> 
      </section> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="macros.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Macros</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="staging.html" class="arrows next" aria-keyshortcuts="Right"> <span>Runtime Multi-Stage Programming</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="macros.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Macros</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="staging.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Runtime Multi-Stage Programming</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/metaprogramming/macros-spec.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

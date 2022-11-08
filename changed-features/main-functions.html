@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/main-functions.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Main Methods</h1> 
@@ -94,11 +81,18 @@
      </div> 
      <p>The previous functionality of <a href="https://www.scala-lang.org/api/3.x/scala/App.html"><code>App</code></a>, which relied on the "magic" <a href="../dropped-features/delayed-init.html"><code>DelayedInit</code></a> trait, is no longer available. <a href="https://scala-lang.org/api/3.x/scala/App.html"><code>App</code></a> still exists in limited form for now, but it does not support command line arguments and will be deprecated in the future. If programs need to cross-build between Scala 2 and Scala 3, it is recommended to use an explicit <code>main</code> method with an <code>Array[String]</code> argument instead.</p> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="lazy-vals-init.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Lazy Vals Initialization</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="interpolation-escapes.html" class="arrows next" aria-keyshortcuts="Right"> <span>Escapes in interpolations</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="lazy-vals-init.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Lazy Vals Initialization</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="interpolation-escapes.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Escapes in interpolations</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/changed-features/main-functions.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>

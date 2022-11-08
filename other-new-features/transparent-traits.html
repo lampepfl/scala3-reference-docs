@@ -6,21 +6,8 @@
  </head>
  <body>
   <div id="content-wrapper"> 
-   <div class="container"> 
-    <div id="site-header"> 
-     <div class="wrap"> 
-      <nav class="navigation" role="menu"> 
-       <ul class="navigation-menu"> 
-        <li class="navigation-menu-item"> <a href="https://docs.scala-lang.org/" class="active">Learn</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/download/">Install</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://scastie.scala-lang.org">Playground</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://index.scala-lang.org">Find A Library</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/community/">Community</a> </li> 
-        <li class="navigation-menu-item"> <a href="https://www.scala-lang.org/blog/">Blog</a> </li> 
-       </ul> 
-      </nav> 
-     </div> 
-    </div> 
+   <div class="site-container"> 
+    <div id="site-header"></div> 
     <main> 
      <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/other-new-features/transparent-traits.md"> Edit this page on GitHub </a> 
       <h1 class="h600">Transparent Traits</h1> 
@@ -79,11 +66,18 @@
       <p>The last clause ensures that a single transparent trait instance such as <a href="https://scala-lang.org/api/3.x/scala/Product.html"><code>Product</code></a> is not widened to <a href="https://scala-lang.org/api/3.x/scala/Any.html"><code>Any</code></a>. Transparent trait instances are only dropped when they appear in conjunction with some other type.</p> 
      </section> 
     </main> 
-    <nav class="arrows-wrapper" aria-label="Page navigation"> <a rel="prev" href="trait-parameters.html" class="arrows previous" aria-keyshortcuts="Left"> <span>Trait Parameters</span> <i class="fa fa-angle-left"></i> </a> <a rel="next" href="creator-applications.html" class="arrows next" aria-keyshortcuts="Right"> <span>Universal Apply Methods</span> <i class="fa fa-angle-right"></i> </a> 
+    <div class="divider"></div> 
+    <nav class="arrow-navigation" aria-label="Page navigation"> 
+     <div> <span class="body-small">Previous</span> <a rel="prev" href="trait-parameters.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Trait Parameters</span> </a> 
+     </div> 
+     <div> <span class="body-small">Next</span> <a rel="next" href="creator-applications.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Universal Apply Methods</span> </a> 
+     </div> 
     </nav> 
     <div class="content-contributors hidden"> 
      <h1 class="h200">Contributors to this page</h1> 
      <div id="documentation-contributors" class="contributors-container"></div> 
+     <div class="github-edit-button"> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/other-new-features/transparent-traits.md"> Edit this page on GitHub </a> 
+     </div> 
     </div> 
    </div>
   </div>
