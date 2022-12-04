@@ -45,7 +45,7 @@
 </span></code></pre>
        <div class="buttons"></div>
       </div> 
-      <p>In this case we have inside the object (also for non-opaque types) that <code>o.T</code> is equal to <code>T</code> or its expanded form <code>o.this.T</code>. Equality is understood here as mutual subtyping, i.e. <code>o.T &lt;: o.this.T</code> and <code>o.this.T &lt;: T</code>. Furthermore, we have by the rules of opaque type aliases that <code>o.this.T</code> equals <code>R</code>. The two equalities compose. That is, inside <code>o</code>, it is also known that <code>o.T</code> is equal to <code>R</code>. This means the following code type-checks:</p> 
+      <p>In this case we have inside the object (also for non-opaque types) that <code>o.T</code> is equal to <code>T</code> or its expanded form <code>o.this.T</code>. Equality is understood here as mutual subtyping, i.e. <code>o.T &lt;: o.this.T</code> and <code>o.this.T &lt;: o.T</code>. Furthermore, we have by the rules of opaque type aliases that <code>o.this.T</code> equals <code>R</code>. The two equalities compose. That is, inside <code>o</code>, it is also known that <code>o.T</code> is equal to <code>R</code>. This means the following code type-checks:</p> 
       <div class="snippet mono-small-block" scala-snippet="">
        <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>object o:
 </span><span line-number="2" class=""><span class="tooltip-container"></span>  opaque type T = Int
