@@ -41,7 +41,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"metaprogramming/simple-smp.html#","e":false,"i":"","n":"The Meta-theory of Symmetric Metaprogramming","t":"The Meta-theory of Symmetric Metaprogramming","d":"","k":"static","x":""},
 {"l":"other-new-features/index.html#","e":false,"i":"","n":"Other New Features","t":"Other New Features","d":"","k":"static","x":""},
 {"l":"other-new-features/trait-parameters.html#","e":false,"i":"","n":"Trait Parameters","t":"Trait Parameters","d":"","k":"static","x":""},
-{"l":"other-new-features/transparent-traits.html#","e":false,"i":"","n":"Transparent Traits","t":"Transparent Traits","d":"","k":"static","x":""},
+{"l":"other-new-features/transparent-traits.html#","e":false,"i":"","n":"Transparent Traits and Classes","t":"Transparent Traits and Classes","d":"","k":"static","x":""},
 {"l":"other-new-features/creator-applications.html#","e":false,"i":"","n":"Universal Apply Methods","t":"Universal Apply Methods","d":"","k":"static","x":""},
 {"l":"other-new-features/export.html#","e":false,"i":"","n":"Export Clauses","t":"Export Clauses","d":"","k":"static","x":""},
 {"l":"other-new-features/opaques.html#","e":false,"i":"","n":"Opaque Type Aliases","t":"Opaque Type Aliases","d":"","k":"static","x":""},
