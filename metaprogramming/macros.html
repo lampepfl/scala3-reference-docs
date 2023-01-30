@@ -341,11 +341,11 @@
    </section> 
    <section id="example-expansion"> 
     <h2 class="h500"><a href="#example-expansion" class="anchor"></a>Example Expansion</h2> 
-    <p>Assume we have two methods, <code>map</code> that takes an <code>Expr[Array[T]]</code> and a function <code>f</code>, and <code>sum</code> that performs a sum by delegating to <code>map</code>.</p> 
+    <p>Assume we have two methods, <code>foreach</code> that takes an <code>Expr[Array[T]]</code> and a consumer <code>f</code>, and <code>sum</code> that performs a sum by delegating to <code>foreach</code>.</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>object Macros:
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>  def map[T](arr: Expr[Array[T]], f: Expr[T] =&gt; Expr[Unit])
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  def foreach[T](arr: Expr[Array[T]], f: Expr[T] =&gt; Expr[Unit])
 </span><span line-number="4" class=""><span class="tooltip-container"></span>            (using Type[T], Quotes): Expr[Unit] = '{
 </span><span line-number="5" class=""><span class="tooltip-container"></span>    var i: Int = 0
 </span><span line-number="6" class=""><span class="tooltip-container"></span>    while i &lt; ($arr).length do
@@ -356,7 +356,7 @@
 </span><span line-number="11" class=""><span class="tooltip-container"></span>
 </span><span line-number="12" class=""><span class="tooltip-container"></span>  def sum(arr: Expr[Array[Int]])(using Quotes): Expr[Int] = '{
 </span><span line-number="13" class=""><span class="tooltip-container"></span>    var sum = 0
-</span><span line-number="14" class=""><span class="tooltip-container"></span>    ${ map(arr, x =&gt; '{sum += $x}) }
+</span><span line-number="14" class=""><span class="tooltip-container"></span>    ${ foreach(arr, x =&gt; '{sum += $x}) }
 </span><span line-number="15" class=""><span class="tooltip-container"></span>    sum
 </span><span line-number="16" class=""><span class="tooltip-container"></span>  }
 </span><span line-number="17" class=""><span class="tooltip-container"></span>
@@ -378,7 +378,7 @@
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span line-number="2" class=""><span class="tooltip-container"></span>${ '{
 </span><span line-number="3" class=""><span class="tooltip-container"></span>  var sum = 0
-</span><span line-number="4" class=""><span class="tooltip-container"></span>  ${ map('arr, x =&gt; '{sum += $x}) }
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  ${ foreach('arr, x =&gt; '{sum += $x}) }
 </span><span line-number="5" class=""><span class="tooltip-container"></span>  sum
 </span><span line-number="6" class=""><span class="tooltip-container"></span>} }
 </span></code></pre> 
@@ -389,7 +389,7 @@
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
 </span><span line-number="3" class=""><span class="tooltip-container"></span>var sum = 0
-</span><span line-number="4" class=""><span class="tooltip-container"></span>${ map('arr, x =&gt; '{sum += $x}) }
+</span><span line-number="4" class=""><span class="tooltip-container"></span>${ foreach('arr, x =&gt; '{sum += $x}) }
 </span><span line-number="5" class=""><span class="tooltip-container"></span>sum
 </span></code></pre> 
      <div class="buttons"></div> 
@@ -400,12 +400,12 @@
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
 </span><span line-number="3" class=""><span class="tooltip-container"></span>var sum = 0
 </span><span line-number="4" class=""><span class="tooltip-container"></span>val f = x =&gt; '{sum += $x}
-</span><span line-number="5" class=""><span class="tooltip-container"></span>${ _root_.Macros.map('arr, 'f)(Type.of[Int]) }
+</span><span line-number="5" class=""><span class="tooltip-container"></span>${ _root_.Macros.foreach('arr, 'f)(Type.of[Int]) }
 </span><span line-number="6" class=""><span class="tooltip-container"></span>sum
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>and then call <code>map</code>:</p> 
+    <p>and then call <code>foreach</code>:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>val arr: Array[Int] = Array.apply(1, 2, 3)
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
