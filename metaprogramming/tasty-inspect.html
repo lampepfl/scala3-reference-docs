@@ -7,14 +7,22 @@
    <header> <a class="text-button with-link body-small" href="https://github.com/lampepfl/dotty/edit/language-reference-stable/docs/_docs/reference/metaprogramming/tasty-inspect.md">Edit this page on GitHub</a> 
     <h1 class="h600">TASTy Inspection</h1> 
    </header> 
-   <div class="snippet mono-small-block" scala-snippet=""> 
-    <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>libraryDependencies += "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value
+   <p class="body-large first-p">TASTy files contain the full typed tree of a class including source positions and documentation. This is ideal for tools that analyze or extract semantic information from the code.</p> 
+   <p>To avoid the hassle of working directly with the TASTy file we provide the <code>Inspector</code> which loads the contents and exposes it through the TASTy reflect API.</p> 
+   <p>We also showcase TASTyViz, a visualiser for tasty, useful for debugging and checking your understanding of TASTy</p> 
+   <section id="tastyviz"> 
+    <h2 class="h500"><a href="#tastyviz" class="anchor"></a>TASTyViz</h2> <!-- Keep synced with https://github.com/scala/docs.scala-lang/blob/main/scala3/guides/tasty-overview.md --> 
+    <p>TASTyViz is a tool to inspect TASTy files visually. At the time of writing, it is still in the early stages of developement, therefore you can expect missing functionality and less-than-ideal user experience, but it could still prove useful when debugging. You can check it out <a href="https://github.com/shardulc/tastyviz">here</a>.</p> 
+   </section> 
+   <section id="inspector"> 
+    <h2 class="h500"><a href="#inspector" class="anchor"></a><code>Inspector</code></h2> 
+    <p><code>Inspector</code> is a tool which provides API access to TASTy.</p> 
+    <p>You can add the depency to your sbt build like so:</p> 
+    <div class="snippet mono-small-block" scala-snippet=""> 
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>libraryDependencies += "org.scala-lang" %% "scala3-tasty-inspector" % scalaVersion.value
 </span></code></pre> 
-    <div class="buttons"></div> 
-   </div> 
-   <p>TASTy files contain the full typed tree of a class including source positions and documentation. This is ideal for tools that analyze or extract semantic information from the code. To avoid the hassle of working directly with the TASTy file we provide the <code>Inspector</code> which loads the contents and exposes it through the TASTy reflect API.</p> 
-   <section id="inspecting-tasty-files"> 
-    <h2 class="h500"><a href="#inspecting-tasty-files" class="anchor"></a>Inspecting TASTy files</h2> 
+     <div class="buttons"></div> 
+    </div> 
     <p>To inspect the trees of a TASTy file a consumer can be defined in the following way.</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.quoted.*
@@ -65,4 +73,4 @@
    </div> 
   </nav> 
  </div> 
-</div></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#inspecting-tasty-files">Inspecting TASTy files</a></li><li><a href="#template-project">Template project</a></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/lampepfl/dotty"><button class="icon-button gh"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://gitter.im/scala/scala"><button class="icon-button gitter"></button></a><div class="text">Copyright (c) 2002-2023, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2023, LAMP/EPFL</div></div></div></div></body></html>
+</div></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#tastyviz">TASTyViz</a></li><li><a href="#inspector">Inspector</a></li><li><a href="#template-project">Template project</a></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/lampepfl/dotty"><button class="icon-button gh"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://gitter.im/scala/scala"><button class="icon-button gitter"></button></a><div class="text">Copyright (c) 2002-2023, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2023, LAMP/EPFL</div></div></div></div></body></html>
