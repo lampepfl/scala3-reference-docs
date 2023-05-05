@@ -294,34 +294,47 @@
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.deriving.Mirror
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>inline given derived[T](using m: Mirror.Of[T]): Eq[T] =
-</span><span line-number="4" class=""><span class="tooltip-container"></span>  val elemInstances = summonAll[m.MirroredElemTypes]           // (1)
-</span><span line-number="5" class=""><span class="tooltip-container"></span>  inline m match                                               // (2)
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline def derived[T](using m: Mirror.Of[T]): Eq[T] =
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  lazy val elemInstances = summonInstances[T, m.MirroredElemTypes] // (1)
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  inline m match                                                   // (2)
 </span><span line-number="6" class=""><span class="tooltip-container"></span>    case s: Mirror.SumOf[T]     =&gt; eqSum(s, elemInstances)
 </span><span line-number="7" class=""><span class="tooltip-container"></span>    case p: Mirror.ProductOf[T] =&gt; eqProduct(p, elemInstances)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>Note that <code>derived</code> is defined as an <code>inline</code> given. This means that the method will be expanded at call sites (for instance the compiler generated instance definitions in the companion objects of ADTs which have a <code>derived Eq</code> clause), and also that it can be used recursively if necessary, to compute instances for children.</p> 
-    <p>The body of this method (1) first materializes the <code>Eq</code> instances for all the child types of type the instance is being derived for. This is either all the branches of a sum type or all the fields of a product type. The implementation of <code>summonAll</code> is <code>inline</code> and uses Scala 3's <code>summonInline</code> construct to collect the instances as a <code>List</code>,</p> 
+    <p>Note that <code>derived</code> is defined as an <code>inline def</code>. This means that the method will be inlined at all call sites (for instance the compiler generated instance definitions in the companion objects of ADTs which have a <code>deriving Eq</code> clause).</p> 
+    <blockquote> 
+     <p>Inlining of complex code is potentially expensive if overused (meaning slower compile times) so we should be careful to limit how many times <code>derived</code> is called for the same type. For example, when computing an instance for a sum type, it may be necessary to call <code>derived</code> recursively to compute an instance for a one of its child cases. That child case may in turn be a product type, that declares a field referring back to the parent sum type. To compute the instance for this field, we should not call <code>derived</code> recursively, but instead summon from the context. Typically the found given instance will be the root given instance that initially called <code>derived</code>.</p> 
+    </blockquote> 
+    <p>The body of <code>derived</code> (1) first materializes the <code>Eq</code> instances for all the child types of type the instance is being derived for. This is either all the branches of a sum type or all the fields of a product type. The implementation of <code>summonInstances</code> is <code>inline</code> and uses Scala 3's <code>summonInline</code> construct to collect the instances as a <code>List</code>,</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline def summonAll[T &lt;: Tuple]: List[Eq[_]] =
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  inline erasedValue[T] match
-</span><span line-number="3" class=""><span class="tooltip-container"></span>    case _: EmptyTuple =&gt; Nil
-</span><span line-number="4" class=""><span class="tooltip-container"></span>    case _: (t *: ts) =&gt; summonInline[Eq[t]] :: summonAll[ts]
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline def summonInstances[T, Elems &lt;: Tuple]: List[Eq[?]] =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  inline erasedValue[Elems] match
+</span><span line-number="3" class=""><span class="tooltip-container"></span>    case _: (elem *: elems) =&gt; deriveOrSummon[T, elem] :: summonInstances[T, elems]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    case _: EmptyTuple =&gt; Nil
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>inline def deriveOrSummon[T, Elem]: Eq[Elem] =
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  inline erasedValue[Elem] match
+</span><span line-number="8" class=""><span class="tooltip-container"></span>    case _: T =&gt; deriveRec[T, Elem]
+</span><span line-number="9" class=""><span class="tooltip-container"></span>    case _    =&gt; summonInline[Eq[Elem]]
+</span><span line-number="10" class=""><span class="tooltip-container"></span>
+</span><span line-number="11" class=""><span class="tooltip-container"></span>inline def deriveRec[T, Elem]: Eq[Elem] =
+</span><span line-number="12" class=""><span class="tooltip-container"></span>  inline erasedValue[T] match
+</span><span line-number="13" class=""><span class="tooltip-container"></span>    case _: Elem =&gt; error("infinite recursive derivation")
+</span><span line-number="14" class=""><span class="tooltip-container"></span>    case _       =&gt; Eq.derived[Elem](using summonInline[Mirror.Of[Elem]]) // recursive derivation
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>with the instances for children in hand the <code>derived</code> method uses an <code>inline match</code> to dispatch to methods which can construct instances for either sums or products (2). Note that because <code>derived</code> is <code>inline</code> the match will be resolved at compile-time and only the left-hand side of the matching case will be inlined into the generated code with types refined as revealed by the match.</p> 
+    <p>with the instances for children in hand the <code>derived</code> method uses an <code>inline match</code> to dispatch to methods which can construct instances for either sums or products (2). Note that because <code>derived</code> is <code>inline</code> the match will be resolved at compile-time and only the right-hand side of the matching case will be inlined into the generated code with types refined as revealed by the match.</p> 
     <p>In the sum case, <code>eqSum</code>, we use the runtime <code>ordinal</code> values of the arguments to <code>eqv</code> to first check if the two values are of the same subtype of the ADT (3) and then, if they are, to further test for equality based on the <code>Eq</code> instance for the appropriate ADT subtype using the auxiliary method <code>check</code> (4).</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.deriving.Mirror
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>def eqSum[T](s: Mirror.SumOf[T], elems: List[Eq[_]]): Eq[T] =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>def eqSum[T](s: Mirror.SumOf[T], elems: =&gt; List[Eq[?]]): Eq[T] =
 </span><span line-number="4" class=""><span class="tooltip-container"></span>  new Eq[T]:
 </span><span line-number="5" class=""><span class="tooltip-container"></span>    def eqv(x: T, y: T): Boolean =
 </span><span line-number="6" class=""><span class="tooltip-container"></span>      val ordx = s.ordinal(x)                            // (3)
-</span><span line-number="7" class=""><span class="tooltip-container"></span>      (s.ordinal(y) == ordx) &amp;&amp; check(elems(ordx))(x, y) // (4)
+</span><span line-number="7" class=""><span class="tooltip-container"></span>      (s.ordinal(y) == ordx) &amp;&amp; check(x, y, elems(ordx)) // (4)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -329,87 +342,101 @@
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.deriving.Mirror
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>def eqProduct[T](p: Mirror.ProductOf[T], elems: List[Eq[_]]): Eq[T] =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>def eqProduct[T](p: Mirror.ProductOf[T], elems: =&gt; List[Eq[?]]): Eq[T] =
 </span><span line-number="4" class=""><span class="tooltip-container"></span>  new Eq[T]:
 </span><span line-number="5" class=""><span class="tooltip-container"></span>    def eqv(x: T, y: T): Boolean =
-</span><span line-number="6" class=""><span class="tooltip-container"></span>      iterator(x).zip(iterator(y)).zip(elems.iterator).forall {  // (5)
-</span><span line-number="7" class=""><span class="tooltip-container"></span>        case ((x, y), elem) =&gt; check(elem)(x, y)
-</span><span line-number="8" class=""><span class="tooltip-container"></span>      }
+</span><span line-number="6" class=""><span class="tooltip-container"></span>      iterable(x).lazyZip(iterable(y)).lazyZip(elems).forall(check)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
+    <p>Both <code>eqSum</code> and <code>eqProduct</code> have a by-name parameter <code>elems</code>, because the argument passed is the reference to the lazy <code>elemInstances</code> value.</p> 
     <p>Pulling this all together we have the following complete implementation,</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.deriving.*
-</span><span line-number="2" class=""><span class="tooltip-container"></span>import scala.compiletime.{erasedValue, summonInline}
+</span><span line-number="2" class=""><span class="tooltip-container"></span>import scala.compiletime.{error, erasedValue, summonInline}
 </span><span line-number="3" class=""><span class="tooltip-container"></span>
-</span><span line-number="4" class=""><span class="tooltip-container"></span>inline def summonAll[T &lt;: Tuple]: List[Eq[_]] =
-</span><span line-number="5" class=""><span class="tooltip-container"></span>  inline erasedValue[T] match
-</span><span line-number="6" class=""><span class="tooltip-container"></span>    case _: EmptyTuple =&gt; Nil
-</span><span line-number="7" class=""><span class="tooltip-container"></span>    case _: (t *: ts) =&gt; summonInline[Eq[t]] :: summonAll[ts]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>inline def summonInstances[T, Elems &lt;: Tuple]: List[Eq[?]] =
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  inline erasedValue[Elems] match
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    case _: (elem *: elems) =&gt; deriveOrSummon[T, elem] :: summonInstances[T, elems]
+</span><span line-number="7" class=""><span class="tooltip-container"></span>    case _: EmptyTuple =&gt; Nil
 </span><span line-number="8" class=""><span class="tooltip-container"></span>
-</span><span line-number="9" class=""><span class="tooltip-container"></span>trait Eq[T]:
-</span><span line-number="10" class=""><span class="tooltip-container"></span>  def eqv(x: T, y: T): Boolean
-</span><span line-number="11" class=""><span class="tooltip-container"></span>
-</span><span line-number="12" class=""><span class="tooltip-container"></span>object Eq:
-</span><span line-number="13" class=""><span class="tooltip-container"></span>  given Eq[Int] with
-</span><span line-number="14" class=""><span class="tooltip-container"></span>    def eqv(x: Int, y: Int) = x == y
-</span><span line-number="15" class=""><span class="tooltip-container"></span>
-</span><span line-number="16" class=""><span class="tooltip-container"></span>  def check(elem: Eq[_])(x: Any, y: Any): Boolean =
-</span><span line-number="17" class=""><span class="tooltip-container"></span>    elem.asInstanceOf[Eq[Any]].eqv(x, y)
+</span><span line-number="9" class=""><span class="tooltip-container"></span>inline def deriveOrSummon[T, Elem]: Eq[Elem] =
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  inline erasedValue[Elem] match
+</span><span line-number="11" class=""><span class="tooltip-container"></span>    case _: T =&gt; deriveRec[T, Elem]
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    case _    =&gt; summonInline[Eq[Elem]]
+</span><span line-number="13" class=""><span class="tooltip-container"></span>
+</span><span line-number="14" class=""><span class="tooltip-container"></span>inline def deriveRec[T, Elem]: Eq[Elem] =
+</span><span line-number="15" class=""><span class="tooltip-container"></span>  inline erasedValue[T] match
+</span><span line-number="16" class=""><span class="tooltip-container"></span>    case _: Elem =&gt; error("infinite recursive derivation")
+</span><span line-number="17" class=""><span class="tooltip-container"></span>    case _       =&gt; Eq.derived[Elem](using summonInline[Mirror.Of[Elem]]) // recursive derivation
 </span><span line-number="18" class=""><span class="tooltip-container"></span>
-</span><span line-number="19" class=""><span class="tooltip-container"></span>  def iterator[T](p: T) = p.asInstanceOf[Product].productIterator
-</span><span line-number="20" class=""><span class="tooltip-container"></span>
-</span><span line-number="21" class=""><span class="tooltip-container"></span>  def eqSum[T](s: Mirror.SumOf[T], elems: =&gt; List[Eq[_]]): Eq[T] =
-</span><span line-number="22" class=""><span class="tooltip-container"></span>    new Eq[T]:
-</span><span line-number="23" class=""><span class="tooltip-container"></span>      def eqv(x: T, y: T): Boolean =
-</span><span line-number="24" class=""><span class="tooltip-container"></span>        val ordx = s.ordinal(x)
-</span><span line-number="25" class=""><span class="tooltip-container"></span>        (s.ordinal(y) == ordx) &amp;&amp; check(elems(ordx))(x, y)
-</span><span line-number="26" class=""><span class="tooltip-container"></span>
-</span><span line-number="27" class=""><span class="tooltip-container"></span>  def eqProduct[T](p: Mirror.ProductOf[T], elems: =&gt; List[Eq[_]]): Eq[T] =
-</span><span line-number="28" class=""><span class="tooltip-container"></span>    new Eq[T]:
-</span><span line-number="29" class=""><span class="tooltip-container"></span>      def eqv(x: T, y: T): Boolean =
-</span><span line-number="30" class=""><span class="tooltip-container"></span>        iterator(x).zip(iterator(y)).zip(elems.iterator).forall {
-</span><span line-number="31" class=""><span class="tooltip-container"></span>          case ((x, y), elem) =&gt; check(elem)(x, y)
-</span><span line-number="32" class=""><span class="tooltip-container"></span>        }
-</span><span line-number="33" class=""><span class="tooltip-container"></span>
-</span><span line-number="34" class=""><span class="tooltip-container"></span>  inline given derived[T](using m: Mirror.Of[T]): Eq[T] =
-</span><span line-number="35" class=""><span class="tooltip-container"></span>    lazy val elemInstances = summonAll[m.MirroredElemTypes]
-</span><span line-number="36" class=""><span class="tooltip-container"></span>    inline m match
-</span><span line-number="37" class=""><span class="tooltip-container"></span>      case s: Mirror.SumOf[T]     =&gt; eqSum(s, elemInstances)
-</span><span line-number="38" class=""><span class="tooltip-container"></span>      case p: Mirror.ProductOf[T] =&gt; eqProduct(p, elemInstances)
-</span><span line-number="39" class=""><span class="tooltip-container"></span>end Eq
+</span><span line-number="19" class=""><span class="tooltip-container"></span>trait Eq[T]:
+</span><span line-number="20" class=""><span class="tooltip-container"></span>  def eqv(x: T, y: T): Boolean
+</span><span line-number="21" class=""><span class="tooltip-container"></span>
+</span><span line-number="22" class=""><span class="tooltip-container"></span>object Eq:
+</span><span line-number="23" class=""><span class="tooltip-container"></span>  given Eq[Int] with
+</span><span line-number="24" class=""><span class="tooltip-container"></span>    def eqv(x: Int, y: Int) = x == y
+</span><span line-number="25" class=""><span class="tooltip-container"></span>
+</span><span line-number="26" class=""><span class="tooltip-container"></span>  def check(x: Any, y: Any, elem: Eq[?]): Boolean =
+</span><span line-number="27" class=""><span class="tooltip-container"></span>    elem.asInstanceOf[Eq[Any]].eqv(x, y)
+</span><span line-number="28" class=""><span class="tooltip-container"></span>
+</span><span line-number="29" class=""><span class="tooltip-container"></span>  def iterable[T](p: T): Iterable[Any] = new AbstractIterable[Any]:
+</span><span line-number="30" class=""><span class="tooltip-container"></span>    def iterator: Iterator[Any] = p.asInstanceOf[Product].productIterator
+</span><span line-number="31" class=""><span class="tooltip-container"></span>
+</span><span line-number="32" class=""><span class="tooltip-container"></span>  def eqSum[T](s: Mirror.SumOf[T], elems: =&gt; List[Eq[?]]): Eq[T] =
+</span><span line-number="33" class=""><span class="tooltip-container"></span>    new Eq[T]:
+</span><span line-number="34" class=""><span class="tooltip-container"></span>      def eqv(x: T, y: T): Boolean =
+</span><span line-number="35" class=""><span class="tooltip-container"></span>        val ordx = s.ordinal(x)
+</span><span line-number="36" class=""><span class="tooltip-container"></span>        (s.ordinal(y) == ordx) &amp;&amp; check(x, y, elems(ordx))
+</span><span line-number="37" class=""><span class="tooltip-container"></span>
+</span><span line-number="38" class=""><span class="tooltip-container"></span>  def eqProduct[T](p: Mirror.ProductOf[T], elems: =&gt; List[Eq[?]]): Eq[T] =
+</span><span line-number="39" class=""><span class="tooltip-container"></span>    new Eq[T]:
+</span><span line-number="40" class=""><span class="tooltip-container"></span>      def eqv(x: T, y: T): Boolean =
+</span><span line-number="41" class=""><span class="tooltip-container"></span>        iterable(x).lazyZip(iterable(y)).lazyZip(elems).forall(check)
+</span><span line-number="42" class=""><span class="tooltip-container"></span>
+</span><span line-number="43" class=""><span class="tooltip-container"></span>  inline def derived[T](using m: Mirror.Of[T]): Eq[T] =
+</span><span line-number="44" class=""><span class="tooltip-container"></span>    lazy val elemInstances = summonInstances[T, m.MirroredElemTypes]
+</span><span line-number="45" class=""><span class="tooltip-container"></span>    inline m match
+</span><span line-number="46" class=""><span class="tooltip-container"></span>      case s: Mirror.SumOf[T]     =&gt; eqSum(s, elemInstances)
+</span><span line-number="47" class=""><span class="tooltip-container"></span>      case p: Mirror.ProductOf[T] =&gt; eqProduct(p, elemInstances)
+</span><span line-number="48" class=""><span class="tooltip-container"></span>end Eq
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>we can test this relative to a simple ADT like so,</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>enum Opt[+T] derives Eq:
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  case Sm(t: T)
-</span><span line-number="3" class=""><span class="tooltip-container"></span>  case Nn
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>enum Lst[+T] derives Eq:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  case Cns(t: T, ts: Lst[T])
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  case Nl
 </span><span line-number="4" class=""><span class="tooltip-container"></span>
-</span><span line-number="5" class=""><span class="tooltip-container"></span>@main def test(): Unit =
-</span><span line-number="6" class=""><span class="tooltip-container"></span>  import Opt.*
-</span><span line-number="7" class=""><span class="tooltip-container"></span>  val eqoi = summon[Eq[Opt[Int]]]
-</span><span line-number="8" class=""><span class="tooltip-container"></span>  assert(eqoi.eqv(Sm(23), Sm(23)))
-</span><span line-number="9" class=""><span class="tooltip-container"></span>  assert(!eqoi.eqv(Sm(23), Sm(13)))
-</span><span line-number="10" class=""><span class="tooltip-container"></span>  assert(!eqoi.eqv(Sm(23), Nn))
+</span><span line-number="5" class=""><span class="tooltip-container"></span>extension [T](t: T) def ::(ts: Lst[T]): Lst[T] = Lst.Cns(t, ts)
+</span><span line-number="6" class=""><span class="tooltip-container"></span>
+</span><span line-number="7" class=""><span class="tooltip-container"></span>@main def test(): Unit =
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  import Lst.*
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  val eqoi = summon[Eq[Lst[Int]]]
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  assert(eqoi.eqv(23 :: 47 :: Nl, 23 :: 47 :: Nl))
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  assert(!eqoi.eqv(23 :: Nl, 7 :: Nl))
+</span><span line-number="12" class=""><span class="tooltip-container"></span>  assert(!eqoi.eqv(23 :: Nl, Nl))
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>In this case the code that is generated by the inline expansion for the derived <code>Eq</code> instance for <code>Opt</code> looks like the following, after a little polishing,</p> 
+    <p>In this case the code that is generated by the inline expansion for the derived <code>Eq</code> instance for <code>Lst</code> looks like the following, after a little polishing,</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>given derived$Eq[T](using eqT: Eq[T]): Eq[Opt[T]] =
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  eqSum(
-</span><span line-number="3" class=""><span class="tooltip-container"></span>    summon[Mirror[Opt[T]]],
-</span><span line-number="4" class=""><span class="tooltip-container"></span>    List(
-</span><span line-number="5" class=""><span class="tooltip-container"></span>      eqProduct(summon[Mirror[Sm[T]]], List(summon[Eq[T]])),
-</span><span line-number="6" class=""><span class="tooltip-container"></span>      eqProduct(summon[Mirror[Nn.type]], Nil)
-</span><span line-number="7" class=""><span class="tooltip-container"></span>    )
-</span><span line-number="8" class=""><span class="tooltip-container"></span>  )
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>given derived$Eq[T](using eqT: Eq[T]): Eq[Lst[T]] =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  eqSum(summon[Mirror.Of[Lst[T]]], {/* cached lazily */
+</span><span line-number="3" class=""><span class="tooltip-container"></span>    List(
+</span><span line-number="4" class=""><span class="tooltip-container"></span>      eqProduct(summon[Mirror.Of[Cns[T]]], {/* cached lazily */
+</span><span line-number="5" class=""><span class="tooltip-container"></span>        List(summon[Eq[T]], summon[Eq[Lst[T]]])
+</span><span line-number="6" class=""><span class="tooltip-container"></span>      }),
+</span><span line-number="7" class=""><span class="tooltip-container"></span>      eqProduct(summon[Mirror.Of[Nl.type]], {/* cached lazily */
+</span><span line-number="8" class=""><span class="tooltip-container"></span>        Nil
+</span><span line-number="9" class=""><span class="tooltip-container"></span>      })
+</span><span line-number="10" class=""><span class="tooltip-container"></span>    )
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  })
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
+    <p>The <code>lazy</code> modifier on <code>elemInstances</code> is necessary for preventing infinite recursion in the derived instance for recursive types such as <code>Lst</code>.</p> 
     <p>Alternative approaches can be taken to the way that <code>derived</code> methods can be defined. For example, more aggressively inlined variants using Scala 3 macros, whilst being more involved for type class authors to write than the example above, can produce code for type classes like <code>Eq</code> which eliminate all the abstraction artefacts (eg. the <code>Lists</code> of child instances in the above) and generate code which is indistinguishable from what a programmer might write by hand. As a third example, using a higher level library such as Shapeless the type class author could define an equivalent <code>derived</code> method as,</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>given eqSum[A](using inst: =&gt; K0.CoproductInstances[Eq, A]): Eq[A] with
@@ -417,7 +444,7 @@
 </span><span line-number="3" class=""><span class="tooltip-container"></span>    [t] =&gt; (eqt: Eq[t], t0: t, t1: t) =&gt; eqt.eqv(t0, t1)
 </span><span line-number="4" class=""><span class="tooltip-container"></span>  )
 </span><span line-number="5" class=""><span class="tooltip-container"></span>
-</span><span line-number="6" class=""><span class="tooltip-container"></span>given eqProduct[A](using inst: K0.ProductInstances[Eq, A]): Eq[A] with
+</span><span line-number="6" class=""><span class="tooltip-container"></span>given eqProduct[A](using inst: =&gt; K0.ProductInstances[Eq, A]): Eq[A] with
 </span><span line-number="7" class=""><span class="tooltip-container"></span>  def eqv(x: A, y: A): Boolean = inst.foldLeft2(x, y)(true: Boolean)(
 </span><span line-number="8" class=""><span class="tooltip-container"></span>    [t] =&gt; (acc: Boolean, eqt: Eq[t], t0: t, t1: t) =&gt;
 </span><span line-number="9" class=""><span class="tooltip-container"></span>      Complete(!eqt.eqv(t0, t1))(false)(true)
