@@ -147,47 +147,46 @@
 </span><span line-number="32" class=""><span class="tooltip-container"></span>      case _    =&gt; '{ summonInline[Eq[Elem]] }
 </span><span line-number="33" class=""><span class="tooltip-container"></span>
 </span><span line-number="34" class=""><span class="tooltip-container"></span>  def deriveRec[T: Type, Elem: Type](using Quotes): Expr[Eq[Elem]] =
-</span><span line-number="35" class=""><span class="tooltip-container"></span>    import quotes.reflect.*
-</span><span line-number="36" class=""><span class="tooltip-container"></span>    Type.of[T] match
-</span><span line-number="37" class=""><span class="tooltip-container"></span>      case '[Elem] =&gt; report.errorAndAbort("infinite recursive derivation")
-</span><span line-number="38" class=""><span class="tooltip-container"></span>      case _       =&gt; derivedMacro[Elem] // recursive derivation
-</span><span line-number="39" class=""><span class="tooltip-container"></span>
-</span><span line-number="40" class=""><span class="tooltip-container"></span>  inline def derived[T]: Eq[T] = ${ derivedMacro[T] }
-</span><span line-number="41" class=""><span class="tooltip-container"></span>
-</span><span line-number="42" class=""><span class="tooltip-container"></span>  def derivedMacro[T: Type](using Quotes): Expr[Eq[T]] =
-</span><span line-number="43" class=""><span class="tooltip-container"></span>
-</span><span line-number="44" class=""><span class="tooltip-container"></span>    val ev: Expr[Mirror.Of[T]] = Expr.summon[Mirror.Of[T]].get
-</span><span line-number="45" class=""><span class="tooltip-container"></span>
-</span><span line-number="46" class=""><span class="tooltip-container"></span>    ev match
-</span><span line-number="47" class=""><span class="tooltip-container"></span>      case '{ $m: Mirror.ProductOf[T] { type MirroredElemTypes = elementTypes }} =&gt;
-</span><span line-number="48" class=""><span class="tooltip-container"></span>        val elemInstances = summonInstances[T, elementTypes]
-</span><span line-number="49" class=""><span class="tooltip-container"></span>        def eqProductBody(x: Expr[Product], y: Expr[Product])(using Quotes): Expr[Boolean] = {
-</span><span line-number="50" class=""><span class="tooltip-container"></span>          if elemInstances.isEmpty then
-</span><span line-number="51" class=""><span class="tooltip-container"></span>            Expr(true)
-</span><span line-number="52" class=""><span class="tooltip-container"></span>          else
-</span><span line-number="53" class=""><span class="tooltip-container"></span>            elemInstances.zipWithIndex.map {
-</span><span line-number="54" class=""><span class="tooltip-container"></span>              case ('{ $elem: Eq[t] }, index) =&gt;
-</span><span line-number="55" class=""><span class="tooltip-container"></span>                val indexExpr = Expr(index)
-</span><span line-number="56" class=""><span class="tooltip-container"></span>                val e1 = '{ $x.productElement($indexExpr).asInstanceOf[t] }
-</span><span line-number="57" class=""><span class="tooltip-container"></span>                val e2 = '{ $y.productElement($indexExpr).asInstanceOf[t] }
-</span><span line-number="58" class=""><span class="tooltip-container"></span>                '{ $elem.eqv($e1, $e2) }
-</span><span line-number="59" class=""><span class="tooltip-container"></span>            }.reduce((acc, elem) =&gt; '{ $acc &amp;&amp; $elem })
-</span><span line-number="60" class=""><span class="tooltip-container"></span>          end if
-</span><span line-number="61" class=""><span class="tooltip-container"></span>        }
-</span><span line-number="62" class=""><span class="tooltip-container"></span>        '{ eqProduct((x: T, y: T) =&gt; ${eqProductBody('x.asExprOf[Product], 'y.asExprOf[Product])}) }
-</span><span line-number="63" class=""><span class="tooltip-container"></span>
-</span><span line-number="64" class=""><span class="tooltip-container"></span>      case '{ $m: Mirror.SumOf[T] { type MirroredElemTypes = elementTypes }} =&gt;
-</span><span line-number="65" class=""><span class="tooltip-container"></span>        val elemInstances = summonInstances[T, elementTypes]
-</span><span line-number="66" class=""><span class="tooltip-container"></span>        val elements = Expr.ofList(elemInstances)
-</span><span line-number="67" class=""><span class="tooltip-container"></span>
-</span><span line-number="68" class=""><span class="tooltip-container"></span>        def eqSumBody(x: Expr[T], y: Expr[T])(using Quotes): Expr[Boolean] =
-</span><span line-number="69" class=""><span class="tooltip-container"></span>          val ordx = '{ $m.ordinal($x) }
-</span><span line-number="70" class=""><span class="tooltip-container"></span>          val ordy = '{ $m.ordinal($y) }
-</span><span line-number="71" class=""><span class="tooltip-container"></span>          '{ $ordx == $ordy &amp;&amp; $elements($ordx).asInstanceOf[Eq[Any]].eqv($x, $y) }
-</span><span line-number="72" class=""><span class="tooltip-container"></span>
-</span><span line-number="73" class=""><span class="tooltip-container"></span>        '{ eqSum((x: T, y: T) =&gt; ${eqSumBody('x, 'y)}) }
-</span><span line-number="74" class=""><span class="tooltip-container"></span>  end derivedMacro
-</span><span line-number="75" class=""><span class="tooltip-container"></span>end Eq
+</span><span line-number="35" class=""><span class="tooltip-container"></span>    Type.of[T] match
+</span><span line-number="36" class=""><span class="tooltip-container"></span>      case '[Elem] =&gt; '{ error("infinite recursive derivation") }
+</span><span line-number="37" class=""><span class="tooltip-container"></span>      case _       =&gt; derivedMacro[Elem] // recursive derivation
+</span><span line-number="38" class=""><span class="tooltip-container"></span>
+</span><span line-number="39" class=""><span class="tooltip-container"></span>  inline def derived[T]: Eq[T] = ${ derivedMacro[T] }
+</span><span line-number="40" class=""><span class="tooltip-container"></span>
+</span><span line-number="41" class=""><span class="tooltip-container"></span>  def derivedMacro[T: Type](using Quotes): Expr[Eq[T]] =
+</span><span line-number="42" class=""><span class="tooltip-container"></span>
+</span><span line-number="43" class=""><span class="tooltip-container"></span>    val ev: Expr[Mirror.Of[T]] = Expr.summon[Mirror.Of[T]].get
+</span><span line-number="44" class=""><span class="tooltip-container"></span>
+</span><span line-number="45" class=""><span class="tooltip-container"></span>    ev match
+</span><span line-number="46" class=""><span class="tooltip-container"></span>      case '{ $m: Mirror.ProductOf[T] { type MirroredElemTypes = elementTypes }} =&gt;
+</span><span line-number="47" class=""><span class="tooltip-container"></span>        val elemInstances = summonInstances[T, elementTypes]
+</span><span line-number="48" class=""><span class="tooltip-container"></span>        def eqProductBody(x: Expr[Product], y: Expr[Product])(using Quotes): Expr[Boolean] = {
+</span><span line-number="49" class=""><span class="tooltip-container"></span>          if elemInstances.isEmpty then
+</span><span line-number="50" class=""><span class="tooltip-container"></span>            Expr(true)
+</span><span line-number="51" class=""><span class="tooltip-container"></span>          else
+</span><span line-number="52" class=""><span class="tooltip-container"></span>            elemInstances.zipWithIndex.map {
+</span><span line-number="53" class=""><span class="tooltip-container"></span>              case ('{ $elem: Eq[t] }, index) =&gt;
+</span><span line-number="54" class=""><span class="tooltip-container"></span>                val indexExpr = Expr(index)
+</span><span line-number="55" class=""><span class="tooltip-container"></span>                val e1 = '{ $x.productElement($indexExpr).asInstanceOf[t] }
+</span><span line-number="56" class=""><span class="tooltip-container"></span>                val e2 = '{ $y.productElement($indexExpr).asInstanceOf[t] }
+</span><span line-number="57" class=""><span class="tooltip-container"></span>                '{ $elem.eqv($e1, $e2) }
+</span><span line-number="58" class=""><span class="tooltip-container"></span>            }.reduce((acc, elem) =&gt; '{ $acc &amp;&amp; $elem })
+</span><span line-number="59" class=""><span class="tooltip-container"></span>          end if
+</span><span line-number="60" class=""><span class="tooltip-container"></span>        }
+</span><span line-number="61" class=""><span class="tooltip-container"></span>        '{ eqProduct((x: T, y: T) =&gt; ${eqProductBody('x.asExprOf[Product], 'y.asExprOf[Product])}) }
+</span><span line-number="62" class=""><span class="tooltip-container"></span>
+</span><span line-number="63" class=""><span class="tooltip-container"></span>      case '{ $m: Mirror.SumOf[T] { type MirroredElemTypes = elementTypes }} =&gt;
+</span><span line-number="64" class=""><span class="tooltip-container"></span>        val elemInstances = summonInstances[T, elementTypes]
+</span><span line-number="65" class=""><span class="tooltip-container"></span>        val elements = Expr.ofList(elemInstances)
+</span><span line-number="66" class=""><span class="tooltip-container"></span>
+</span><span line-number="67" class=""><span class="tooltip-container"></span>        def eqSumBody(x: Expr[T], y: Expr[T])(using Quotes): Expr[Boolean] =
+</span><span line-number="68" class=""><span class="tooltip-container"></span>          val ordx = '{ $m.ordinal($x) }
+</span><span line-number="69" class=""><span class="tooltip-container"></span>          val ordy = '{ $m.ordinal($y) }
+</span><span line-number="70" class=""><span class="tooltip-container"></span>          '{ $ordx == $ordy &amp;&amp; $elements($ordx).asInstanceOf[Eq[Any]].eqv($x, $y) }
+</span><span line-number="71" class=""><span class="tooltip-container"></span>
+</span><span line-number="72" class=""><span class="tooltip-container"></span>        '{ eqSum((x: T, y: T) =&gt; ${eqSumBody('x, 'y)}) }
+</span><span line-number="73" class=""><span class="tooltip-container"></span>  end derivedMacro
+</span><span line-number="74" class=""><span class="tooltip-container"></span>end Eq
 </span></code></pre> 
     <div class="buttons"></div> 
    </div> 
