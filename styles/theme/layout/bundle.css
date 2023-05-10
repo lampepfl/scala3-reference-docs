@@ -19,11 +19,21 @@ p {
   --header-height: calc(8 * var(--base-spacing));
 }
 
+/* Scrollbar */
+
 ::-webkit-scrollbar {
   width: 0;
   background: transparent;
 }
-.floating-button {
+
+#leftColumn ::-webkit-scrollbar{
+  width: 5px;
+}
+
+#leftColumn ::-webkit-scrollbar-thumb {
+  background: var(--code-syntax-highlighting-scrollbar);
+  border-radius: 2px;
+}.floating-button {
   display: none;
   position: absolute;
   right: calc(3 * var(--base-spacing));
