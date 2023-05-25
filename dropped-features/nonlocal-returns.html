@@ -9,20 +9,15 @@
    </header> 
    <p class="body-large first-p">Returning from nested anonymous functions has been deprecated, and will produce a warning from version <code>3.2</code>.</p> 
    <p>Nonlocal returns are implemented by throwing and catching <code>scala.runtime.NonLocalReturnException</code>-s. This is rarely what is intended by the programmer. It can be problematic because of the hidden performance cost of throwing and catching exceptions. Furthermore, it is a leaky implementation: a catch-all exception handler can intercept a <code>NonLocalReturnException</code>.</p> 
-   <p>A drop-in library replacement is provided in <a href="https://scala-lang.org/api/3.x/scala/util/control/NonLocalReturns$.html"><code>scala.util.control.NonLocalReturns</code></a>. Example:</p> 
+   <p>A better alternative to nonlocal returns and also the <code>scala.util.control.Breaks</code> API is provided by <a href="http://dotty.epfl.ch/api/scala/util/boundary$.html"><code>scala.util.boundary</code> and <code>boundary.break</code></a>.</p> 
+   <p>Example:</p> 
    <div class="snippet mono-small-block" scala-snippet=""> 
-    <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.util.control.NonLocalReturns.*
-</span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>extension [T](xs: List[T])
-</span><span line-number="4" class=""><span class="tooltip-container"></span>  def has(elem: T): Boolean = returning {
-</span><span line-number="5" class=""><span class="tooltip-container"></span>    for x &lt;- xs do
-</span><span line-number="6" class=""><span class="tooltip-container"></span>      if x == elem then throwReturn(true)
-</span><span line-number="7" class=""><span class="tooltip-container"></span>    false
-</span><span line-number="8" class=""><span class="tooltip-container"></span>  }
-</span><span line-number="9" class=""><span class="tooltip-container"></span>
-</span><span line-number="10" class=""><span class="tooltip-container"></span>@main def test(): Unit =
-</span><span line-number="11" class=""><span class="tooltip-container"></span>  val xs = List(1, 2, 3, 4, 5)
-</span><span line-number="12" class=""><span class="tooltip-container"></span>  assert(xs.has(2) == xs.contains(2))
+    <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.util.boundary, boundary.break
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def firstIndex[T](xs: List[T], elem: T): Int =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  boundary:
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    for (x, i) &lt;- xs.zipWithIndex do
+</span><span line-number="5" class=""><span class="tooltip-container"></span>      if x == elem then break(i)
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    -1
 </span></code></pre> 
     <div class="buttons"></div> 
    </div> 
