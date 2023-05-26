@@ -65,7 +65,6 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"changed-features/operators.html#","e":false,"i":"","n":"Rules for Operators","t":"Rules for Operators","d":"","k":"static","x":""},
 {"l":"changed-features/wildcards.html#","e":false,"i":"","n":"Wildcard Arguments in Types","t":"Wildcard Arguments in Types","d":"","k":"static","x":""},
 {"l":"changed-features/imports.html#","e":false,"i":"","n":"Imports","t":"Imports","d":"","k":"static","x":""},
-{"l":"changed-features/type-checking.html#","e":false,"i":"","n":"Changes in Type Checking","t":"Changes in Type Checking","d":"","k":"static","x":""},
 {"l":"changed-features/type-inference.html#","e":false,"i":"","n":"Changes in Type Inference","t":"Changes in Type Inference","d":"","k":"static","x":""},
 {"l":"changed-features/implicit-resolution.html#","e":false,"i":"","n":"Changes in Implicit Resolution","t":"Changes in Implicit Resolution","d":"","k":"static","x":""},
 {"l":"changed-features/implicit-conversions.html#","e":false,"i":"","n":"Implicit Conversions","t":"Implicit Conversions","d":"","k":"static","x":""},
