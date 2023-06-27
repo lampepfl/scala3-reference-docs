@@ -238,22 +238,23 @@
     <p>For instance, consider:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>{
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  val x = f(x: Int, y =&gt;
-</span><span line-number="3" class=""><span class="tooltip-container"></span>    x * (
-</span><span line-number="4" class=""><span class="tooltip-container"></span>      y + 1
-</span><span line-number="5" class=""><span class="tooltip-container"></span>    ) +
-</span><span line-number="6" class=""><span class="tooltip-container"></span>    (x +
-</span><span line-number="7" class=""><span class="tooltip-container"></span>    x)
-</span><span line-number="8" class=""><span class="tooltip-container"></span>  )
-</span><span line-number="9" class=""><span class="tooltip-container"></span>}
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  val x = 4
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  f(x: Int, y =&gt;
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    x * (
+</span><span line-number="5" class=""><span class="tooltip-container"></span>      y + 1
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    ) +
+</span><span line-number="7" class=""><span class="tooltip-container"></span>    (x +
+</span><span line-number="8" class=""><span class="tooltip-container"></span>    x)
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  )
+</span><span line-number="10" class=""><span class="tooltip-container"></span>}
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <ul> 
-     <li>Here, the indentation width of the region enclosed by the braces is 3 (i.e. the indentation width of the statement starting with <code>val</code>).</li> 
-     <li>The indentation width of the region in parentheses that follows <code>f</code> is also 3, since the opening parenthesis is not at the end of a line.</li> 
-     <li>The indentation width of the region in parentheses around <code>y + 1</code> is 9 (i.e. the indentation width of <code>y + 1</code>).</li> 
-     <li>Finally, the indentation width of the last region in parentheses starting with <code>(x</code> is 6 (i.e. the indentation width of the indented region following the <code>=&gt;</code>.</li> 
+     <li>Here, the indentation width of the region enclosed by the braces is 2 (i.e. the indentation width of the statement starting with <code>val</code>).</li> 
+     <li>The indentation width of the region in parentheses that follows <code>f</code> is also 2, since the opening parenthesis is not at the end of a line.</li> 
+     <li>The indentation width of the region in parentheses around <code>y + 1</code> is 6 (i.e. the indentation width of <code>y + 1</code>).</li> 
+     <li>Finally, the indentation width of the last region in parentheses starting with <code>(x</code> is 4 (i.e. the indentation width of the indented region following the <code>=&gt;</code>.</li> 
     </ul> 
    </section> 
    <section id="special-treatment-of-case-clauses"> 
