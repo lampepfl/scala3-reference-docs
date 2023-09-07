@@ -35,7 +35,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"metaprogramming/compiletime-ops.html#","e":false,"i":"","n":"Compile-time operations","t":"Compile-time operations","d":"","k":"static","x":""},
 {"l":"metaprogramming/macros.html#","e":false,"i":"","n":"Macros","t":"Macros","d":"","k":"static","x":""},
 {"l":"metaprogramming/macros-spec.html#","e":false,"i":"","n":"Macros Spec","t":"Macros Spec","d":"","k":"static","x":""},
-{"l":"metaprogramming/staging.html#","e":false,"i":"","n":"Runtime Multi-Stage Programming","t":"Runtime Multi-Stage Programming","d":"","k":"static","x":""},
+{"l":"metaprogramming/staging.html#","e":false,"i":"","n":"Run-Time Multi-Stage Programming","t":"Run-Time Multi-Stage Programming","d":"","k":"static","x":""},
 {"l":"metaprogramming/reflection.html#","e":false,"i":"","n":"Reflection","t":"Reflection","d":"","k":"static","x":""},
 {"l":"metaprogramming/tasty-inspect.html#","e":false,"i":"","n":"TASTy Inspection","t":"TASTy Inspection","d":"","k":"static","x":""},
 {"l":"metaprogramming/simple-smp.html#","e":false,"i":"","n":"The Meta-theory of Symmetric Metaprogramming","t":"The Meta-theory of Symmetric Metaprogramming","d":"","k":"static","x":""},
