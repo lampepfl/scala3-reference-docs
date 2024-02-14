@@ -14,7 +14,7 @@
 </span></code></pre> 
     <div class="buttons"></div> 
    </div> 
-   <p>At present, capture checking is still highly experimental and unstable.</p> 
+   <p>At present, capture checking is still highly experimental and unstable, and it evolves quickly. Before trying it out, make sure you have the latest version of Scala.</p> 
    <p>To get an idea what capture checking can do, let's start with a small example:</p> 
    <div class="snippet mono-small-block" scala-snippet=""> 
     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def usingLogFile[T](op: FileOutputStream =&gt; T): T =
@@ -36,17 +36,17 @@
    <p>When <code>later</code> is executed it tries to write to a file that is already closed, which results in an uncaught <code>IOException</code>.</p> 
    <p>Capture checking gives us the mechanism to prevent such errors <em>statically</em>. To prevent unsafe usages of <code>usingLogFile</code>, we can declare it like this:</p> 
    <div class="snippet mono-small-block" scala-snippet=""> 
-    <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def usingLogFile[T](op: ({*} FileOutputStream) =&gt; T): T =
+    <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def usingLogFile[T](op: FileOutputStream^ =&gt; T): T =
 </span><span line-number="2" class=""><span class="tooltip-container"></span>  // same body as before
 </span></code></pre> 
     <div class="buttons"></div> 
    </div> 
-   <p>The only thing that's changed is that the <code>FileOutputStream</code> parameter of <code>op</code> is now tagged with <code>{*}</code>. We'll see that this turns the parameter into a <em>capability</em> whose lifetime is tracked.</p> 
+   <p>The only thing that's changed is that the <code>FileOutputStream</code> parameter of <code>op</code> is now followed by <code>^</code>. We'll see that this turns the parameter into a <em>capability</em> whose lifetime is tracked.</p> 
    <p>If we now try to define the problematic value <code>later</code>, we get a static error:</p> 
    <div class="snippet mono-small-block"> 
     <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|  val later = usingLogFile { f =&gt; () =&gt; f.write(0) }
 </span><span line-number="2" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type {*} () -&gt; Unit is not allowed to capture the root capability `*`.
+</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type () =&gt; Unit is not allowed to capture the root capability `cap`.
 </span><span line-number="4" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|This usually means that a capability persists longer than its allowed lifetime.
 </span></code></pre> 
     <div class="buttons"></div> 
@@ -83,20 +83,20 @@
    </section> 
    <section id="capabilities-and-capturing-types-1"> 
     <h2 class="h500"><a href="#capabilities-and-capturing-types-1" class="anchor"></a>Capabilities and Capturing Types</h2> 
-    <p>Capture checking is done in terms of <em>capturing types</em> of the form <code>{c₁, ..., cᵢ} T</code>. Here <code>T</code> is a type, and <code>{c₁, ..., cᵢ}</code> is a <em>capture set</em> consisting of references to capabilities <code>c₁, ..., cᵢ</code>.</p> 
+    <p>Capture checking is done in terms of <em>capturing types</em> of the form <code>T^{c₁, ..., cᵢ}</code>. Here <code>T</code> is a type, and <code>{c₁, ..., cᵢ}</code> is a <em>capture set</em> consisting of references to capabilities <code>c₁, ..., cᵢ</code>.</p> 
     <p>A <em>capability</em> is syntactically a method- or class-parameter, a local variable, or the <code>this</code> of an enclosing class. The type of a capability must be a capturing type with a non-empty capture set. We also say that variables that are capabilities are <em>tracked</em>.</p> 
-    <p>In a sense, every capability gets its authority from some other, more sweeping capability which it captures. The most sweeping capability, from which ultimately all others are derived is written <code>*</code>. We call it the <em>universal capability</em>.</p> 
+    <p>In a sense, every capability gets its authority from some other, more sweeping capability which it captures. The most sweeping capability, from which ultimately all others are derived is written <code>cap</code>. We call it the <em>universal capability</em>. If <code>T</code> is a type, then <code>T^</code> is a shorthand for <code>T^{cap}</code>, meaning <code>T</code> can capture arbitrary capabilities.</p> 
     <p>Here is an example:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class FileSystem
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>class Logger(fs: {*} FileSystem):
+</span><span line-number="3" class=""><span class="tooltip-container"></span>class Logger(fs: FileSystem^):
 </span><span line-number="4" class=""><span class="tooltip-container"></span>  def log(s: String): Unit = ... // Write to a log file, using `fs`
 </span><span line-number="5" class=""><span class="tooltip-container"></span>
-</span><span line-number="6" class=""><span class="tooltip-container"></span>def test(fs: {*} FileSystem) =
-</span><span line-number="7" class=""><span class="tooltip-container"></span>  val l: {fs} Logger = Logger(fs)
+</span><span line-number="6" class=""><span class="tooltip-container"></span>def test(fs: FileSystem^) =
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  val l: Logger^{fs} = Logger(fs)
 </span><span line-number="8" class=""><span class="tooltip-container"></span>  l.log("hello world!")
-</span><span line-number="9" class=""><span class="tooltip-container"></span>  val xs: {l} LazyList[Int] =
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  val xs: LazyList[Int]^{l} =
 </span><span line-number="10" class=""><span class="tooltip-container"></span>    LazyList.from(1)
 </span><span line-number="11" class=""><span class="tooltip-container"></span>      .map { i =&gt;
 </span><span line-number="12" class=""><span class="tooltip-container"></span>        l.log(s"computing elem # $i")
@@ -106,33 +106,15 @@
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>Here, the <code>test</code> method takes a <code>FileSystem</code> as a parameter. <code>fs</code> is a capability since its type has a non-empty capture set. The capability is passed to the <code>Logger</code> constructor and retained as a field in class <code>Logger</code>. Hence, the local variable <code>l</code> has type <code>{fs} Logger</code>: it is a <code>Logger</code> which retains the <code>fs</code> capability.</p> 
-    <p>The second variable defined in <code>test</code> is <code>xs</code>, a lazy list that is obtained from <code>LazyList.from(1)</code> by logging and mapping consecutive numbers. Since the list is lazy, it needs to retain the reference to the logger <code>l</code> for its computations. Hence, the type of the list is <code>{l} LazyList[Int]</code>. On the other hand, since <code>xs</code> only logs but does not do other file operations, it retains the <code>fs</code> capability only indirectly. That's why <code>fs</code> does not show up in the capture set of <code>xs</code>.</p> 
+    <p>Here, the <code>test</code> method takes a <code>FileSystem</code> as a parameter. <code>fs</code> is a capability since its type has a non-empty capture set. The capability is passed to the <code>Logger</code> constructor and retained as a field in class <code>Logger</code>. Hence, the local variable <code>l</code> has type <code>Logger^{fs}</code>: it is a <code>Logger</code> which retains the <code>fs</code> capability.</p> 
+    <p>The second variable defined in <code>test</code> is <code>xs</code>, a lazy list that is obtained from <code>LazyList.from(1)</code> by logging and mapping consecutive numbers. Since the list is lazy, it needs to retain the reference to the logger <code>l</code> for its computations. Hence, the type of the list is <code>LazyList[Int]^{l}</code>. On the other hand, since <code>xs</code> only logs but does not do other file operations, it retains the <code>fs</code> capability only indirectly. That's why <code>fs</code> does not show up in the capture set of <code>xs</code>.</p> 
     <p>Capturing types come with a subtype relation where types with "smaller" capture sets are subtypes of types with larger sets (the <em>subcapturing</em> relation is defined in more detail below). If a type <code>T</code> does not have a capture set, it is called <em>pure</em>, and is a subtype of any capturing type that adds a capture set to <code>T</code>.</p> 
    </section> 
    <section id="function-types-1"> 
     <h2 class="h500"><a href="#function-types-1" class="anchor"></a>Function Types</h2> 
-    <p>The usual function type <code>A =&gt; B</code> now stands for a function that can capture arbitrary capabilities. We call such functions <em>impure</em>. By contrast, the new single arrow function type <code>A -&gt; B</code> stands for a function that cannot capture any capabilities, or otherwise said, is <em>pure</em>. One can add a capture set in front of an otherwise pure function. For instance, <code>{c, d} A -&gt; B</code> would be a function that can capture capabilities <code>c</code> and <code>d</code>, but no others.</p> 
-    <p>The impure function type <code>A =&gt; B</code> is treated as an alias for <code>{*} A -&gt; B</code>. That is, impure functions are functions that can capture anything.</p> 
-    <p>Function types and captures both associate to the right, so</p> 
-    <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>{c} A -&gt; {d} B -&gt; C
-</span></code></pre> 
-     <div class="buttons"></div> 
-    </div> 
-    <p>is the same as</p> 
-    <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>{c} (A -&gt; {d} (B -&gt; C))
-</span></code></pre> 
-     <div class="buttons"></div> 
-    </div> 
-    <p>Contrast with</p> 
-    <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>({c} A) -&gt; ({d} B) -&gt; C
-</span></code></pre> 
-     <div class="buttons"></div> 
-    </div> 
-    <p>which is a curried pure function over argument types that can capture <code>c</code> and <code>d</code>, respectively.</p> 
+    <p>The usual function type <code>A =&gt; B</code> now stands for a function that can capture arbitrary capabilities. We call such functions <em>impure</em>. By contrast, the new single arrow function type <code>A -&gt; B</code> stands for a function that cannot capture any capabilities, or otherwise said, is <em>pure</em>. One can add a capture set after the arrow of an otherwise pure function. For instance, <code>A -&gt;{c, d} B</code> would be a function that can capture capabilities <code>c</code> and <code>d</code>, but no others. This type is a shorthand for <code>(A -&gt; B)^{c, d}</code>, i.e. the function type <code>A -&gt; B</code> with possible captures <code>{c, d}</code>.</p> 
+    <p>The impure function type <code>A =&gt; B</code> is treated as an alias for <code>A -&gt;{cap} B</code>. That is, impure functions are functions that can capture anything.</p> 
+    <p>A capture annotation <code>^</code> binds more strongly than a function arrow. So <code>A -&gt; B^{c}</code> is read as <code>A</code> -&gt; (B^{c})`.</p> 
     <p>Analogous conventions apply to context function types. <code>A ?=&gt; B</code> is an impure context function, with <code>A ?-&gt; B</code> as its pure complement.</p> 
     <p><strong>Note 1:</strong> The identifiers <code>-&gt;</code> and <code>?-&gt;</code> are now treated as soft keywords when used as infix type operators. They are still available as regular identifiers for terms. For instance, the mapping syntax <code>Map("x" -&gt; 1, "y" -&gt; 2)</code> is still supported since it only applies to terms.</p> 
     <p><strong>Note 2:</strong> The distinctions between pure vs impure function types do not apply to methods. In fact, since methods are not values they never capture anything directly. References to capabilities in a method are instead counted in the capture set of the enclosing object.</p> 
@@ -159,12 +141,11 @@
     </div> 
     <p>the actual argument to <code>f</code> could not refer to any capabilities, so the call above would be rejected. One can also allow specific capabilities like this:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def f(x: {c}-&gt; Int): Int
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def f(x: -&gt;{c} Int): Int
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>Here, the actual argument to <code>f</code> is allowed to use the <code>c</code> capability but no others.</p> 
-    <p><strong>Note:</strong> It is strongly recommended to write the capability set and the arrow <code>-&gt;</code> without intervening spaces, as otherwise the notation would look confusingly like a function type.</p> 
    </section> 
    <section id="subtyping-and-subcapturing-1"> 
     <h2 class="h500"><a href="#subtyping-and-subcapturing-1" class="anchor"></a>Subtyping and Subcapturing</h2> 
@@ -182,36 +163,36 @@
     </ul> 
     <p><strong>Example 1.</strong> Given</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>fs: {*} FileSystem
-</span><span line-number="2" class=""><span class="tooltip-container"></span>ct: {*} CanThrow[Exception]
-</span><span line-number="3" class=""><span class="tooltip-container"></span>l : {fs} Logger
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>fs: FileSystem^
+</span><span line-number="2" class=""><span class="tooltip-container"></span>ct: CanThrow[Exception]^
+</span><span line-number="3" class=""><span class="tooltip-container"></span>l : Logger^{fs}
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>we have</p> 
     <div class="snippet mono-small-block"> 
-     <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span>{l}  &lt;: {fs}     &lt;: {*}
-</span><span line-number="2" class=""><span class="tooltip-container"></span>{fs} &lt;: {fs, ct} &lt;: {*}
-</span><span line-number="3" class=""><span class="tooltip-container"></span>{ct} &lt;: {fs, ct} &lt;: {*}
+     <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span>{l}  &lt;: {fs}     &lt;: {cap}
+</span><span line-number="2" class=""><span class="tooltip-container"></span>{fs} &lt;: {fs, ct} &lt;: {cap}
+</span><span line-number="3" class=""><span class="tooltip-container"></span>{ct} &lt;: {fs, ct} &lt;: {cap}
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>The set consisting of the root capability <code>{*}</code> covers every other capture set. This is a consequence of the fact that, ultimately, every capability is created from <code>*</code>.</p> 
-    <p><strong>Example 2.</strong> Consider again the FileSystem/Logger example from before. <code>LazyList[Int]</code> is a proper subtype of <code>{l} LazyList[Int]</code>. So if the <code>test</code> method in that example was declared with a result type <code>LazyList[Int]</code>, we'd get a type error. Here is the error message:</p> 
+    <p>The set consisting of the root capability <code>{cap}</code> covers every other capture set. This is a consequence of the fact that, ultimately, every capability is created from <code>cap</code>.</p> 
+    <p><strong>Example 2.</strong> Consider again the FileSystem/Logger example from before. <code>LazyList[Int]</code> is a proper subtype of <code>LazyList[Int]^{l}</code>. So if the <code>test</code> method in that example was declared with a result type <code>LazyList[Int]</code>, we'd get a type error. Here is the error message:</p> 
     <div class="snippet mono-small-block"> 
-     <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span>11 |def test(using fs: {*} FileSystem): LazyList[Int] = {
-</span><span line-number="2" class=""><span class="tooltip-container"></span>   |                                                    ^
-</span><span line-number="3" class=""><span class="tooltip-container"></span>   |                                            Found:    {fs} LazyList[Int]
-</span><span line-number="4" class=""><span class="tooltip-container"></span>   |                                            Required: LazyList[Int]
+     <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span>11 |def test(using fs: FileSystem^): LazyList[Int] = {
+</span><span line-number="2" class=""><span class="tooltip-container"></span>   |                                                 ^
+</span><span line-number="3" class=""><span class="tooltip-container"></span>   |                                        Found:    LazyList[Int]^{fs}
+</span><span line-number="4" class=""><span class="tooltip-container"></span>   |                                        Required: LazyList[Int]
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>Why does it say <code>{fs} LazyList[Int]</code> and not <code>{l} LazyList[Int]</code>, which is, after all, the type of the returned value <code>xs</code>? The reason is that <code>l</code> is a local variable in the body of <code>test</code>, so it cannot be referred to in a type outside that body. What happens instead is that the type is <em>widened</em> to the smallest supertype that does not mention <code>l</code>. Since <code>l</code> has capture set <code>fs</code>, we have that <code>{fs}</code> covers <code>{l}</code>, and <code>{fs}</code> is acceptable in a result type of <code>test</code>, so <code>{fs}</code> is the result of that widening. This widening is called <em>avoidance</em>; it is not specific to capture checking but applies to all variable references in Scala types.</p> 
+    <p>Why does it say <code>LazyList[Int]^{fs}</code> and not <code>LazyList[Int]^{l}</code>, which is, after all, the type of the returned value <code>xs</code>? The reason is that <code>l</code> is a local variable in the body of <code>test</code>, so it cannot be referred to in a type outside that body. What happens instead is that the type is <em>widened</em> to the smallest supertype that does not mention <code>l</code>. Since <code>l</code> has capture set <code>fs</code>, we have that <code>{fs}</code> covers <code>{l}</code>, and <code>{fs}</code> is acceptable in a result type of <code>test</code>, so <code>{fs}</code> is the result of that widening. This widening is called <em>avoidance</em>; it is not specific to capture checking but applies to all variable references in Scala types.</p> 
    </section> 
    <section id="capability-classes-1"> 
     <h2 class="h500"><a href="#capability-classes-1" class="anchor"></a>Capability Classes</h2> 
     <p>Classes like <code>CanThrow</code> or <code>FileSystem</code> have the property that their values are always intended to be capabilities. We can make this intention explicit and save boilerplate by declaring these classes with a <code>@capability</code> annotation.</p> 
-    <p>The capture set of a capability class type is always <code>{*}</code>. This means we could equivalently express the <code>FileSystem</code> and <code>Logger</code> classes as follows:</p> 
+    <p>The capture set of a capability class type is always <code>{cap}</code>. This means we could equivalently express the <code>FileSystem</code> and <code>Logger</code> classes as follows:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import annotation.capability
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
@@ -221,16 +202,16 @@
 </span><span line-number="6" class=""><span class="tooltip-container"></span>  def log(s: String): Unit = ???
 </span><span line-number="7" class=""><span class="tooltip-container"></span>
 </span><span line-number="8" class=""><span class="tooltip-container"></span>def test(using fs: FileSystem) =
-</span><span line-number="9" class=""><span class="tooltip-container"></span>  val l: {fs} Logger = Logger()
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  val l: Logger^{fs} = Logger()
 </span><span line-number="10" class=""><span class="tooltip-container"></span>  ...
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>In this version, <code>FileSystem</code> is a capability class, which means that the <code>{*}</code> capture set is implied on the parameters of <code>Logger</code> and <code>test</code>. Writing the capture set explicitly produces a warning:</p> 
+    <p>In this version, <code>FileSystem</code> is a capability class, which means that the <code>{cap}</code> capture set is implied on the parameters of <code>Logger</code> and <code>test</code>. Writing the capture set explicitly produces a warning:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class Logger(using {*} FileSystem):
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class Logger(using FileSystem^{cap}):
 </span><span line-number="2" class=""><span class="tooltip-container"></span>                   ^^^^^^^^^^^^^^
-</span><span line-number="3" class=""><span class="tooltip-container"></span>             redundant capture: FileSystem already accounts for *
+</span><span line-number="3" class=""><span class="tooltip-container"></span>             redundant capture: FileSystem already accounts for cap
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -240,12 +221,12 @@
     <h2 class="h500"><a href="#capture-checking-of-closures-1" class="anchor"></a>Capture Checking of Closures</h2> 
     <p>If a closure refers to capabilities in its body, it captures these capabilities in its type. For instance, consider:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def test(fs: FileSystem): {fs} String -&gt; Unit =
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def test(fs: FileSystem): String -&gt;{fs} Unit =
 </span><span line-number="2" class=""><span class="tooltip-container"></span>  (x: String) =&gt; Logger(fs).log(x)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>Here, the body of <code>test</code> is a lambda that refers to the capability <code>fs</code>, which means that <code>fs</code> is retained in the lambda. Consequently, the type of the lambda is <code>{fs} String -&gt; Unit</code>.</p> 
+    <p>Here, the body of <code>test</code> is a lambda that refers to the capability <code>fs</code>, which means that <code>fs</code> is retained in the lambda. Consequently, the type of the lambda is <code>String -&gt;{fs} Unit</code>.</p> 
     <p><strong>Note:</strong> Function values are always written with <code>=&gt;</code> (or <code>?=&gt;</code> for context functions). There is no syntactic distinction for pure <em>vs</em> impure function values. The distinction is only made in their types.</p> 
     <p>A closure also captures all capabilities that are captured by the functions it calls. For instance, in</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
@@ -256,7 +237,7 @@
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>the result of <code>test</code> has type <code>{fs} String -&gt; Unit</code> even though function <code>f</code> itself does not refer to <code>fs</code>.</p> 
+    <p>the result of <code>test</code> has type <code>String -&gt;{fs} Unit</code> even though function <code>f</code> itself does not refer to <code>fs</code>.</p> 
    </section> 
    <section id="capture-checking-of-classes-1"> 
     <h2 class="h500"><a href="#capture-checking-of-classes-1" class="anchor"></a>Capture Checking of Classes</h2> 
@@ -265,12 +246,12 @@
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class Logger(using fs: FileSystem):
 </span><span line-number="2" class=""><span class="tooltip-container"></span>  def log(s: String): Unit = ... summon[FileSystem] ...
 </span><span line-number="3" class=""><span class="tooltip-container"></span>
-</span><span line-number="4" class=""><span class="tooltip-container"></span>def test(xfs: FileSystem): {xfs} Logger =
+</span><span line-number="4" class=""><span class="tooltip-container"></span>def test(xfs: FileSystem): Logger^{xfs} =
 </span><span line-number="5" class=""><span class="tooltip-container"></span>  Logger(xfs)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>Here, class <code>Logger</code> retains the capability <code>fs</code> as a (private) field. Hence, the result of <code>test</code> is of type <code>{xfs} Logger</code></p> 
+    <p>Here, class <code>Logger</code> retains the capability <code>fs</code> as a (private) field. Hence, the result of <code>test</code> is of type <code>Logger^{xfs}</code></p> 
     <p>Sometimes, a tracked capability is meant to be used only in the constructor of a class, but is not intended to be retained as a field. This fact can be communicated to the capture checker by declaring the parameter as <code>@constructorOnly</code>. Example:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import annotation.constructorOnly
@@ -298,7 +279,7 @@
     <p>The capture set of the type of <code>this</code> of a class is inferred by the capture checker, unless the type is explicitly declared with a self type annotation like this one:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class C:
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  self: {a, b} D =&gt; ...
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  self: D^{a, b} =&gt; ...
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -339,22 +320,22 @@
     </div> 
     <p>What happens if <code>Pair</code> is instantiated like this (assuming <code>ct</code> and <code>fs</code> are two capabilities in scope)?</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def x: {ct} Int -&gt; String
-</span><span line-number="2" class=""><span class="tooltip-container"></span>def y: {fs} Logger
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def x: Int -&gt;{ct} String
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def y: Logger^{fs}
 </span><span line-number="3" class=""><span class="tooltip-container"></span>def p = Pair(x, y)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>The last line will be typed as follows:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def p: Pair[{ct} Int -&gt; String, {fs} Logger] = Pair(x, y)
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def p: Pair[Int -&gt;{ct} String, Logger^{fs}] = Pair(x, y)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>This might seem surprising. The <code>Pair(x, y)</code> value does capture capabilities <code>ct</code> and <code>fs</code>. Why don't they show up in its type at the outside?</p> 
     <p>The answer is capture tunnelling. Once a type variable is instantiated to a capturing type, the capture is not propagated beyond this point. On the other hand, if the type variable is instantiated again on access, the capture information "pops out" again. For instance, even though <code>p</code> is technically pure because its capture set is empty, writing <code>p.fst</code> would record a reference to the captured capability <code>ct</code>. So if this access was put in a closure, the capability would again form part of the outer capture set. E.g.</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>() =&gt; p.fst : {ct} () -&gt; {ct} Int -&gt; String
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>() =&gt; p.fst : () -&gt; Int -&gt;{ct} String
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -362,11 +343,11 @@
    </section> 
    <section id="escape-checking-1"> 
     <h2 class="h500"><a href="#escape-checking-1" class="anchor"></a>Escape Checking</h2> 
-    <p>The universal capability <code>*</code> should be conceptually available only as a parameter to the main program. Indeed, if it was available everywhere, capability checking would be undermined since one could mint new capabilities at will. In line with this reasoning, some capture sets are restricted so that they are not allowed to contain the universal capability.</p> 
-    <p>Specifically, if a capturing type is an instance of a type variable, that capturing type is not allowed to carry the universal capability <code>{*}</code>. There's a connection to tunnelling here. The capture set of a type has to be present in the environment when a type is instantiated from a type variable. But <code>*</code> is not itself available as a global entity in the environment. Hence, an error should result.</p> 
+    <p>Some capture sets are restricted so that they are not allowed to contain the universal capability.</p> 
+    <p>Specifically, if a capturing type is an instance of a type variable, that capturing type is not allowed to carry the universal capability <code>cap</code>. There's a connection to tunnelling here. The capture set of a type has to be present in the environment when a type is instantiated from a type variable. But <code>cap</code> is not itself available as a global entity in the environment. Hence, an error should result.</p> 
     <p>We can now reconstruct how this principle produced the error in the introductory example, where <code>usingLogFile</code> was declared like this:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def usingLogFile[T](op: ({*} FileOutputStream) =&gt; T): T = ...
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def usingLogFile[T](op: FileOutputStream^ =&gt; T): T = ...
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -374,23 +355,23 @@
     <div class="snippet mono-small-block"> 
      <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|  val later = usingLogFile { f =&gt; () =&gt; f.write(0) }
 </span><span line-number="2" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type {*} () -&gt; Unit is not allowed to capture the root capability `*`.
+</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type () =&gt; Unit is not allowed to capture the root capability `cap`.
 </span><span line-number="4" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|This usually means that a capability persists longer than its allowed lifetime.
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
     <p>This error message was produced by the following logic:</p> 
     <ul> 
-     <li>The <code>f</code> parameter has type <code>{*} FileOutputStream</code>, which makes it a capability.</li> 
-     <li>Therefore, the type of the expression <code>() =&gt; f.write(0)</code> is <code>{f} () -&gt; Unit</code>.</li> 
-     <li>This makes the type of the whole closure passed to <code>usingLogFile</code> the dependent function type <code>(f: {*} FileOutputStream) -&gt; {f} () -&gt; Unit</code>.</li> 
-     <li>The expected type of the closure is a simple, parametric, impure function type <code>({*} FileOutputStream) =&gt; T</code>, for some instantiation of the type variable <code>T</code>.</li> 
-     <li>The smallest supertype of the closure's dependent function type that is a parametric function type is <code>({*} FileOutputStream) =&gt; {*} () -&gt; Unit</code></li> 
-     <li>Hence, the type variable <code>T</code> is instantiated to <code>* () -&gt; Unit</code>, which causes the error.</li> 
+     <li>The <code>f</code> parameter has type <code>FileOutputStream^</code>, which makes it a capability.</li> 
+     <li>Therefore, the type of the expression <code>() =&gt; f.write(0)</code> is <code>() -&gt;{f} Unit</code>.</li> 
+     <li>This makes the type of the whole closure passed to <code>usingLogFile</code> the dependent function type <code>(f: FileOutputStream^) -&gt; () -&gt;{f} Unit</code>.</li> 
+     <li>The expected type of the closure is a simple, parametric, impure function type <code>FileOutputStream^ =&gt; T</code>, for some instantiation of the type variable <code>T</code>.</li> 
+     <li>The smallest supertype of the closure's dependent function type that is a parametric function type is <code>FileOutputStream^ =&gt; () -&gt;{cap} Unit</code></li> 
+     <li>Hence, the type variable <code>T</code> is instantiated to <code>() -&gt;{cap} Unit</code>, or abbreviated <code>() =&gt; Unit</code>, which causes the error.</li> 
     </ul> 
     <p>An analogous restriction applies to the type of a mutable variable. Another way one could try to undermine capture checking would be to assign a closure with a local capability to a global variable. Maybe like this:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>var loophole: {*} () -&gt; Unit = () =&gt; ()
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>var loophole: () =&gt; Unit = () =&gt; ()
 </span><span line-number="2" class=""><span class="tooltip-container"></span>usingLogFile { f =&gt;
 </span><span line-number="3" class=""><span class="tooltip-container"></span>  loophole = () =&gt; f.write(0)
 </span><span line-number="4" class=""><span class="tooltip-container"></span>}
@@ -407,11 +388,11 @@
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>At the point where the <code>Cell</code> is created, the capture set of the argument is <code>f</code>, which is OK. But at the point of use, it is <code>*</code> (because <code>f</code> is no longer in scope), which causes again an error:</p> 
+    <p>At the point where the <code>Cell</code> is created, the capture set of the argument is <code>f</code>, which is OK. But at the point of use, it is <code>cap</code> (because <code>f</code> is no longer in scope), which causes again an error:</p> 
     <div class="snippet mono-small-block"> 
      <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|  sneaky.x()
 </span><span line-number="2" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|  ^^^^^^^^
-</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type {*} () -&gt; Unit is not allowed to capture the root capability `*`.
+</span><span line-number="3" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|The expression's type () =&gt; Unit is not allowed to capture the root capability `cap`.
 </span><span line-number="4" class=""><span class="tooltip-container"></span><span class="hideable">   </span>|This usually means that a capability persists longer than its allowed lifetime.
 </span></code></pre> 
      <div class="buttons"></div> 
@@ -492,7 +473,7 @@
     <div class="snippet mono-small-block"> 
      <pre><code class="language-"><span line-number="1" class=""><span class="tooltip-container"></span>14 |  try () =&gt; xs.map(f).sum
 </span><span line-number="2" class=""><span class="tooltip-container"></span>   |  ^
-</span><span line-number="3" class=""><span class="tooltip-container"></span>   |The expression's type {*} () -&gt; Double is not allowed to capture the root capability `*`.
+</span><span line-number="3" class=""><span class="tooltip-container"></span>   |The expression's type () =&gt; Double is not allowed to capture the root capability `cap`.
 </span><span line-number="4" class=""><span class="tooltip-container"></span>   |This usually means that a capability persists longer than its allowed lifetime.
 </span><span line-number="5" class=""><span class="tooltip-container"></span>15 |  catch case ex: LimitExceeded =&gt; () =&gt; -1
 </span></code></pre> 
@@ -512,7 +493,7 @@
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>trait LzyList[+A]:
 </span><span line-number="2" class=""><span class="tooltip-container"></span>  def isEmpty: Boolean
 </span><span line-number="3" class=""><span class="tooltip-container"></span>  def head: A
-</span><span line-number="4" class=""><span class="tooltip-container"></span>  def tail: {this} LzyList[A]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  def tail: LzyList[A]^{this}
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -530,16 +511,16 @@
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.compiletime.uninitialized
 </span><span line-number="2" class=""><span class="tooltip-container"></span>
-</span><span line-number="3" class=""><span class="tooltip-container"></span>final class LzyCons[+A](hd: A, tl: () =&gt; {*} LzyList[A]) extends LzyList[A]:
+</span><span line-number="3" class=""><span class="tooltip-container"></span>final class LzyCons[+A](hd: A, tl: () =&gt; LzyList[A]^) extends LzyList[A]:
 </span><span line-number="4" class=""><span class="tooltip-container"></span>  private var forced = false
-</span><span line-number="5" class=""><span class="tooltip-container"></span>  private var cache: {this} LzyList[A] = uninitialized
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  private var cache: LzyList[A]^{this} = uninitialized
 </span><span line-number="6" class=""><span class="tooltip-container"></span>  private def force =
 </span><span line-number="7" class=""><span class="tooltip-container"></span>    if !forced then { cache = tl(); forced = true }
 </span><span line-number="8" class=""><span class="tooltip-container"></span>    cache
 </span><span line-number="9" class=""><span class="tooltip-container"></span>
 </span><span line-number="10" class=""><span class="tooltip-container"></span>  def isEmpty = false
 </span><span line-number="11" class=""><span class="tooltip-container"></span>  def head = hd
-</span><span line-number="12" class=""><span class="tooltip-container"></span>  def tail: {this} LzyList[A] = force
+</span><span line-number="12" class=""><span class="tooltip-container"></span>  def tail: LzyList[A]^{this} = force
 </span><span line-number="13" class=""><span class="tooltip-container"></span>end LzyCons
 </span></code></pre> 
      <div class="buttons"></div> 
@@ -548,7 +529,7 @@
     <p>Here is an extension method to define an infix cons operator <code>#:</code> for lazy lists. It is analogous to <code>::</code> but instead of a strict list it produces a lazy list without evaluating its right operand.</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>extension [A](x: A)
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  def #:(xs1: =&gt; {*} LzyList[A]): {xs1} LzyList[A] =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def #:(xs1: =&gt; LzyList[A]^): LzyList[A]^{xs1} =
 </span><span line-number="3" class=""><span class="tooltip-container"></span>    LzyCons(x, () =&gt; xs1)
 </span></code></pre> 
      <div class="buttons"></div> 
@@ -557,7 +538,7 @@
     <p>As an example usage of <code>#:</code>, here is a method <code>tabulate</code> that creates a lazy list of given length with a generator function <code>gen</code>. The generator function is allowed to have side effects.</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def tabulate[A](n: Int)(gen: Int =&gt; A) =
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  def recur(i: Int): {gen} LzyList[A] =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def recur(i: Int): LzyList[A]^{gen} =
 </span><span line-number="3" class=""><span class="tooltip-container"></span>    if i == n then LzyNil
 </span><span line-number="4" class=""><span class="tooltip-container"></span>    else gen(i) #: recur(i + 1)
 </span><span line-number="5" class=""><span class="tooltip-container"></span>  recur(0)
@@ -568,31 +549,30 @@
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class LimitExceeded extends Exception
 </span><span line-number="2" class=""><span class="tooltip-container"></span>def squares(n: Int)(using ct: CanThrow[LimitExceeded]) =
-</span><span line-number="3" class=""><span class="tooltip-container"></span>  tabulate(10) { i =&gt;
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  tabulate(10): i =&gt;
 </span><span line-number="4" class=""><span class="tooltip-container"></span>    if i &gt; 9 then throw LimitExceeded()
 </span><span line-number="5" class=""><span class="tooltip-container"></span>    i * i
-</span><span line-number="6" class=""><span class="tooltip-container"></span>  }
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
-    <p>The inferred result type of <code>squares</code> is <code>{ct} LzyList[Int]</code>, i.e it is a lazy list of <code>Int</code>s that can throw the <code>LimitExceeded</code> exception when it is elaborated by calling <code>tail</code> one or more times.</p> 
+    <p>The inferred result type of <code>squares</code> is <code>LzyList[Int]^{ct}</code>, i.e it is a lazy list of <code>Int</code>s that can throw the <code>LimitExceeded</code> exception when it is elaborated by calling <code>tail</code> one or more times.</p> 
     <p>Here are some further extension methods for mapping, filtering, and concatenating lazy lists:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
-     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>extension [A](xs: {*} LzyList[A])
-</span><span line-number="2" class=""><span class="tooltip-container"></span>  def map[B](f: A =&gt; B): {xs, f} LzyList[B] =
+     <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>extension [A](xs: LzyList[A]^)
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def map[B](f: A =&gt; B): LzyList[B]^{xs, f} =
 </span><span line-number="3" class=""><span class="tooltip-container"></span>    if xs.isEmpty then LzyNil
 </span><span line-number="4" class=""><span class="tooltip-container"></span>    else f(xs.head) #: xs.tail.map(f)
 </span><span line-number="5" class=""><span class="tooltip-container"></span>
-</span><span line-number="6" class=""><span class="tooltip-container"></span>  def filter(p: A =&gt; Boolean): {xs, p} LzyList[A] =
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  def filter(p: A =&gt; Boolean): LzyList[A]^{xs, p} =
 </span><span line-number="7" class=""><span class="tooltip-container"></span>    if xs.isEmpty then LzyNil
 </span><span line-number="8" class=""><span class="tooltip-container"></span>    else if p(xs.head) then xs.head #: xs.tail.filter(p)
 </span><span line-number="9" class=""><span class="tooltip-container"></span>    else xs.tail.filter(p)
 </span><span line-number="10" class=""><span class="tooltip-container"></span>
-</span><span line-number="11" class=""><span class="tooltip-container"></span>  def concat(ys: {*} LzyList[A]): {xs, ys} LzyList[A] =
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  def concat(ys: LzyList[A]^): LzyList[A]^{xs, ys} =
 </span><span line-number="12" class=""><span class="tooltip-container"></span>    if xs.isEmpty then ys
 </span><span line-number="13" class=""><span class="tooltip-container"></span>    else xs.head #: xs.tail.concat(ys)
 </span><span line-number="14" class=""><span class="tooltip-container"></span>
-</span><span line-number="15" class=""><span class="tooltip-container"></span>  def drop(n: Int): {xs} LzyList[A] =
+</span><span line-number="15" class=""><span class="tooltip-container"></span>  def drop(n: Int): LzyList[A]^{xs} =
 </span><span line-number="16" class=""><span class="tooltip-container"></span>    if n == 0 then xs else xs.tail.drop(n - 1)
 </span></code></pre> 
      <div class="buttons"></div> 
@@ -604,10 +584,10 @@
      <li>Concatenating two lazy lists produces a lazy list that captures both arguments.</li> 
      <li>Dropping elements from a lazy list gives a safe approximation where the original list is captured in the result. In fact, it's only some suffix of the list that is retained at run time, but our modelling identifies lazy lists and their suffixes, so this additional knowledge would not be useful.</li> 
     </ul> 
-    <p>Of course the function passed to <code>map</code> or <code>filter</code> could also be pure. After all, <code>A -&gt; B</code> is a subtype of <code>{*} A -&gt; B</code> which is the same as <code>A =&gt; B</code>. In that case, the pure function argument will <em>not</em> show up in the result type of <code>map</code> or <code>filter</code>. For instance:</p> 
+    <p>Of course the function passed to <code>map</code> or <code>filter</code> could also be pure. After all, <code>A -&gt; B</code> is a subtype of <code>(A -&gt; B)^{cap}</code> which is the same as <code>A =&gt; B</code>. In that case, the pure function argument will <em>not</em> show up in the result type of <code>map</code> or <code>filter</code>. For instance:</p> 
     <div class="snippet mono-small-block" scala-snippet=""> 
      <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>val xs = squares(10)
-</span><span line-number="2" class=""><span class="tooltip-container"></span>val ys: {xs} LzyList[Int] = xs.map(_ + 1)
+</span><span line-number="2" class=""><span class="tooltip-container"></span>val ys: LzyList[Int]^{xs} = xs.map(_ + 1)
 </span></code></pre> 
      <div class="buttons"></div> 
     </div> 
@@ -662,6 +642,7 @@
      <li><code>F</code> : a variable resulting from <em>filtering</em> the elements of the variable indicated by the string to the right,</li> 
      <li><code>I</code> : a variable resulting from an <em>intersection</em> of two capture sets,</li> 
      <li><code>D</code> : a variable resulting from the set <em>difference</em> of two capture sets.</li> 
+     <li><code>R</code> : a regular variable that <em>refines</em> a class parameter, so that the capture set of a constructor argument is known in the class instance type.</li> 
     </ul> 
     <p>At the end of a compilation run, <code>-Ycc-debug</code> will print all variable dependencies of variables referred to in previous output. Here is an example:</p> 
     <div class="snippet mono-small-block"> 
