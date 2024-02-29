@@ -436,7 +436,7 @@ margin-block-start: 27px;
     display: none;
   }
 
-  #footer.mobile-footer  .text-mobile {
+  #footer.mobile-footer .text-mobile {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -450,7 +450,7 @@ margin-block-start: 27px;
   #footer.mobile-footer > .text-mobile {
     display: flex;
   }
-  
+
 }#header {
   --header-height: calc(8 * var(--base-spacing));
   box-sizing: border-box;
