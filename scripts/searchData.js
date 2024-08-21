@@ -58,6 +58,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"other-new-features/safe-initialization.html#","e":false,"i":"","n":"Safe Initialization","t":"Safe Initialization","d":"","k":"static","x":""},
 {"l":"other-new-features/type-test.html#","e":false,"i":"","n":"TypeTest","t":"TypeTest","d":"","k":"static","x":""},
 {"l":"other-new-features/experimental-defs.html#","e":false,"i":"","n":"Experimental Definitions","t":"Experimental Definitions","d":"","k":"static","x":""},
+{"l":"other-new-features/binary-literals.html#","e":false,"i":"","n":"Binary Integer Literals","t":"Binary Integer Literals","d":"","k":"static","x":""},
 {"l":"changed-features/index.html#","e":false,"i":"","n":"Other Changed Features","t":"Other Changed Features","d":"","k":"static","x":""},
 {"l":"changed-features/numeric-literals.html#","e":false,"i":"","n":"Numeric Literals","t":"Numeric Literals","d":"","k":"static","x":""},
 {"l":"changed-features/structural-types.html#","e":false,"i":"","n":"Programmatic Structural Types","t":"Programmatic Structural Types","d":"","k":"static","x":""},
