@@ -139,6 +139,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"other-new-features.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"changed-features.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"dropped-features.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
+{"l":"preview/overview.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"experimental/overview.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"docs/reference/other-new-features/named-typeargs.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"docs/reference/other-new-features/into-modifier.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
