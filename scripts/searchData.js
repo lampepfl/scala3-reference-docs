@@ -10233,6 +10233,7 @@ pages = [{"l":"api/index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Sc
 {"l":"dropped-features/type-projection.html#","e":false,"i":"","n":"Dropped: General Type Projection","t":"Dropped: General Type Projection","d":"","k":"static","x":""},
 {"l":"dropped-features/do-while.html#","e":false,"i":"","n":"Dropped: Do-While","t":"Dropped: Do-While","d":"","k":"static","x":""},
 {"l":"dropped-features/procedure-syntax.html#","e":false,"i":"","n":"Dropped: Procedure Syntax","t":"Dropped: Procedure Syntax","d":"","k":"static","x":""},
+{"l":"dropped-features/package-objects.html#","e":false,"i":"","n":"Dropped: Package Objects","t":"Dropped: Package Objects","d":"","k":"static","x":""},
 {"l":"dropped-features/early-initializers.html#","e":false,"i":"","n":"Dropped: Early Initializers","t":"Dropped: Early Initializers","d":"","k":"static","x":""},
 {"l":"dropped-features/class-shadowing.html#","e":false,"i":"","n":"Dropped: Class Shadowing","t":"Dropped: Class Shadowing","d":"","k":"static","x":""},
 {"l":"dropped-features/class-shadowing-spec.html#","e":false,"i":"","n":"Dropped: Class Shadowing - More Details","t":"Dropped: Class Shadowing - More Details","d":"","k":"static","x":""},
