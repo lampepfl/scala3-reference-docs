@@ -1,0 +1,417 @@
+<!DOCTYPE html><html data-githubContributorsUrl="https://api.github.com/repos/scala/scala3" data-githubContributorsFilename="docs/_docs/reference/experimental/capture-checking/scoped-capabilities.md" data-pathToRoot="../../" data-rawLocation="experimental/capture-checking/scoped-capabilities" data-dynamicSideMenu="false"><head><meta charset="utf-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta><title>Scoped Capabilities</title><link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"></link><script type="text/javascript" src="../../scripts/theme.js"></script><script type="text/javascript" src="../../scripts/searchData.js" defer="true"></script><script type="text/javascript" src="../../scripts/scastieConfiguration.js" defer="true"></script><link rel="stylesheet" href="../../styles/theme/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/components/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/components/button/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/layout/bundle.css"></link><link rel="stylesheet" href="../../styles/nord-light.css"></link><link rel="stylesheet" href="../../styles/dotty-icons.css"></link><link rel="stylesheet" href="../../styles/filter-bar.css"></link><link rel="stylesheet" href="../../styles/code-snippets.css"></link><link rel="stylesheet" href="../../styles/searchbar.css"></link><link rel="stylesheet" href="../../styles/social-links.css"></link><link rel="stylesheet" href="../../styles/versions-dropdown.css"></link><link rel="stylesheet" href="../../styles/content-contributors.css"></link><link rel="stylesheet" href="../../styles/fontawesome.css"></link><script type="text/javascript" src="../../hljs/highlight.pack.js" defer="true"></script><script type="text/javascript" src="../../scripts/hljs-scala3.js" defer="true"></script><script type="text/javascript" src="../../scripts/ux.js" defer="true"></script><script type="text/javascript" src="../../scripts/common/component.js" defer="true"></script><script type="text/javascript" src="../../scripts/common/utils.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/FilterBar.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/DocumentableList.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/Input.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/FilterGroup.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/Filter.js" defer="true"></script><script type="text/javascript" src="../../scripts/scaladoc-scalajs.js" defer="true"></script><script type="text/javascript" src="../../scripts/contributors.js" defer="true"></script><script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" defer="true"></script><script type="text/javascript" src="https://d3js.org/d3.v6.min.js" defer="true"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/graphlib-dot@0.6.2/dist/graphlib-dot.min.js" defer="true"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.1/dagre-d3.min.js" defer="true"></script><script type="text/javascript" src="https://scastie.scala-lang.org/embedded.js" defer="true"></script><script type="text/javascript" src="../../scripts/data.js" defer="true"></script><link rel="stylesheet" href="../../styles/staticsitestyles.css"></link><script>var pathToRoot = "../../";</script><link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/css/dottydoc.css"></head><body><div id=""><div id="header" class="body-small"><div class="header-container-left"><a href="../../" class="logo-container"><span id="project-logo" class="project-logo"><img src="../../project-logo/logo.svg"></img></span><span id="dark-project-logo" class="project-logo"><img src="../../project-logo/logo_dark.svg"></img></span><span class="project-name h300">Scala 3 Reference</span></a><span onclick="dropdownHandler(event)" class="text-button with-arrow" id="dropdown-trigger"><a><div class="projectVersion">3.8.3</div></a></span><div id="version-dropdown" class="dropdown-menu"></div></div><div class="header-container-right"><button id="search-toggle" class="icon-button"></button><a href="https://docs.scala-lang.org/" class="text-button">Learn</a><a href="https://www.scala-lang.org/download/" class="text-button">Install</a><a href="https://scastie.scala-lang.org" class="text-button">Playground</a><a href="https://index.scala-lang.org" class="text-button">Find A Library</a><a href="https://www.scala-lang.org/community/" class="text-button">Community</a><a href="https://www.scala-lang.org/blog/" class="text-button">Blog</a><span id="theme-toggle" class="icon-button"></span><span id="mobile-menu-toggle" class="icon-button hamburger"></span></div></div><div id="mobile-menu"><div class="mobile-menu-header body-small"><span class="mobile-menu-logo"><span id="project-logo" class="project-logo"><img src="../../project-logo/logo.svg"></img></span><span id="dark-project-logo" class="project-logo"><img src="../../project-logo/logo_dark.svg"></img></span><span class="project-name h300">Scala 3 Reference</span></span><button id="mobile-menu-close" class="icon-button close"></button></div><div class="mobile-menu-container body-medium"><input id="mobile-scaladoc-searchbar-input" class="scaladoc-searchbar-input" type="search" placeholder="Find anything"></input><a href="https://docs.scala-lang.org/" class="mobile-menu-item">Learn</a><a href="https://www.scala-lang.org/download/" class="mobile-menu-item">Install</a><a href="https://scastie.scala-lang.org" class="mobile-menu-item">Playground</a><a href="https://index.scala-lang.org" class="mobile-menu-item">Find A Library</a><a href="https://www.scala-lang.org/community/" class="mobile-menu-item">Community</a><a href="https://www.scala-lang.org/blog/" class="mobile-menu-item">Blog</a><span id="mobile-theme-toggle" class="mobile-menu-item mode"></span></div></div><span id="mobile-sidebar-toggle" class="floating-button"></span><div id="leftColumn" class="body-small"><div class="switcher-container"><a id="docs-nav-button" class="switcher h100 selected" href="../../index.html">Docs</a></div><nav id="docs-nav" class="side-menu"><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../new-types/index.html"><span>New Types</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../new-types/intersection-types.html"><span>Intersection Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../new-types/union-types.html"><span>Union Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../new-types/type-lambdas.html"><span>Type Lambdas</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../new-types/match-types.html"><span>Match Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../new-types/dependent-function-types.html"><span>Dependent Function Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../new-types/polymorphic-function-types.html"><span>Polymorphic Function Types</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../enums/index.html"><span>Enums</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../enums/enums.html"><span>Enumerations</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../enums/adts.html"><span>Algebraic Data Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../enums/desugarEnums.html"><span>Translation of Enums and ADTs</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../contextual/index.html"><span>Contextual Abstractions</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../contextual/givens.html"><span>Given Instances</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/using-clauses.html"><span>Using Clauses</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/context-bounds.html"><span>Context Bounds</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/deferred-givens.html"><span>Deferred Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/given-imports.html"><span>Importing Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/more-givens.html"><span>Other Forms Of Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/extension-methods.html"><span>Extension Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/right-associative-extension-methods.html"><span>Right-Associative Extension Methods: Details</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/type-classes.html"><span>Implementing Type classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/derivation.html"><span>Type Class Derivation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/derivation-macro.html"><span>How to write a type class `derived` method using macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/multiversal-equality.html"><span>Multiversal Equality</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/context-functions.html"><span>Context Functions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/conversions.html"><span>Implicit Conversions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/by-name-context-parameters.html"><span>By-Name Context Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../contextual/relationship-implicits.html"><span>Relationship with Scala 2 Implicits</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../metaprogramming/index.html"><span>Metaprogramming</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/inline.html"><span>Inline</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/compiletime-ops.html"><span>Compile-time operations</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/macros.html"><span>Macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/simple-smp.html"><span>The Meta-theory of Symmetric Metaprogramming</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/staging.html"><span>Run-Time Multi-Stage Programming</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/reflection.html"><span>Reflection</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../metaprogramming/tasty-inspect.html"><span>TASTy Inspection</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../other-new-features/index.html"><span>Other New Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/trait-parameters.html"><span>Trait Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/transparent-traits.html"><span>Transparent Traits and Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/creator-applications.html"><span>Universal Apply Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/export.html"><span>Export Clauses</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/opaques.html"><span>Opaque Type Aliases</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/opaques-details.html"><span>Opaque Type Aliases: More Details</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/named-tuples.html"><span>Named Tuples</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/open-classes.html"><span>Open Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/parameter-untupling.html"><span>Parameter Untupling</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/generalized-method-syntax.html"><span>Generalized Method Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/kind-polymorphism.html"><span>Kind Polymorphism</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/matchable.html"><span>The Matchable Trait</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/threadUnsafe-annotation.html"><span>The @threadUnsafe annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/targetName.html"><span>The @targetName annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/control-syntax.html"><span>New Control Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/indentation.html"><span>Optional Braces</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/safe-initialization.html"><span>Safe Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/type-test.html"><span>TypeTest</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/experimental-defs.html"><span>Experimental Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/preview-defs.html"><span>Preview Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/binary-literals.html"><span>Binary Integer Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/toplevel-definitions.html"><span>Toplevel Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/better-fors.html"><span>Better fors</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../other-new-features/runtimeChecked.html"><span>The runtimeChecked method</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../changed-features/index.html"><span>Other Changed Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../changed-features/numeric-literals.html"><span>Numeric Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/structural-types.html"><span>Programmatic Structural Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/operators.html"><span>Rules for Operators</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/wildcards.html"><span>Wildcard Arguments in Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/imports.html"><span>Imports</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/type-inference.html"><span>Changes in Type Inference</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/implicit-resolution.html"><span>Changes in Implicit Resolution</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/implicit-conversions.html"><span>Implicit Conversions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/overload-resolution.html"><span>Changes in Overload Resolution</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/match-syntax.html"><span>Match Expressions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/vararg-splices.html"><span>Vararg Splices</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/pattern-bindings.html"><span>Pattern Bindings</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/pattern-matching.html"><span>Option-less pattern matching</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/eta-expansion.html"><span>Automatic Eta Expansion</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/compiler-plugins.html"><span>Changes in Compiler Plugins</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/lazy-vals-init.html"><span>Lazy Vals Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/main-functions.html"><span>Main Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../changed-features/interpolation-escapes.html"><span>Escapes in interpolations</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../dropped-features/index.html"><span>Dropped Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/delayed-init.html"><span>Dropped: DelayedInit</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/macros.html"><span>Dropped: Scala 2 Macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/existential-types.html"><span>Dropped: Existential Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/type-projection.html"><span>Dropped: General Type Projection</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/do-while.html"><span>Dropped: Do-While</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/procedure-syntax.html"><span>Dropped: Procedure Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/package-objects.html"><span>Dropped: Package Objects</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/early-initializers.html"><span>Dropped: Early Initializers</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/class-shadowing.html"><span>Dropped: Class Shadowing</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/limit22.html"><span>Dropped: Limit 22</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/xml.html"><span>Dropped: XML Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/symlits.html"><span>Dropped: Symbol Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/auto-apply.html"><span>Dropped: Auto-Application</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/weak-conformance.html"><span>Dropped: Weak Conformance</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/nonlocal-returns.html"><span>Deprecated: Nonlocal Returns</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/this-qualifier.html"><span>Dropped: private[this] and protected[this]</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../dropped-features/wildcard-init.html"><span>Dropped: Wildcard Initializer</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../preview/index.html"><span>Preview</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../preview/into.html"><span>The `into` Type and Modifier</span></a></span></div></div><div class="ni n0 expanded"><span class="nh h100 expanded cs de"><button class="ar icon-button expanded"></button><a href="../index.html"><span>Experimental</span></a></span><div class="ni n1 "><span class="nh de"><a href="../canthrow.html"><span>CanThrow Capabilities</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../erased-defs.html"><span>Erased Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../named-typeargs.html"><span>Named Type Arguments</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../numeric-literals.html"><span>Numeric Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../explicit-nulls.html"><span>Explicit Nulls</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../main-annotation.html"><span>MainAnnotation</span></a></span></div><div class="ni n1 expanded"><span class="nh h100 expanded cs de"><button class="ar icon-button expanded"></button><a href="index.html"><span>Capture Checking</span></a></span><div class="ni n2 "><span class="nh de"><a href="basics.html"><span>Capture Checking Basics</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="classes.html"><span>Capture Checking of Classes</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="polymorphism.html"><span>Capability Polymorphism</span></a></span></div><div class="ni n2 expanded"><span class="nh h100 selected de"><a href="#"><span>Scoped Capabilities</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="classifiers.html"><span>Capability Classifiers</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="checked-exceptions.html"><span>Checked Exceptions</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="mutability.html"><span>Stateful Capabilities</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="separation-checking.html"><span>Separation Checking</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="safe.html"><span>Safe Mode</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="how-to-use.html"><span>How to Use the Capture Checker</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="internals.html"><span>Capture Checking Internals</span></a></span></div></div><div class="ni n1 "><span class="nh de"><a href="../purefuns.html"><span>Pure Function Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../tupled-function.html"><span>Tupled Function</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../modularity.html"><span>Modularity Improvements</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../typeclasses.html"><span>Better Support for Type Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../unrolled-defs.html"><span>Automatic Parameter Unrolling</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../package-object-values.html"><span>Reference-able Package Objects</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../quoted-patterns-with-polymorphic-functions.html"><span>Quoted Patterns with Polymorphic Functions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../relaxed-lambdas.html"><span>Relaxed Lambda Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../sub-cases.html"><span>Match Expressions with Sub Cases</span></a></span></div></div><div class="ni n0 "><span class="nh de"><a href="../../syntax.html"><span>Scala 3 Syntax Summary</span></a></span></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../../language-versions/index.html"><span>Language Versions</span></a></span><div class="ni n1 "><span class="nh de"><a href="../../language-versions/source-compatibility.html"><span>Source Compatibility</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../../language-versions/binary-compatibility.html"><span>Binary Compatibility</span></a></span></div></div><div class="ni n0 "><span class="nh de"><a href="../../soft-modifier.html"><span>Soft Keywords</span></a></span></div><div class="ni n0 "><span class="nh de"><a href="../../features-classification.html"><span>A Classification of Proposed Language Features</span></a></span></div></nav></div><div id="footer" class="body-small"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/scala/scala3"><button class="icon-button gh"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><div class="text">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div id="scaladoc-searchBar"></div><div id="main"><div class="breadcrumbs container"><a href="../../index.html">Scala 3 Reference</a>/<a href="../index.html">Experimental</a>/<a href="index.html">Capture Checking</a>/<a href="scoped-capabilities.html">Scoped Capabilities</a></div><div id="content" class="body-medium"><div><div id="content-wrapper">
+ <div class="site-container">
+  <div id="site-header"></div>
+  <main>
+   <header>
+    <a class="text-button with-link body-small" href="https://github.com/scala/scala3/edit/language-reference-stable/docs/_docs/reference/experimental/capture-checking/scoped-capabilities.md">Edit this page on GitHub</a>
+    <h1 class="h600">Scoped Capabilities</h1>
+   </header>
+   <div class="snippet mono-small-block" scala-snippet="">
+    <pre><code class="language-scala"></code></pre>
+    <div class="snippet-meta">
+     <div class="snippet-label">
+      preamble
+     </div>
+    </div>
+    <div class="buttons"></div>
+   </div>
+   <section id="introduction">
+    <h2 class="h500"><a href="#introduction" class="anchor"></a>Introduction</h2>
+    <p>When discussing <a href="basics.html#escape-checking">escape checking</a>, we referred to a scoping discipline. That is, capture sets can contain only capabilities that are visible at the point where the set is defined. But that raises the question: where is a universal capability <code>any</code> defined?</p>
+    <p>The key principle is that each occurrence of <code>any</code> represents a <em>different</em> capability. Each <code>any</code> can subsume capabilities of the same or outer level, including other <code>any</code>s. This property is central to <a href="separation-checking.html">separation checking</a>, where each <code>any</code> gets its own hidden set of capabilities it subsumes.</p>
+    <p>Besides <code>any</code>, there is a related capability <code>fresh</code> (available via <code>import caps.fresh</code>) that can appear in function type results. While <code>any</code> in a function result refers to the enclosing scope's local <code>any</code>, <code>fresh</code> introduces a new existentially bound capability, guaranteeing that each call produces a distinct, isolated result. We cover <code>fresh</code> in detail <a href="#parameter-and-result-anys-in-function-types">below</a>.</p>
+   </section>
+   <section id="where-any-appears">
+    <h2 class="h500"><a href="#where-any-appears" class="anchor"></a>Where <code>any</code> Appears</h2>
+    <p>We distinguish four positions where <code>any</code> (or <code>fresh</code>) can appear:</p>
+    <ol>
+     <li>
+      <p><strong>Local <code>any</code>s</strong>: Every class, method body, and block has its own local <code>any</code>. It abstracts over the capabilities used inside that scope, representing them by a single name to the outside world. Local <code>any</code>s form a subcapturing hierarchy based on lexical nesting.</p></li>
+     <li>
+      <p><strong>Parameter <code>any</code>s</strong>: When <code>any</code> appears in a function parameter type (e.g., <code>def foo(x: T^)</code>), it gets its own <code>any</code> scoped to that parameter. At call sites, parameter <code>any</code>s are instantiated to the actual capabilities passed in.</p></li>
+     <li>
+      <p><strong>Result <code>any</code>s</strong>: When <code>any</code> appears in a function result type (e.g., <code>A^ -&gt; B^</code>, i.e., <code>A^{any} -&gt; B^{any}</code>), it refers to the local <code>any</code> of the enclosing scope. Two calls to such a function produce results with the same capture-set bound.</p></li>
+     <li>
+      <p><strong>Result <code>fresh</code>s</strong>: Instead of <code>any</code>, one can write <code>fresh</code> in the result type of a function type (e.g., <code>A^ -&gt; B^{fresh}</code>). This indicates that each call to the function yields a result capturing a fresh, distinct capability, hence the name. Unlike a result <code>any</code>, a result <code>fresh</code> is isolated: it cannot be merged with capabilities from the enclosing scope. Note that <code>fresh</code> applies only to function types, not to method return types (which use <code>any</code>).</p></li>
+    </ol>
+    <p>So, when writing <code>T^</code> (shorthand for <code>T^{any}</code>), <code>any</code> is a way of saying "captures something" without naming what it is precisely, and depending on the context, the capture checker imposes restrictions on which capabilities are allowed to flow into them by means of subcapturing. Writing <code>T^{fresh}</code> instead says "captures something new and isolated"; see the comparison <a href="#any-vs-fresh-in-function-type-results">below</a> for the practical difference.</p>
+    <p>Another analogy for the different <code>any</code>s is that they are some form of implicitly named existential or abstract self-capture set attached to elements of the program structure, e.g., scopes, parameters, or return values.</p>
+   </section>
+   <section id="local-anys">
+    <h2 class="h500"><a href="#local-anys" class="anchor"></a>Local <code>any</code>s</h2>
+    <p>Local <code>any</code>s form a subcapturing hierarchy based on lexical nesting: a nested scope's local <code>any</code> subsumes its enclosing scope's local <code>any</code>. This makes sense because the inner scope can use any capability available in the outer scope as well as locally defined ones. At the top level, there is a true universal <code>any</code> — the local <code>any</code> of the global scope — which all other local <code>any</code>s ultimately subsume:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>// top level: the global `any`
+</span><span line-number="3" class=""><span class="tooltip-container"></span>class Outer: // has local any₁
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  val f1: File^ = File("f1") // File^{any₁}
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  def method() = // has local any₂
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    val f2: File^ = File("f2") // File^{any₂}
+</span><span line-number="7" class=""><span class="tooltip-container"></span>    var ref: () =&gt; Unit = null // () -&gt;{any₂} Unit, can accept what can flow into any₂
+</span><span line-number="8" class=""><span class="tooltip-container"></span>    val closure = () =&gt; // has local any₃
+</span><span line-number="9" class=""><span class="tooltip-container"></span>      val f3: File^ = File("f3") // File^{any₃}
+</span><span line-number="10" class=""><span class="tooltip-container"></span>      val f4: File^ = f2 // ok, because {any₂} &lt;: {any₃}
+</span><span line-number="11" class=""><span class="tooltip-container"></span>      val f5: File^ = f1 // ok, because {any₁} &lt;: {any₃}
+</span><span line-number="12" class=""><span class="tooltip-container"></span>      ref = () =&gt; f3.read() // error, f3 is at the level of any₃ and cannot flow into any₂
+</span><span line-number="13" class=""><span class="tooltip-container"></span>      ...
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>Each capability has a <em>level</em> corresponding to the local <code>any</code> of its defining scope. The level determines where a capability can flow: it can flow into <code>any</code>s at the same level or more deeply nested, but not outward to enclosing scopes (which would mean a capability lives longer than its lexical lifetime). The compiler computes a capability's level by walking up the ownership chain until reaching a symbol that represents a level boundary. Level boundaries are:</p>
+    <ul>
+     <li><strong>Classes</strong></li>
+     <li><strong>Static objects</strong></li>
+     <li><strong>Methods</strong></li>
+    </ul>
+    <p>Local values like <code>f1</code>, <code>f2</code>, <code>ref</code>, etc., don't define their own levels. They inherit the level of their enclosing method or class. For example, this means:</p>
+    <ul>
+     <li><code>f1</code> is at <code>Outer</code>'s level, i.e., <code>f1</code> subcaptures local <code>any₁</code>.</li>
+     <li><code>f2</code> and <code>ref</code> are both at <code>method</code>'s level, i.e., both subcapture local <code>any₂</code>.</li>
+     <li>By lexical nesting, <code>{any₂} &lt;: {any₃}</code> holds, but it does <strong>not</strong> hold that <code>{any₃} &lt;: {any₂}</code>. Hence, we cannot assign the closure to <code>ref</code>, because <code>{f3}</code> is subcapture-bounded by <code>{any₃}</code>.</li>
+    </ul>
+   </section>
+   <section id="charging-captures">
+    <h3 class="h400"><a href="#charging-captures" class="anchor"></a>Charging Captures</h3>
+    <p>When a capability is used, it must be checked for compatibility with the capture-set constraints of all enclosing scopes. This process is called <em>charging</em> the capability to the environment.</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def outer(fs: FileSystem^): Unit =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  def inner: () -&gt;{fs} Unit =
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    () =&gt; fs.read()  // fs is used here
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  inner()
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>When the capture checker sees <code>fs.read()</code>, it verifies that <code>fs</code> can flow into each enclosing scope:</p>
+    <ol>
+     <li>The immediately enclosing closure <code>() =&gt; fs.read()</code> must permit <code>fs</code> in its capture set ✓</li>
+     <li>The enclosing method <code>inner</code> must account for <code>fs</code> (it does, via its capture set) ✓</li>
+     <li>The enclosing method <code>outer</code> must account for <code>fs</code> (it does, via its parameter) ✓</li>
+    </ol>
+    <p>If any scope refuses to absorb the capability, capture checking fails:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def process(fs: FileSystem^): Unit =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  val f: () -&gt; Unit = () =&gt; fs.read()  // Error: fs cannot flow into {}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The closure is declared pure (<code>() -&gt; Unit</code>), meaning its local <code>any</code> is the empty set. The capability <code>fs</code> cannot flow into an empty set, so the checker rejects this.</p>
+   </section>
+   <section id="visibility-and-widening">
+    <h3 class="h400"><a href="#visibility-and-widening" class="anchor"></a>Visibility and Widening</h3>
+    <p>When capabilities flow outward to enclosing scopes, they must remain visible. A local capability cannot appear in a type outside its defining scope. In such cases, the capture set is <em>widened</em> to the smallest visible super capture set:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def test(fs: FileSystem^/*{any₁}*/): Logger^{fs} =
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  val localLogger = Logger(fs)
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  localLogger  // Type widens from Logger^{localLogger} to Logger^{fs}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>Here, <code>localLogger</code> cannot appear in the result type because it's a local variable. The capture set <code>{localLogger}</code> widens to <code>{fs}</code> (since <code>localLogger</code> captures <code>fs</code>), which is visible outside of <code>test</code>.</p>
+   </section>
+   <section id="try-with-resources-again">
+    <h4 class="h300"><a href="#try-with-resources-again" class="anchor"></a>Try-With-Resources, Again</h4>
+    <p>Local <code>any</code>s are one of the mechanisms that enable <a href="basics.html#escape-checking">escape checking</a> for the try-with-resources pattern. They prevent escaping of scoped capabilities through (direct or indirect) assignment to mutable variables:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def withFile[T](block: File^ =&gt; T): T
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>var esc: File^/*{any₁}*/ = null
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>withFile: f /* : File^{any₂} */ =&gt;
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  esc = f   // error, since any₂ cannot flow into any₁
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The other mechanism is careful treatment of <code>any</code>s in function results (cf. below) which prevents returning closures holding onto <code>f</code>.</p>
+    <p>Later sections on <a href="classifiers.html">capability classifiers</a> will add a controlled mechanism that permits capabilities to escape their level for situations where this would be desirable.</p>
+   </section>
+   <section id="local-anys-of-classes">
+    <h3 class="h400"><a href="#local-anys-of-classes" class="anchor"></a>Local <code>any</code>s of Classes</h3>
+    <p>A class receives its own local <code>any</code> for the scope of its body. This <code>any</code> serves as a template for a new <code>any</code> that will be attached to each instance of the class. Inside the class body, references to the class's <code>any</code> are implicitly prefixed by the path <code>this</code>:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>class Logger(fs: FileSystem^): // local any₁
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  // Logger has its own local any₁, accessed as this.any₁
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  val file: File^ = fs.open("log.txt")  // File^{this.any₁}
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  def log(msg: String): Unit = file.write(msg)
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>When a class inherits from other classes or traits, the <code>any</code>s of all supertypes in the <code>extends</code> clause are essentially unified with the <code>any</code> of the current class. This unification happens because all inherited members are accessed through <code>this</code>, and hence the local <code>any</code>s will conform through subtyping with each other:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>trait Super: // local any₁
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  val doSomething: () =&gt; Unit // () -&gt;{any₁} Unit
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>class Logger(fs: FileSystem^) extends Super: // local any₂
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  val file: File^ = fs.open("log.txt") // File^{any₂}
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  def log(msg: String): Unit = file.write(msg)
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  val doSomething = () =&gt; log("hello") // ok, since {file} &lt;: {this.any₂} =:= {this.any₁}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>As explained in <a href="classes.html">Capture Checking of Classes</a>, the capture checker infers and verifies constraints on the contents of a class's <code>any</code> through its self-type, reporting any inconsistencies.</p>
+    <p>When creating an instance, the class's template <code>any</code> is substituted with a new <code>any</code> specific to the new object:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def test(fs: FileSystem^) = /* local any₁ */
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  val logger1 = Logger(fs)  // New logger1.any for this instance, capturing fs
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  val logger2 = Logger(fs)  // New logger2.any, distinct from logger1.any
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>Note that the <code>any</code>s attached to <code>logger1</code> and <code>logger2</code> subsume the local <code>any</code> of method <code>test</code> in accordance to the rules outlined earlier.</p>
+    <p>Conceptually, a class' local <code>any</code> behaves like an implicit <a href="polymorphism.html#capability-members">capture-set member</a> present in the class and all its supertypes:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>class Logger(fs: FileSystem^) extends Super:
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  type Cap^
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  val file: File^{Cap} = ...
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  // ...
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+   </section>
+   <section id="parameter-and-result-anys-in-function-types">
+    <h2 class="h500"><a href="#parameter-and-result-anys-in-function-types" class="anchor"></a>Parameter and Result <code>any</code>s in Function Types</h2>
+    <p>So far we've discussed local <code>any</code>s that follow the lexical nesting hierarchy. But <code>any</code> can also appear in function parameter and result types, where special binding rules apply.</p>
+   </section>
+   <section id="existential-binding">
+    <h3 class="h400"><a href="#existential-binding" class="anchor"></a>Existential Binding</h3>
+    <p>Consider this method:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def makeLogger(fs: FileSystem^): Logger^ = new Logger(fs)
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>This creates a <code>Logger</code> that captures <code>fs</code>. We could have been more specific in specifying <code>Logger^{fs}</code> as the return type, but the current definition is also valid, and might be preferable if we want to hide details of what the returned logger captures. If we write it as above then certainly the implied <code>any</code> in the return type should be able to absorb the capability <code>fs</code>. This means that this <code>any</code> has to be defined in a scope in which <code>fs</code> is visible.</p>
+    <p>In logic, the usual way to achieve this scoping is with an existential binder. We can express the type of <code>makeLogger</code> like this:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>makeLogger: (fs: ∃any₁.FileSystem^{any₁}): ∃fresh. Logger^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>In words: <code>makeLogger</code> takes a parameter <code>fs</code> of type <code>Filesystem</code> capturing <em>some</em> universal capability <code>any₁</code> and returns a <code>Logger</code> capturing some (possibly different) <code>fresh</code> capability.</p>
+    <p>We can also turn the existential in the function parameter to a universal "forall" in the function itself. In that alternative notation, the type of <code>makeLogger</code> would read like this:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>makeLogger: ∀any₁.(fs: FileSystem^{any₁}): ∃fresh. Logger^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>There's a connection with <a href="polymorphism.html">capture polymorphism</a> here. <code>any</code>s in function parameters behave like additional capture parameters that can be instantiated at the call site to arbitrary capabilities.</p>
+   </section>
+   <section id="expansion-rules-for-function-types">
+    <h3 class="h400"><a href="#expansion-rules-for-function-types" class="anchor"></a>Expansion Rules for Function Types</h3>
+    <p>The conventions for method types carry over to function types. A function type with <code>fresh</code> in the result, such as</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>(x: T) -&gt; U^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>is interpreted as having an existentially bound <code>fresh</code>:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>(x: T) -&gt; ∃fresh.U^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The same rules hold for all kinds of function arrows: <code>-&gt;</code>, <code>=&gt;</code>, <code>?-&gt;</code>, and <code>?=&gt;</code>. So <code>fresh</code> can in this case absorb the function parameter <code>x</code> since <code>x</code> is locally bound in the function result.</p>
+    <p>Only <code>fresh</code> expands to existentially bound capabilities, and it does so regardless of how the function is written. For instance, both of these types have existentially bound result capabilities:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>A =&gt; B^{fresh}                         // ∃fresh. A -&gt;{any} B^{fresh}
+</span><span line-number="3" class=""><span class="tooltip-container"></span>(x: A) -&gt; B -&gt; C^{fresh}               // (x: A) -&gt; ∃fresh. B -&gt; C^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>In effect, we have some form of "second-class" existential capture types which are carefully restricted and implied by the type structure and <code>fresh</code> occurrences. Unlike first-class existential types, this approach does not require programmers to explicitly pack and unpack: the system determines the binding structure automatically from where <code>fresh</code> appears in the type.</p>
+   </section>
+   <section id="summary">
+    <h4 class="h300"><a href="#summary" class="anchor"></a>Summary</h4>
+    <ul>
+     <li>Occurrences of <code>fresh</code> in a function result type are replaced by a new existential variable bound by a quantifier scoping over the result type.</li>
+     <li>If a function parameter type contains covariant occurrences of <code>any</code>, we replace these occurrences with a new existential variable scoping over the parameter type.</li>
+     <li>Occurrences of <code>any</code> in function result types are not translated to existential variables. They refer to the local <code>any</code> of the enclosing scope. This includes bare <code>T^</code> in function type results, which is shorthand for <code>T^{any}</code>.</li>
+    </ul>
+   </section>
+   <section id="any-vs-fresh-in-function-type-results">
+    <h4 class="h300"><a href="#any-vs-fresh-in-function-type-results" class="anchor"></a><code>any</code> vs <code>fresh</code> in Function Type Results</h4>
+    <p>The rules above establish a key practical distinction when writing function types. Consider:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>import caps.fresh
+</span><span line-number="3" class=""><span class="tooltip-container"></span>class A
+</span><span line-number="4" class=""><span class="tooltip-container"></span>class B
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>def test(): Unit =
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  val f: (x: A^) -&gt; B^{fresh} = ???   // B^{fresh}: existentially bound
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  val g: A^ -&gt; B^             = ???   // B^{any}: enclosing scope's local any
+</span><span line-number="9" class=""><span class="tooltip-container"></span>
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  val _: A^ -&gt; B^        = f   // error: fresh is not in {any}
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  val _: A^ -&gt; B^{fresh} = f   // ok
+</span><span line-number="12" class=""><span class="tooltip-container"></span>  val _: (x: A^) -&gt; B^{fresh} = g   // error: g* is not in {fresh}
+</span><span line-number="13" class=""><span class="tooltip-container"></span>  val _: A^ -&gt; B^        = g   // ok
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>With <code>B^{any}</code> in the result, the returned value's captures are tied to the enclosing scope's local <code>any</code>. Two calls to <code>g</code> produce values with the same capture-set bound. The checker treats them identically. With <code>B^{fresh}</code>, each call to <code>f</code> yields a value with a distinct existential capability, so the checker can prove that results from different calls do not alias.</p>
+    <p>The two types are not interchangeable: a result <code>fresh</code> cannot flow into a local <code>any</code> (since the existential is not visible from the enclosing scope), and a local <code>any</code> cannot flow into a result <code>fresh</code> (since <code>fresh</code> can only subsume other existentials or <a href="classifiers.html">shared capabilities</a>).</p>
+   </section>
+   <section id="outer-bound-fresh">
+    <h4 class="h300"><a href="#outer-bound-fresh" class="anchor"></a>Outer-Bound <code>fresh</code></h4>
+    <p>By default, <code>fresh</code> in a function result type is bound by the immediately enclosing function. But sometimes we want the <code>fresh</code> to be bound by an <em>outer</em> function instead. This can be achieved by using type aliases or capture-set parameters to "tunnel" the <code>fresh</code> through an inner function type.</p>
+    <p>Consider these type definitions:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>class A
+</span><span line-number="3" class=""><span class="tooltip-container"></span>type F[X] = (t: String) -&gt; X
+</span><span line-number="4" class=""><span class="tooltip-container"></span>type G[C^] = (t: String) -&gt; A^{C}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>With these aliases, we can write:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>val x: (s: String) -&gt; F[A^{fresh}] = ???
+</span><span line-number="3" class=""><span class="tooltip-container"></span>val y: (s: String) -&gt; G[{fresh}] = ???
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>In both cases, the <code>fresh</code> is bound by the outer function <code>(s: String) -&gt; ...</code>, not by the inner function <code>(t: String) -&gt; ...</code>. This works because <code>fresh</code> appears outside the inner function type definition—it is passed as a type argument or capture-set argument to the alias. The expanded types are:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>x: ∃fresh. (s: String) -&gt; (t: String) -&gt; A^{fresh}
+</span><span line-number="3" class=""><span class="tooltip-container"></span>y: ∃fresh. (s: String) -&gt; (t: String) -&gt; A^{fresh}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>This technique is useful when a capability needs to span nested function calls while remaining existentially bound at an outer scope.</p>
+   </section>
+   <section id="parameter-anys-and-local-anys">
+    <h3 class="h400"><a href="#parameter-anys-and-local-anys" class="anchor"></a>Parameter <code>any</code>s and Local <code>any</code>s</h3>
+    <p>Inside the function body, parameter <code>any</code>s are at the <strong>same level</strong> as the function's local <code>any</code>. This means the function's local <code>any</code> can subsume capabilities from parameters:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def process(x: File^/* parameter {any₁} */): Unit = /* local any₂ */
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  val y: File^/*{any₂}*/ = x  // OK: x's any is at process's level, same as process's local any
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  val f: () =&gt;/*{any₂}*/ Unit = () =&gt; x.read()  // OK: closure's local any subsumes x
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The parameter <code>x</code> has a capability at <code>process</code>'s level. The local <code>any</code> of <code>process</code> (and any nested closures) can subsume it because they're at the same level or more deeply nested.</p>
+   </section>
+   <section id="result-freshs-are-isolated">
+    <h3 class="h400"><a href="#result-freshs-are-isolated" class="anchor"></a>Result <code>fresh</code>s are Isolated</h3>
+    <p>Result <code>fresh</code>s (i.e., those we assign an existential capture set in function-result types) cannot absorb capabilities that would allow scoped resources to escape. Consider trying to leak a file by directly returning a closure that captures it:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>withFile[() =&gt; File^]("test.txt"): f =&gt;
+</span><span line-number="3" class=""><span class="tooltip-container"></span>//       ^^^^^^^^^^^ T = () =&gt; File^, i.e., () -&gt;{any} File^{any} for some outer any
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  () =&gt; f  // We want to return this as () =&gt; File^
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The lambda <code>(f: File^) =&gt; () =&gt; f</code> has inferred type:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>(f: File^) -&gt; () -&gt;{f} File^{f}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The inner closure explicitly captures <code>f</code>. To fit the expected type <code>File^ =&gt; () =&gt; File^</code>, we'd need to widen through these steps:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>(f: File^) -&gt; () -&gt;{f} File^{f}         // inferred: captures f explicitly
+</span><span line-number="3" class=""><span class="tooltip-container"></span>(f: File^) -&gt; () -&gt;{any} File^{any}     // widen to any
+</span><span line-number="4" class=""><span class="tooltip-container"></span>(f: File^) -&gt; ∃fresh. () -&gt;{fresh} File^{fresh} // apply existential rule for result `fresh`
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>The final step produces a result <code>fresh</code> that is existentially bound to the outer function type. But the expected type <code>() =&gt; File^</code> has an <code>any</code> bound to the enclosing scope of <code>withFile</code> outside the function entirely. The capture checker prevents the existentially bound <code>fresh</code> from flowing into this outer <code>any</code>, so the assignment fails.</p>
+    <p>Otherwise, allowing widening <code>∃fresh. () -&gt;{fresh} File^{fresh}</code> to <code>() =&gt; File^</code> would let the scoped file escape:</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>val escaped: () =&gt; File^ = withFile[() =&gt; File^]("test.txt")(f =&gt; () =&gt; f)
+</span><span line-number="3" class=""><span class="tooltip-container"></span>//           ^^^^^^^^^^^ any here is in the outer scope
+</span><span line-number="4" class=""><span class="tooltip-container"></span>escaped().read()  // Use-after-close!
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>By keeping result <code>fresh</code>s isolated, the capture checker ensures that an existential cannot hide <code>f</code> and smuggle it out of its scope.</p>
+    <p>Beyond preventing escaping capabilities, the principle of isolating result <code>fresh</code>s is important for <a href="mutability.html">tracking mutation and allocation effects</a> and <a href="separation-checking.html">separation checking</a>, e.g., for a function returning a new mutable reference cell on each call</p>
+    <div class="snippet mono-small-block" scala-snippet="">
+     <pre><code class="language-scala"><span line-number="1" class="hideable include"><span class="tooltip-container"></span>
+</span><span line-number="2" class=""><span class="tooltip-container"></span>def freshCell(init: Int): Cell^ = new Cell(s)
+</span><span line-number="3" class=""><span class="tooltip-container"></span>val c1 = freshCell(0).set(42) // Cell^{fresh₁}
+</span><span line-number="4" class=""><span class="tooltip-container"></span>val c2 = freshCell(11)        // Cell^{fresh₂}, fresh₁ and fresh₂ are incomparable
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>a natural type would be <code>(init: Int) -&gt; Cell^</code>, i.e., <code>(init: Int) -&gt; ∃fresh.Cell[Int]^{fresh}</code> by the rules above, reflecting that each invocation returns a distinct new <code>Cell</code> instance.</p>
+   </section>
+   <section id="comparison-with-rust-lifetimes">
+    <h2 class="h500"><a href="#comparison-with-rust-lifetimes" class="anchor"></a>Comparison with Rust Lifetimes</h2>
+    <p>Readers familiar with Rust may notice similarities to lifetime checking. Both systems prevent references from escaping their valid scope. In Rust, a reference type <code>&amp;'a T</code> carries an explicit lifetime parameter <code>'a</code>. In Scala's capture checking, the lifetime is folded into the capability name itself: <code>T^{x}</code> says "a <code>T</code> capturing <code>x</code>," and <code>x</code>'s level implicitly determines how long this reference is valid. A capture set of a reference then acts as an upper bound of the reference itself: it only lives as long as all the capabilities it contains are visible.</p>
+    <p>Here is how we could express the familiar <code>withFile</code> pattern in Rust:</p>
+    <div class="snippet mono-small-block">
+     <pre><code class="language-rust"><span line-number="1" class=""><span class="tooltip-container"></span>struct File;
+</span><span line-number="2" class=""><span class="tooltip-container"></span>impl File { fn open(_path: &amp;str) -&gt; Option&lt;File&gt; { Some(File) } }
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>// Rust: the closure receives a reference bounded by 'a
+</span><span line-number="5" class=""><span class="tooltip-container"></span>fn with_file&lt;R&gt;(path: &amp;str, f: impl for&lt;'a&gt; FnOnce(&amp;'a File) -&gt; R) -&gt; R {
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    let file = File::open(path).unwrap();
+</span><span line-number="7" class=""><span class="tooltip-container"></span>    f(&amp;file)
+</span><span line-number="8" class=""><span class="tooltip-container"></span>}
+</span><span line-number="9" class=""><span class="tooltip-container"></span>
+</span><span line-number="10" class=""><span class="tooltip-container"></span>fn main() {
+</span><span line-number="11" class=""><span class="tooltip-container"></span>    let f = File;
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    let mut escaped: &amp;File = &amp;f;
+</span><span line-number="13" class=""><span class="tooltip-container"></span>    with_file("test.txt", |file| {
+</span><span line-number="14" class=""><span class="tooltip-container"></span>        escaped = file;  // Error: borrowed value does not live long enough
+</span><span line-number="15" class=""><span class="tooltip-container"></span>    });
+</span><span line-number="16" class=""><span class="tooltip-container"></span>}
+</span></code></pre>
+     <div class="buttons"></div>
+    </div>
+    <p>In both Rust and Scala, the type system prevents the handle from escaping the callback. Rust achieves this by requiring <code>'a</code> to be contained within the closure's scope. Scala achieves it by checking that <code>file</code>'s level (tied to <code>withFile</code>) cannot flow into <code>escaped</code>'s level (at <code>main</code>).</p>
+    <p>The key analogies are:</p>
+    <ul>
+     <li><strong>Capability name ≈ Lifetime parameter</strong>: Where Rust writes <code>&amp;'a T</code>, Scala writes <code>T^{x}</code>. The capability <code>x</code> carries its lifetime implicitly via its level.</li>
+     <li><strong>Capture set ≈ Lifetime bound</strong>: A capture set <code>{x, y}</code> bounds the lifetime of a value to be no longer than the shortest-lived capability it contains.</li>
+     <li><strong>Level containment ≈ Outlives</strong>: Rust's <code>'a: 'b</code> (a outlives b) corresponds to Scala's level check (outer scopes can flow into inner ones).</li>
+    </ul>
+    <p>The key differences are:</p>
+    <ul>
+     <li><strong>What's tracked</strong>: Rust tracks memory validity (preventing dangling pointers). Scala CC tracks capability usage (preventing unauthorized effects).</li>
+     <li><strong>Explicit vs. implicit</strong>: Rust lifetimes are explicit parameters (<code>&amp;'a T</code>). Scala levels are computed automatically from program structure: you name the capability, not the lifetime.</li>
+    </ul>
+   </section>
+  </main>
+  <div class="divider"></div>
+  <nav class="arrow-navigation" aria-label="Page navigation">
+   <div>
+    <span class="body-small">Previous</span> <a rel="prev" href="polymorphism.html" aria-keyshortcuts="Left" class="body-medium"> <span class="body-medium">Capability Polymorphism</span> </a>
+   </div>
+   <div>
+    <span class="body-small arrow-navigation--next">Next</span> <a rel="next" href="classifiers.html" aria-keyshortcuts="Right" class="body-medium"> <span class="body-medium">Capability Classifiers</span> </a>
+   </div>
+  </nav>
+  <div class="content-contributors hidden">
+   <h1 class="h200">Contributors to this page</h1>
+   <div id="documentation-contributors" class="contributors-container"></div>
+   <div class="github-edit-button">
+    <a class="text-button with-link body-small" href="https://github.com/scala/scala3/edit/language-reference-stable/docs/_docs/reference/experimental/capture-checking/scoped-capabilities.md"> Edit this page on GitHub </a>
+   </div>
+  </div>
+ </div>
+</div></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#introduction">Introduction</a></li><li><a href="#where-any-appears">Where any Appears</a></li><li><a href="#local-anys">Local anys</a><ul><li><a href="#charging-captures">Charging Captures</a></li><li><a href="#visibility-and-widening">Visibility and Widening</a><ul><li><a href="#try-with-resources-again">Try-With-Resources, Again</a></li></ul></li><li><a href="#local-anys-of-classes">Local anys of Classes</a></li></ul></li><li><a href="#parameter-and-result-anys-in-function-types">Parameter and Result anys in Function Types</a><ul><li><a href="#existential-binding">Existential Binding</a></li><li><a href="#expansion-rules-for-function-types">Expansion Rules for Function Types</a><ul><li><a href="#summary">Summary</a></li><li><a href="#any-vs-fresh-in-function-type-results">any vs fresh in Function Type Results</a></li><li><a href="#outer-bound-fresh">Outer-Bound fresh</a></li></ul></li><li><a href="#parameter-anys-and-local-anys">Parameter anys and Local anys</a></li><li><a href="#result-freshs-are-isolated">Result freshs are Isolated</a></li></ul></li><li><a href="#comparison-with-rust-lifetimes">Comparison with Rust Lifetimes</a></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/scala/scala3"><button class="icon-button gh"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><div class="text">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2026, LAMP/EPFL</div></div></div></div></body></html>
