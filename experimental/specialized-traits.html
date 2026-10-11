@@ -1,0 +1,760 @@
+<!DOCTYPE html><html data-githubContributorsUrl="https://api.github.com/repos/scala/scala3" data-githubContributorsFilename="docs/_docs/reference/experimental/specialized-traits.md" data-pathToRoot="../" data-rawLocation="experimental/specialized-traits" data-dynamicSideMenu="false"><head><meta charset="utf-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta><title>specialized-traits</title><link rel="shortcut icon" type="image/x-icon" href="../favicon.ico"></link><script type="text/javascript" src="../scripts/theme.js"></script><script type="text/javascript" src="../scripts/searchData.js" defer="true"></script><script type="text/javascript" src="../scripts/scastieConfiguration.js" defer="true"></script><link rel="stylesheet" href="../styles/theme/bundle.css"></link><link rel="stylesheet" href="../styles/theme/components/bundle.css"></link><link rel="stylesheet" href="../styles/theme/components/button/bundle.css"></link><link rel="stylesheet" href="../styles/theme/layout/bundle.css"></link><link rel="stylesheet" href="../styles/dotty-icons.css"></link><link rel="stylesheet" href="../styles/filter-bar.css"></link><link rel="stylesheet" href="../styles/searchbar.css"></link><link rel="stylesheet" href="../styles/social-links.css"></link><link rel="stylesheet" href="../styles/versions-dropdown.css"></link><link rel="stylesheet" href="../styles/content-contributors.css"></link><script type="text/javascript" src="../hljs/highlight.pack.js" defer="true"></script><script type="text/javascript" src="../scripts/hljs-scala3.js" defer="true"></script><script type="text/javascript" src="../scripts/ux.js" defer="true"></script><script type="text/javascript" src="../scripts/common/component.js" defer="true"></script><script type="text/javascript" src="../scripts/common/utils.js" defer="true"></script><script type="text/javascript" src="../scripts/components/FilterBar.js" defer="true"></script><script type="text/javascript" src="../scripts/components/DocumentableList.js" defer="true"></script><script type="text/javascript" src="../scripts/components/Input.js" defer="true"></script><script type="text/javascript" src="../scripts/components/FilterGroup.js" defer="true"></script><script type="text/javascript" src="../scripts/components/Filter.js" defer="true"></script><script type="text/javascript" src="../scripts/scaladoc-scalajs.js" defer="true"></script><script type="text/javascript" src="../scripts/contributors.js" defer="true"></script><script type="text/javascript" src="https://d3js.org/d3.v6.min.js" defer="true"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/graphlib-dot@0.6.2/dist/graphlib-dot.min.js" defer="true"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.1/dagre-d3.min.js" defer="true"></script><script type="text/javascript" src="https://scastie.scala-lang.org/embedded.js" defer="true"></script><script type="text/javascript" src="../scripts/data.js" defer="true"></script><script>var pathToRoot = "../";</script></head><body><div id=""><div id="header" class="body-small"><div class="header-container-left"><a href="../" class="logo-container"><span id="project-logo" class="project-logo"><img src="../project-logo/logo.svg"></img></span><span id="dark-project-logo" class="project-logo"><img src="../project-logo/logo_dark.svg"></img></span><span class="project-name h300">Scala 3 Reference</span></a><span onclick="dropdownHandler(event)" class="text-button with-arrow" id="dropdown-trigger"><a><div class="projectVersion">3.10.0</div></a></span><div id="version-dropdown" class="dropdown-menu"></div></div><div class="header-container-right"><button id="search-toggle" class="icon-button"></button><a href="https://docs.scala-lang.org/" class="text-button">Learn</a><a href="https://www.scala-lang.org/download/" class="text-button">Install</a><a href="https://scastie.scala-lang.org" class="text-button">Playground</a><a href="https://index.scala-lang.org" class="text-button">Find A Library</a><a href="https://www.scala-lang.org/community/" class="text-button">Community</a><a href="https://www.scala-lang.org/blog/" class="text-button">Blog</a><span id="theme-toggle" class="icon-button"></span><span id="mobile-menu-toggle" class="icon-button hamburger"></span></div></div><div id="mobile-menu"><div class="mobile-menu-header body-small"><span class="mobile-menu-logo"><span id="project-logo" class="project-logo"><img src="../project-logo/logo.svg"></img></span><span id="dark-project-logo" class="project-logo"><img src="../project-logo/logo_dark.svg"></img></span><span class="project-name h300">Scala 3 Reference</span></span><button id="mobile-menu-close" class="icon-button close"></button></div><div class="mobile-menu-container body-medium"><input id="mobile-scaladoc-searchbar-input" class="scaladoc-searchbar-input" type="search" placeholder="Find anything"></input><a href="https://docs.scala-lang.org/" class="mobile-menu-item">Learn</a><a href="https://www.scala-lang.org/download/" class="mobile-menu-item">Install</a><a href="https://scastie.scala-lang.org" class="mobile-menu-item">Playground</a><a href="https://index.scala-lang.org" class="mobile-menu-item">Find A Library</a><a href="https://www.scala-lang.org/community/" class="mobile-menu-item">Community</a><a href="https://www.scala-lang.org/blog/" class="mobile-menu-item">Blog</a><span id="mobile-theme-toggle" class="mobile-menu-item mode"></span></div></div><span id="mobile-sidebar-toggle" class="floating-button"></span><div id="leftColumn" class="body-small"><div class="switcher-container"><a id="docs-nav-button" class="switcher h100 selected" href="../index.html">Docs</a></div><nav id="docs-nav" class="side-menu"><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../new-types/index.html"><span>New Types</span></a></span><div class="ni n1 "><span class="nh de"><a href="../new-types/intersection-types.html"><span>Intersection Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../new-types/union-types.html"><span>Union Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../new-types/type-lambdas.html"><span>Type Lambdas</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../new-types/match-types.html"><span>Match Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../new-types/dependent-function-types.html"><span>Dependent Function Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../new-types/polymorphic-function-types.html"><span>Polymorphic Function Types</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../enums/index.html"><span>Enums</span></a></span><div class="ni n1 "><span class="nh de"><a href="../enums/enums.html"><span>Enumerations</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../enums/adts.html"><span>Algebraic Data Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../enums/desugarEnums.html"><span>Translation of Enums and ADTs</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../contextual/index.html"><span>Contextual Abstractions</span></a></span><div class="ni n1 "><span class="nh de"><a href="../contextual/givens.html"><span>Given Instances</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/using-clauses.html"><span>Using Clauses</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/context-bounds.html"><span>Context Bounds</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/deferred-givens.html"><span>Deferred Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/given-imports.html"><span>Importing Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/more-givens.html"><span>Other Forms Of Givens</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/extension-methods.html"><span>Extension Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/right-associative-extension-methods.html"><span>Right-Associative Extension Methods: Details</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/type-classes.html"><span>Implementing Type classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/derivation.html"><span>Type Class Derivation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/derivation-macro.html"><span>How to write a type class `derived` method using macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/multiversal-equality.html"><span>Multiversal Equality</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/context-functions.html"><span>Context Functions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/conversions.html"><span>Implicit Conversions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/by-name-context-parameters.html"><span>By-Name Context Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../contextual/relationship-implicits.html"><span>Relationship with Scala 2 Implicits</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../metaprogramming/index.html"><span>Metaprogramming</span></a></span><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/inline.html"><span>Inline</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/compiletime-ops.html"><span>Compile-time operations</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/macros.html"><span>Macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/simple-smp.html"><span>The Meta-theory of Symmetric Metaprogramming</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/staging.html"><span>Run-Time Multi-Stage Programming</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/reflection.html"><span>Reflection</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../metaprogramming/tasty-inspect.html"><span>TASTy Inspection</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../other-new-features/index.html"><span>Other New Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../other-new-features/trait-parameters.html"><span>Trait Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/transparent-traits.html"><span>Transparent Traits and Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/creator-applications.html"><span>Universal Apply Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/export.html"><span>Export Clauses</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/opaques.html"><span>Opaque Type Aliases</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/opaques-details.html"><span>Opaque Type Aliases: More Details</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/named-tuples.html"><span>Named Tuples</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/open-classes.html"><span>Open Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/parameter-untupling.html"><span>Parameter Untupling</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/generalized-method-syntax.html"><span>Generalized Method Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/kind-polymorphism.html"><span>Kind Polymorphism</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/matchable.html"><span>The Matchable Trait</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/threadUnsafe-annotation.html"><span>The @threadUnsafe annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/targetName.html"><span>The @targetName annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/control-syntax.html"><span>New Control Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/indentation.html"><span>Optional Braces</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/safe-initialization.html"><span>Safe Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/type-test.html"><span>TypeTest</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/experimental-defs.html"><span>Experimental Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/preview-defs.html"><span>Preview Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/binary-literals.html"><span>Binary Integer Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/toplevel-definitions.html"><span>Toplevel Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/better-fors.html"><span>Better fors</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/runtimeChecked.html"><span>The runtimeChecked method</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../other-new-features/into.html"><span>The `into` Type and Modifier</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../changed-features/index.html"><span>Other Changed Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../changed-features/numeric-literals.html"><span>Numeric Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/structural-types.html"><span>Programmatic Structural Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/operators.html"><span>Rules for Operators</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/wildcards.html"><span>Wildcard Arguments in Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/imports.html"><span>Imports</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/type-inference.html"><span>Changes in Type Inference</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/implicit-resolution.html"><span>Changes in Implicit Resolution</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/implicit-conversions.html"><span>Implicit Conversions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/overload-resolution.html"><span>Changes in Overload Resolution</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/match-syntax.html"><span>Match Expressions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/vararg-splices.html"><span>Vararg Splices</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/pattern-bindings.html"><span>Pattern Bindings</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/pattern-matching.html"><span>Option-less pattern matching</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/eta-expansion.html"><span>Automatic Eta Expansion</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/compiler-plugins.html"><span>Changes in Compiler Plugins</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/lazy-vals-init.html"><span>Lazy Vals Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/main-functions.html"><span>Main Methods</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../changed-features/interpolation-escapes.html"><span>Escapes in interpolations</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../dropped-features/index.html"><span>Dropped Features</span></a></span><div class="ni n1 "><span class="nh de"><a href="../dropped-features/delayed-init.html"><span>Dropped: DelayedInit</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/macros.html"><span>Dropped: Scala 2 Macros</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/existential-types.html"><span>Dropped: Existential Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/type-projection.html"><span>Dropped: General Type Projection</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/do-while.html"><span>Dropped: Do-While</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/procedure-syntax.html"><span>Dropped: Procedure Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/package-objects.html"><span>Dropped: Package Objects</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/early-initializers.html"><span>Dropped: Early Initializers</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/class-shadowing.html"><span>Dropped: Class Shadowing</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/limit22.html"><span>Dropped: Limit 22</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/xml.html"><span>Dropped: XML Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/symlits.html"><span>Dropped: Symbol Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/auto-apply.html"><span>Dropped: Auto-Application</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/weak-conformance.html"><span>Dropped: Weak Conformance</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/nonlocal-returns.html"><span>Deprecated: Nonlocal Returns</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/this-qualifier.html"><span>Dropped: private[this] and protected[this]</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../dropped-features/wildcard-init.html"><span>Dropped: Wildcard Initializer</span></a></span></div></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../preview/index.html"><span>Preview</span></a></span><div class="ni n1 "><span class="nh de"><a href="../preview/unrolled-defs.html"><span>Automatic Parameter Unrolling</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../preview/relaxed-lambdas.html"><span>Relaxed Lambda Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../preview/package-object-values.html"><span>Reference-able Package Objects</span></a></span></div></div><div class="ni n0 expanded"><span class="nh h100 expanded cs de"><button class="ar icon-button expanded"></button><a href="index.html"><span>Experimental</span></a></span><div class="ni n1 "><span class="nh de"><a href="canthrow.html"><span>CanThrow Capabilities</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="erased-defs.html"><span>Erased Definitions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="named-typeargs.html"><span>Named Type Arguments</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="numeric-literals.html"><span>Numeric Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="explicit-nulls.html"><span>Explicit Nulls</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="main-annotation.html"><span>MainAnnotation</span></a></span></div><div class="ni n1"><span class="nh de"><button class="ar icon-button "></button><a href="capture-checking/index.html"><span>Capture Checking</span></a></span><div class="ni n2 "><span class="nh de"><a href="capture-checking/overview.html"><span>Tracked Capabilities Overview</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/basics.html"><span>Capture Checking Basics</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/classes.html"><span>Capture Checking of Classes</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/polymorphism.html"><span>Capability Polymorphism</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/scoped-capabilities.html"><span>Scoped Capabilities</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/classifiers.html"><span>Capability Classifiers</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/checked-exceptions.html"><span>Checked Exceptions</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/mutability.html"><span>Stateful Capabilities</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/separation-checking.html"><span>Separation Checking</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/safe.html"><span>Safe Mode</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/how-to-use.html"><span>How to Use the Capture Checker</span></a></span></div><div class="ni n2 "><span class="nh de"><a href="capture-checking/internals.html"><span>Capture Checking Internals</span></a></span></div></div><div class="ni n1 "><span class="nh de"><a href="purefuns.html"><span>Pure Function Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="tupled-function.html"><span>Tupled Function</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="modularity.html"><span>Modularity Improvements</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="typeclasses.html"><span>Better Support for Type Classes</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="quoted-patterns-with-polymorphic-functions.html"><span>Quoted Patterns with Polymorphic Functions</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="sub-cases.html"><span>Match Expressions with Sub Cases</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="dedented-string-literals.html"><span>Dedented String Literals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="spec-strings.html"><span>Spec Strings</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="inline-traits.html"><span>inline-traits</span></a></span></div><div class="ni n1 expanded"><span class="nh h100 selected de"><a href="#"><span>specialized-traits</span></a></span></div></div><div class="ni n0 "><span class="nh de"><a href="../syntax.html"><span>Scala 3 Syntax Summary</span></a></span></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../language-versions/index.html"><span>Language Versions</span></a></span><div class="ni n1 "><span class="nh de"><a href="../language-versions/source-compatibility.html"><span>Source Compatibility</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../language-versions/binary-compatibility.html"><span>Binary Compatibility</span></a></span></div></div><div class="ni n0 "><span class="nh de"><a href="../soft-modifier.html"><span>Soft Keywords</span></a></span></div><div class="ni n0 "><span class="nh de"><a href="../features-classification.html"><span>A Classification of Proposed Language Features</span></a></span></div><div class="ni n0"><span class="nh de"><button class="ar icon-button "></button><a href="../error-codes/index.html"><span>Error codes</span></a></span><div class="ni n1 "><span class="nh de"><a href="../error-codes/E001.html"><span>E001: Empty Catch Block</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E002.html"><span>E002: Empty Catch And Finally Block</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E003.html"><span>E003: Deprecated With Operator</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E004.html"><span>E004: Case Class Missing Param List</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E005.html"><span>E005: Duplicate Bind</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E006.html"><span>E006: Missing Ident</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E007.html"><span>E007: Type Mismatch</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E008.html"><span>E008: Not A Member</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E009.html"><span>E009: Early Definitions Not Supported</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E010.html"><span>E010: Top Level Implicit Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E011.html"><span>E011: Implicit Case Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E012.html"><span>E012: Implicit Class Primary Constructor Arity</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E013.html"><span>E013: Object May Not Have Self Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E014.html"><span>E014: Tuple Too Long</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E015.html"><span>E015: Repeated Modifier</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E016.html"><span>E016: Interpolated String Error</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E017.html"><span>E017: Unbound Placeholder Parameter</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E018.html"><span>E018: Illegal Start Simple Expr</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E019.html"><span>E019: Missing Return Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E020.html"><span>E020: Yield Or Do Expected In For Comprehension</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E021.html"><span>E021: Proper Definition Not Found</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E022.html"><span>E022: By Name Parameter Not Supported</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E023.html"><span>E023: Wrong Number Of Type Args</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E024.html"><span>E024: Illegal Variable In Pattern Alternative</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E025.html"><span>E025: Identifier Expected</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E026.html"><span>E026: Auxiliary Constructor Needs Non-Implicit Parameter</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E027.html"><span>E027: Varargs Parameter Must Come Last</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E028.html"><span>E028: Illegal Literal</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E029.html"><span>E029: Pattern Match Exhaustivity</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E030.html"><span>E030: Match Case Unreachable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E031.html"><span>E031: Sequence Wildcard Pattern Position</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E032.html"><span>E032: Illegal Start Of Simple Pattern</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E033.html"><span>E033: Package Duplicate Symbol</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E034.html"><span>E034: Existential Types No Longer Supported</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E035.html"><span>E035: Unbound Wildcard Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E036.html"><span>E036: Dangling This In Path</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E037.html"><span>E037: Overrides Nothing</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E038.html"><span>E038: Overrides Nothing But Name Exists</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E039.html"><span>E039: Forward Reference Extends Over Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E040.html"><span>E040: Expected Token But Found</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E041.html"><span>E041: Mixed Left And Right Associative Ops</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E042.html"><span>E042: Cannot Instantiate Abstract Class Or Trait</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E043.html"><span>E043: Unreducible Application</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E044.html"><span>E044: Overloaded Or Recursive Method Needs Result Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E045.html"><span>E045: Recursive Value Needs Result Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E046.html"><span>E046: Cyclic Reference Involving</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E047.html"><span>E047: Cyclic Reference Involving Implicit</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E048.html"><span>E048: Super Qualifier Must Be Parent</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E049.html"><span>E049: Ambiguous Reference</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E050.html"><span>E050: Method Does Not Take Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E051.html"><span>E051: Ambiguous Overload</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E052.html"><span>E052: Reassignment To Val</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E053.html"><span>E053: Type Does Not Take Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E054.html"><span>E054: Parameterized Type Lacks Arguments</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E055.html"><span>E055: Var Val Parameters May Not Be Call By Name</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E056.html"><span>E056: Missing Type Parameter For</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E057.html"><span>E057: Does Not Conform To Bound</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E058.html"><span>E058: Does Not Conform To Self Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E059.html"><span>E059: Does Not Conform To Self Type Cannot Be Instantiated</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E060.html"><span>E060: Abstract Member May Not Have Modifier</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E061.html"><span>E061: Top Level Can&apos;t Be Implicit</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E062.html"><span>E062: Types And Traits Cannot Be Implicit</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E063.html"><span>E063: Only Classes Can Be Abstract</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E064.html"><span>E064: Abstract Override Only In Traits</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E065.html"><span>E065: Traits May Not Be Final</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E066.html"><span>E066: Native Members May Not Have Implementation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E067.html"><span>E067: Only Classes Can Have Declared But Undefined Members</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E068.html"><span>E068: Cannot Extend AnyVal</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E069.html"><span>E069: Cannot Have Same Name As</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E070.html"><span>E070: Value Classes May Not Define Inner Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E071.html"><span>E071: Value Classes May Not Define Non Parameter Field</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E072.html"><span>E072: Value Classes May Not Define A Secondary Constructor</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E073.html"><span>E073: Value Classes May Not Contain Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E074.html"><span>E074: Value Classes May Not Be Abstract</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E075.html"><span>E075: Value Classes May Not Be Contained</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E076.html"><span>E076: Value Classes May Not Wrap Another Value Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E077.html"><span>E077: Value Class Parameter May Not Be A Var</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E078.html"><span>E078: Value Class Needs Exactly One Val Parameter</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E079.html"><span>E079: Only Case Class Or Case Object Allowed</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E080.html"><span>E080: Expected Top Level Def</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E081.html"><span>E081: Anonymous Function Missing Parameter Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E082.html"><span>E082: Super Calls Not Allowed In Inlineable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E083.html"><span>E083: Not A Path</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E084.html"><span>E084: Wildcard On Type Argument Not Allowed On New</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E085.html"><span>E085: Function Type Needs Non-Empty Parameter List</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E086.html"><span>E086: Wrong Number Of Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E087.html"><span>E087: Duplicate Private Protected Qualifier</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E088.html"><span>E088: Expected Start Of Top Level Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E089.html"><span>E089: Missing Return Type With Return Statement</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E090.html"><span>E090: No Return From Inlineable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E091.html"><span>E091: Return Outside Method Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E092.html"><span>E092: Unchecked Type Pattern</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E093.html"><span>E093: Extend Final Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E094.html"><span>E094: Enum Case Definition In Non-Enum Owner</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E095.html"><span>E095: Expected Type Bound Or Equals</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E096.html"><span>E096: Class And Companion Name Clash</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E097.html"><span>E097: Tailrec Not Applicable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E098.html"><span>E098: Failure To Eliminate Existential</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E099.html"><span>E099: Only Functions Can Be Followed By Underscore</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E100.html"><span>E100: Missing Empty Argument List</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E101.html"><span>E101: Duplicate Named Type Parameter</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E102.html"><span>E102: Undefined Named Type Parameter</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E103.html"><span>E103: Illegal Start of Statement</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E104.html"><span>E104: Trait Is Expected</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E105.html"><span>E105: Trait Redefined Final Method From AnyRef</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E106.html"><span>E106: Package Name Already Defined</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E107.html"><span>E107: Unapply Invalid Number of Arguments</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E108.html"><span>E108: Unapply Invalid Return Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E109.html"><span>E109: Static Fields Only Allowed in Objects</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E110.html"><span>E110: Cyclic Inheritance</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E111.html"><span>E111: Bad Symbolic Reference</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E112.html"><span>E112: Unable to Extend Sealed Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E113.html"><span>E113: Symbol Has Unparsable Version Number</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E114.html"><span>E114: Symbol Changed Semantics In Version</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E115.html"><span>E115: Unable to Emit Switch</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E116.html"><span>E116: Missing Companion for Static</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E117.html"><span>E117: Polymorphic Method Missing Type in Parent</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E118.html"><span>E118: Params No Inline</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E119.html"><span>E119: Symbol Is Not a Value</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E120.html"><span>E120: Double Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E121.html"><span>E121: Match Case Only Null Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E122.html"><span>E122: Imported Twice</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E123.html"><span>E123: Type Test Always Diverges</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E124.html"><span>E124: Term Member Needs Result Type for Implicit Search</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E125.html"><span>E125: Class Cannot Extend Enum</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E126.html"><span>E126: Value Class Parameter May Not Be Call-By-Name</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E127.html"><span>E127: Not An Extractor</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E128.html"><span>E128: Member With Same Name As Static</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E129.html"><span>E129: Pure Expression In Statement Position</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E130.html"><span>E130: Trait Companion With Mutable Static</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E131.html"><span>E131: Lazy Static Field</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E132.html"><span>E132: Static Overriding Non-Static Members</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E133.html"><span>E133: Overload In Refinement</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E134.html"><span>E134: No Matching Overload</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E135.html"><span>E135: Stable Identifier Pattern</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E136.html"><span>E136: Static Fields Should Precede Non-Static</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E137.html"><span>E137: Illegal Super Accessor</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E138.html"><span>E138: Trait Parameter Used As Parent Prefix</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E139.html"><span>E139: Unknown Named Enclosing Class Or Object</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E140.html"><span>E140: Illegal Cyclic Type Reference</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E141.html"><span>E141: Missing Type Parameter In Type App</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E142.html"><span>E142: Skolem in Inferred</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E143.html"><span>E143: Erased Types Can Only Be Function Types</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E144.html"><span>E144: Case Class Missing Non-Implicit Parameter List</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E145.html"><span>E145: Enumerations Should Not Be Empty</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E146.html"><span>E146: Illegal Parameter Initialization</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E147.html"><span>E147: Redundant Modifier</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E148.html"><span>E148: Typed Case Does Not Explicitly Extend Typed Enum</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E149.html"><span>E149: Illegal Redefinition Of Standard Kind</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E150.html"><span>E150: No Extension Method Allowed</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E151.html"><span>E151: Extension Method Cannot Have Type Parameters</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E152.html"><span>E152: Extension Can Only Have Defs</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E153.html"><span>E153: Unexpected Pattern For SummonFrom</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E154.html"><span>E154: Anonymous Instance Cannot Be Empty</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E155.html"><span>E155: Type Splice in Val Pattern</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E156.html"><span>E156: Modifier Not Allowed For Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E157.html"><span>E157: Cannot Extend Java Enum</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E158.html"><span>E158: Invalid Reference In ImplicitNotFound Annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E159.html"><span>E159: Trait May Not Define Native Method</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E160.html"><span>E160: Java Enum Parent Args</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E161.html"><span>E161: Already Defined</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E162.html"><span>E162: Case Class In Inlined Code</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E163.html"><span>E163: Override Type Mismatch Error</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E164.html"><span>E164: Override Error</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E165.html"><span>E165: Matchable Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E166.html"><span>E166: Cannot Extend Function</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E167.html"><span>E167: Lossy Widening Constant Conversion</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E168.html"><span>E168: Implicit Search Too Large</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E169.html"><span>E169: TargetName On Top-Level Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E170.html"><span>E170: Not Class Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E171.html"><span>E171: Missing Argument</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E172.html"><span>E172: Missing Implicit Argument</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E173.html"><span>E173: Cannot Be Accessed</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E174.html"><span>E174: Inline Given Should Not Be Function</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E175.html"><span>E175: Value Discarding</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E176.html"><span>E176: Unused Non-Unit Value</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E177.html"><span>E177: Constructor Proxy Shadows</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E178.html"><span>E178: Missing Argument List</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E179.html"><span>E179: Match Type Scrutinee Cannot Be Higher-Kinded</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E180.html"><span>E180: Ambiguous Extension Method</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E181.html"><span>E181: Unqualified Call to AnyRef Method</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E182.html"><span>E182: Not Constant</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E183.html"><span>E183: Closure Cannot Have Internal Parameter Dependencies</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E184.html"><span>E184: Match Type No Cases</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E185.html"><span>E185: Unimported and Imported</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E186.html"><span>E186: Implausible Pattern Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E187.html"><span>E187: Synchronized Call on Boxed Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E188.html"><span>E188: VarArgs Param Cannot Be Given</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E189.html"><span>E189: Extractor Not Found</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E190.html"><span>E190: Pure Unit Expression</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E191.html"><span>E191: Match Type Legacy Pattern</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E192.html"><span>E192: Unstable Inline Accessor</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E193.html"><span>E193: Volatile on Val</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E194.html"><span>E194: Extension Nullified by Member</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E195.html"><span>E195: Phantom Symbol Not Value</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E196.html"><span>E196: Context Bound Companion Not Value</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E197.html"><span>E197: Inlined Anonymous Class Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E198.html"><span>E198: Unused Symbol</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E199.html"><span>E199: Tailrec Nested Call</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E200.html"><span>E200: Final Local Def</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E201.html"><span>E201: Non-Named Argument in Java Annotation</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E202.html"><span>E202: Quoted Type Missing</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E203.html"><span>E203: Deprecated Assignment Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E204.html"><span>E204: Deprecated Infix Named Argument Syntax</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E205.html"><span>E205: Given Search Priority Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E206.html"><span>E206: Enum May Not Be Value Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E207.html"><span>E207: Illegal Unroll Placement</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E208.html"><span>E208: Extension Has Default Receiver</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E209.html"><span>E209: Format Interpolation Error</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E210.html"><span>E210: Value Class Cannot Extend Alias of AnyVal</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E211.html"><span>E211: Match Is Not Partial Function</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E212.html"><span>E212: Only Fully Dependent Applied Constructor Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E213.html"><span>E213: Pointless Applied Constructor Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E214.html"><span>E214: Illegal Context Bounds</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E215.html"><span>E215: Named Pattern Not Applicable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E216.html"><span>E216: Unnecessary .nn</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E217.html"><span>E217: Erased Not Pure</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E218.html"><span>E218: Illegal Erased Definition</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E219.html"><span>E219: Cannot Instantiate Quoted Type Variable</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E220.html"><span>E220: Default Shadows Given</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E221.html"><span>E221: Recurse With Default</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E222.html"><span>E222: Encoded Package Name</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E223.html"><span>E223: Cannot Be Included in Capture Set</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E224.html"><span>E224: Override Class</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E225.html"><span>E225: Infer Union Warning</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E226.html"><span>E226: Type Parameter Shadows Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E227.html"><span>E227: Private Shadows Type</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E228.html"><span>E228: Names With Trailing Colon</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E229.html"><span>E229: Indentation Does Not Reflect Nesting</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E230.html"><span>E230: Illegal Identifier</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E231.html"><span>&apos;E231: Concrete Class Has Unimplemented Methods&apos;</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E232.html"><span>E232: Use of Interpolator from Any</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E233.html"><span>E233: Illegal Use of Specialized Error</span></a></span></div><div class="ni n1 "><span class="nh de"><a href="../error-codes/E234.html"><span>E234: Variance in Specialized Traits Limitation</span></a></span></div></div></nav></div><div id="footer" class="body-small"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/scala/scala3"><button class="icon-button gh"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><div class="text">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div id="scaladoc-searchBar"></div><div id="main"><div class="breadcrumbs container"><a href="../index.html">Scala 3 Reference</a>/<a href="index.html">Experimental</a>/<a href="specialized-traits.html">specialized-traits</a></div><div id="content" class="body-medium"><div><section id="specialized-traits">
+ <h1 class="h500"><a href="#specialized-traits" class="anchor"></a>Specialized Traits</h1>
+ <p>Specialized traits accompany inline traits as a new attempt to solve to the specialization problem in Scala 3, replacing the <code>@specialized</code> annotation from Scala 2.</p>
+ <p>As mentioned in the accompanying document on inline traits, inline traits have one shortcoming, namely that interfaces are not specialized. For example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Foo[T](x: T):
+</span><span line-number="2" class=""><span class="tooltip-container"></span>    def foo: T = x
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>class Bar extends Foo[Int](42)
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>def f(b: Foo[Int]) = 37 + b.foo
+</span><span line-number="7" class=""><span class="tooltip-container"></span> 
+</span><span line-number="8" class=""><span class="tooltip-container"></span>@main def main =
+</span><span line-number="9" class=""><span class="tooltip-container"></span>    val x = Bar()
+</span><span line-number="10" class=""><span class="tooltip-container"></span>    f(x)
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In this code the call to <code>b.foo</code> will refer to the version of <code>foo</code> typed <code>foo: T</code> which becomes <code>foo: Object</code> during erasure, because we accessed <code>foo</code> on an object of declared type <code>Foo</code> (even though <code>b</code>'s actual runtime type is <code>Bar</code>). This will in turn call a bridge method which means the <code>foo: Int</code> method will be called, but unnecessary boxing and unboxing will be added:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Foo
+</span><span line-number="2" class=""><span class="tooltip-container"></span>    def foo#1(): Object
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>class Bar extends Foo[Int](42):
+</span><span line-number="5" class=""><span class="tooltip-container"></span>    override def foo#2(): Int = 42
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    override def foo#3(): Object = Int.box(this.foo())
+</span><span line-number="7" class=""><span class="tooltip-container"></span>
+</span><span line-number="8" class=""><span class="tooltip-container"></span>def f(b: Foo): Int = 37 + Int.unbox(b.foo#1()) // virtual call to foo#1 resolves to bridge method foo#3, which in turn calls actual method foo#2, adding boxing. 
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>We introduce the typeclass <code>Specialized</code> that can be used as a context bound on type parameters of inline traits and inline methods.</p>
+ <p>The <code>Specialized</code> context bound indicates that we want to create specialized versions of the inline trait where the type parameter is instantiated to the type argument, and replace (in erasure) uses of the inline trait with the corresponding specialized version so that member accesses pass through the specialized interface.</p>
+ <p>A <code>Specialized</code> context bound on an inline method allows it to call other specialized methods or instantiate specialized traits using the specialized type variable (any code may instantiate specialized traits with concrete types). This allows us to transport information about possible specialization types through multiple layers of generic inline methods (see Transportation of Specialized through Generic Code).</p>
+</section>
+<section id="example">
+ <h2 class="h500"><a href="#example" class="anchor"></a>Example</h2>
+ <p>To give a flavour of what specialization does, consider a <code>Vec</code> trait for vectors over a numeric type:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>import scala.math.Numeric
+</span><span line-number="2" class=""><span class="tooltip-container"></span>
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait Vec[T: {Specialized, Numeric}](elems: Array[T]):
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  private val num = summon[Numeric[T]]
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  def length = elems.length
+</span><span line-number="7" class=""><span class="tooltip-container"></span>
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  def apply(i: Int): T = elems(i)
+</span><span line-number="9" class=""><span class="tooltip-container"></span>
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  def scalarProduct(other: Vec[T]): T =
+</span><span line-number="11" class=""><span class="tooltip-container"></span>    require(this.length == other.length)
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    var result = num.fromInt(0)
+</span><span line-number="13" class=""><span class="tooltip-container"></span>    for i &lt;- 0 until length do
+</span><span line-number="14" class=""><span class="tooltip-container"></span>      result = num.plus(result, num.times(this(i), other(i)))
+</span><span line-number="15" class=""><span class="tooltip-container"></span>    result
+</span><span line-number="16" class=""><span class="tooltip-container"></span>
+</span><span line-number="17" class=""><span class="tooltip-container"></span>def printVector(v: Vec[Int]) = println(v)
+</span><span line-number="18" class=""><span class="tooltip-container"></span>
+</span><span line-number="19" class=""><span class="tooltip-container"></span>object Vec:
+</span><span line-number="20" class=""><span class="tooltip-container"></span>  inline def apply[T: Specialized](elems: Array[T]) = new Vec[T](elems) {}
+</span><span line-number="21" class=""><span class="tooltip-container"></span>end Vec
+</span><span line-number="22" class=""><span class="tooltip-container"></span>
+</span><span line-number="23" class=""><span class="tooltip-container"></span>val v = Vec[Int](Array(1, 2, 3, 4, 5))
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Specialization will generate:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Vec$sp$Int extends Vec[Int]:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def length: Int
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  def apply(i: Int): Int
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  def scalarProduct(other: Vec$sp$Int): Int
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>class Vec$impl$Int(elems: Array[Int])(using Numeric[Int]) extends Vec[Int](elems), Vec$sp$Int:
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  private val Vec$$num = summon[Numeric[Int]]
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  def length = elems.length
+</span><span line-number="10" class=""><span class="tooltip-container"></span>
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  def apply(i: Int): Int = elems(i)
+</span><span line-number="12" class=""><span class="tooltip-container"></span>
+</span><span line-number="13" class=""><span class="tooltip-container"></span>  def scalarProduct(other: Vec$sp$Int): Int =
+</span><span line-number="14" class=""><span class="tooltip-container"></span>    require(this.length == other.length)
+</span><span line-number="15" class=""><span class="tooltip-container"></span>    var result = Vec$$num.fromInt(0)
+</span><span line-number="16" class=""><span class="tooltip-container"></span>    for i &lt;- 0 until length do
+</span><span line-number="17" class=""><span class="tooltip-container"></span>      result = Vec$$num.plus(result, Vec$$num.times(this(i), other(i)))
+</span><span line-number="18" class=""><span class="tooltip-container"></span>    result
+</span><span line-number="19" class=""><span class="tooltip-container"></span>
+</span><span line-number="20" class=""><span class="tooltip-container"></span>def printVector(v: Vec$sp$Int) = println(v)
+</span><span line-number="21" class=""><span class="tooltip-container"></span>
+</span><span line-number="22" class=""><span class="tooltip-container"></span>object Vec:
+</span><span line-number="23" class=""><span class="tooltip-container"></span>  inline def apply[T: Specialized](elems: Array[T]) = new Vec[T](elems) {}
+</span><span line-number="24" class=""><span class="tooltip-container"></span>end Vec
+</span><span line-number="25" class=""><span class="tooltip-container"></span>
+</span><span line-number="26" class=""><span class="tooltip-container"></span>val v = Vec$impl$Int(Array(1, 2, 3, 4, 5))
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>This provides a number of potential efficiency gains:</p>
+ <ul>
+  <li>Avoid boxing in the API for values like the result of <code>scalarProduct</code> (as we will access the method on the specialized version).</li>
+  <li>Specialize on the concrete <code>Numeric</code> class instance for <code>T</code>, so that calls to <code>num</code>'s methods have static targets and can be inlined, and avoid boxing for internal values like <code>result</code> (if we use define and use a specialized version of Numeric).</li>
+  <li>Use an array <code>elems</code> specialized to the actual element instead of a fully generic array that has to be accessed via reflection. (The rest of the compiler already generates <code>int[]</code> when the source references <code>Array[Int]</code> so this comes for free through inline trait specialization).</li>
+ </ul>
+</section>
+<section id="creating-specialized-trait-instances">
+ <h2 class="h500"><a href="#creating-specialized-trait-instances" class="anchor"></a>Creating Specialized Trait Instances</h2>
+ <p>Creation of an object with specialized behaviour can occur in one of two ways:</p>
+ <ul>
+  <li>Instantiating a <code>class</code> or using an <code>object</code> [1, 2] which extends the specialized trait, specializing its type parameters. E.g.:</li>
+ </ul>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Foo[T: Specialized](x: T):
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def foo: T = x
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>class Bar extends Foo[Int](10): // Type parameter does of course not need to be specified explicitly here (it can be inferred from the value type of 10)
+</span><span line-number="5" class=""><span class="tooltip-container"></span>    def myMethod = "Hello I am a method"
+</span><span line-number="6" class=""><span class="tooltip-container"></span>
+</span><span line-number="7" class=""><span class="tooltip-container"></span>// Both Baz and myBar will have specialized versions of foo.
+</span><span line-number="8" class=""><span class="tooltip-container"></span>object Baz extends Foo(12)
+</span><span line-number="9" class=""><span class="tooltip-container"></span>val myBar = Bar()
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <ul>
+  <li>
+   <p>Instantiation of an anonymous class instance directly from the Specialized trait: <code>new A[Ts](ps1)...(psN) {}</code> where <code>A</code> is a specialized trait and the type parameters <code>Ts</code> and term parameters <code>ps1, ,,, psN</code> can also be absent. This has a special meaning, as it desugars to instantiating a <em>specialized instance class</em> (<code>$impl$</code> class, see Expansion of Specialized Traits). This comes with the twin advantages that:</p>
+   <ul>
+    <li>there is no need for the boilerplate of manually defining an object/class to extend the specialized trait</li>
+    <li>this specialized instance class is reused every time such an instance is created (there is no proliferation of anonymous classes).</li>
+   </ul>
+   <p>However, to facilitate this reuse, we must impose the following restrictions. Anonymous class instances acting as instances of Specialized traits:</p>
+   <ul>
+    <li>can extend only a single specialized trait [0],</li>
+    <li>cannot mix in further classes or traits, and</li>
+    <li>cannot contain member definitions.</li>
+   </ul>
+   <p>Should these restrictions be undesirable, the user can always create their own named <code>object</code> or <code>class</code> extending from a specialized trait (i.e. the first case for creation of a specialized object just above), which does not induce these restrictions.</p>
+  </li>
+ </ul>
+ <p>[0] Note that because the specialized traits take evidence parameters for the <code>Specialized</code> typeclass, <code>new Foo[Int] {}</code> where <code>Foo</code> extends some other specialized trait <code>Bar</code> desugars in the compiler to <code>new Bar[Int] with Foo[Int] {}</code>, which means we can't distinguish these two cases. Therefore we allow e.g. <code>new Bar[Int] with Foo[Int] {}</code> although there is no reason to use this in source code because it's exactly the same as writing <code>new Foo[Int] {}</code>.</p>
+ <p>Note that 'class extends specialized trait' and 'object extends specialized trait' are allowed. However, 'trait extends specialized trait' is not. This is due to the restriction on extending inline traits with parameters by ordinary traits, as discussed in <code>inline-traits.md</code>. 'inline trait extends specialized trait' is allowed as it is not subject to this restriction.</p>
+ <p>As explained in detail in <em>Specialized Traits Expansion Specification</em>, specialized instance traits and implementation classes have a special erasure. Classes/objects extending a specialized trait also have special erasure behaviour which adds both the specialized parents and ordinary parents:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class Bar extends Foo[Int](10) with Baz[Int](10)
+</span><span line-number="2" class=""><span class="tooltip-container"></span>class Bar extends Object, Foo(10), Bar(10), Foo$sp$Int, Bar$sp$Int
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>This is necessary so that Bar can be treated as a <code>Bar$sp$Int</code> or <code>Foo$sp$Int</code> (in general we may not have <code>Bar$sp$Int</code> extends <code>Foo$sp$Int</code> so we add both) and to pass arguments to <code>Foo</code> and <code>Bar</code>.</p>
+</section>
+<section id="specialized-traits-expansion-specification">
+ <h2 class="h500"><a href="#specialized-traits-expansion-specification" class="anchor"></a>Specialized Traits Expansion Specification</h2>
+ <p>The following is a technical specification for the expansion of specialized traits.</p>
+</section>
+<section id="expansion-of-specialized-traits">
+ <h3 class="h400"><a href="#expansion-of-specialized-traits" class="anchor"></a>Expansion of Specialized Traits</h3>
+ <p><strong>Definition</strong>: A <em>specialized trait</em> is an inline trait that has at least one <code>Specialized</code> context bound. A specialized context bound (or its expansion to a context parameter) is only allowed for type parameters of inline methods and inline traits. Regular methods or traits or classes cannot take <code>Specialized[T]</code> parameters.</p>
+ <p><strong>Definition</strong>: A <em>simple class type</em> is a reference to a static class that does not have type parameters. References to traits and references containing non-static prefixes or refinements are excluded.</p>
+ <p><strong>Definition</strong>: A <em>top class</em> is one of <code>Any</code>, <code>AnyVal</code>, or <code>Object</code> (also <code>AnyRef</code> which is a synonym of <code>Object</code>).</p>
+ <p><strong>Definition</strong>: The <em>specializing supertype</em> <code>SpecType(Tp)</code> of a type <code>Tp</code> is defined as follows:</p>
+ <ul>
+  <li><code>SpecType(Tp) =</code> the smallest simple class type <code>C</code> such that:
+   <ul>
+    <li><code>C</code> is a supertype of <code>Tp</code></li>
+    <li>The superclass of <code>C</code> is a top class, or <code>C</code> is itself a top class.</li>
+   </ul></li>
+  <li><code>SpecType(Nothing) = Nothing</code></li>
+ </ul>
+ <blockquote>
+  <p>By smallest simple class type we mean in the sense of smallest set of values that the type contains, i.e. the closest to the leaves of the class hierarchy. This simply means we may have a choice between <code>Foo</code> and <code>Any</code>, with <code>Foo &lt;:&lt; Any</code> and we will select <code>Foo</code>.</p>
+ </blockquote>
+ <p><strong>Definition</strong> A <em>specialization</em> <code>SpecTrait[T1, T2, T3, ...]</code> is a reference to a specialized trait with concrete type arguments.</p>
+ <p>The presence of a specialization <code>SpecTrait[T1, T2, T3, ...]</code> in the program implies the creation of a <em>specialized interface trait</em>. This trait will be named <code>SpecTrait$sp$C1$C2$C3</code>, where <code>$sp$</code> is a fixed specialization marker and <code>Cn</code> is an encoding of the fully qualified name of <code>SpecType(Tn)</code>. This means that the name of the specialized interface trait reflects in its name all specializing supertypes of the type arguments passed to specialized type parameters in sequence. Arguments passed to non-specialized type parameters are ignored.</p>
+ <p>The presence of an anonymous class instance creation like <code>new Vec[T](elems) {}</code> in the program implies the creation of both a specialized interface trait and a <em>specialized instance class</em>, named <code>Vec$impl$TN</code>. The class name derives from the trait name by replacing <code>$sp$</code> with <code>$impl$</code>.</p>
+ <p>Should the <code>SpecType</code> of all of the concrete type arguments to a specialization be a top class or <code>Nothing</code>, a specialized interface trait is not produced. However, should such a specialization require an instance class, an instance class will be created and will be named <code>SpecTrait$impl</code>. This is advantageous as it means that anonymous class instances extending specialized traits are <em>always</em> replaced by an instance class.</p>
+ <p>Replacement of specializations with their corresponding specialized interface traits and anonymous specialized instances with their corresponding specialized instance classes happens via erasure. The <em>erasure</em> of <code>SpecTrait[T1, T2, T3, ...]</code> where <code>SpecType(Tn) = Cn</code> is:</p>
+ <ul>
+  <li>If, for all n, <code>Cn</code> is one of the top classes <code>Any</code>/<code>AnyRef</code>/<code>AnyVal</code>/<code>Object</code>, or <code>Cn</code> is <code>Nothing</code>, the usual erased trait <code>Vec</code>.</li>
+  <li>If for at least one n, <code>Cn</code> is some other class, the corresponding specialized interface trait <code>SpecTrait$sp$C1$C2$C3</code>.</li>
+ </ul>
+ <p>We also erase <code>new SpecTrait[T1, T2, T3, ....]</code> to:</p>
+ <ul>
+  <li><code>SpecTrait$impl()</code> if all type arguments are top classes or nothing.</li>
+  <li><code>SpecTrait$impl$C1$C2$C3()</code> otherwise.</li>
+ </ul>
+ <p>The specialized interface traits and implementation classes are created on demand the first time the corresponding specialization or anonymous class is mentioned in the program.</p>
+ <p>The idea of this transformation is that we obey the invariant <code>T &lt;:&lt; Foo[Int] &lt;=&gt; T &lt;:&lt; Foo$sp$Int</code>.</p>
+</section>
+<section id="specialized-interface-traits-definition">
+ <h3 class="h400"><a href="#specialized-interface-traits-definition" class="anchor"></a>Specialized interface traits definition</h3>
+ <p>A specialized interface trait takes the form:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Vec[T: Specialized] extends Seq[T]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>inline trait Vec$sp$Int extends Vec[Int], Seq$sp$Int
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In general a specialized interface trait that specializes an inline trait <code>A[T]</code> with type argument <code>S</code>:</p>
+ <ul>
+  <li>drops all <code>Specialized</code> trait parameters of <code>A</code></li>
+  <li>adds <code>A[S]</code> as first parent trait</li>
+  <li><em>also</em> adds all parents of <code>A</code> <em>in their specialized forms</em>,</li>
+  <li>contains declarations from the body of <code>A</code> specialized to the type(s) in question (via inline trait inlining)</li>
+  <li>is also an <code>inline trait</code>. This is for consistency; see [1].</li>
+  <li>does not take value parameters (including evidence parameters)</li>
+ </ul>
+ <p>We also allow 2 variants of "partial specialization":</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Vec[T: Specialized, S] // Specialized traits defined with some non-specialized parameters
+</span><span line-number="2" class=""><span class="tooltip-container"></span>val x = new Vec[Int, String]() {}
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>inline trait Foo[T: Specialized, S: Specialized] 
+</span><span line-number="5" class=""><span class="tooltip-container"></span>inline trait Bar[T: Specialized] extends Foo[T, Int] // Specialized to a specialized type variable.
+</span><span line-number="6" class=""><span class="tooltip-container"></span>class Baz extends Bar[Boolean]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In the first of these cases, the generated specialized interface traits will get type parameters:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Vec$sp$scala$Int[S]() extends Vec[Int, S]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>val x = new Vec$impl$scala$Int()
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In the other case, specialization waits until all the types are known, except for <code>Bar</code> which gets an additional <code>Foo$sp$Any$Int</code> parent. <!-- I think the Foo$sp$Any$Int is not strictly necessary because it shouldn't be possible to generate an interface with that type, so maybe we can get rid of it. It may be the case that we can change the condition for specialization from "at least one type is known" (material specialization) to "all types are known" (complete specialization). --></p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Bar[T: Specialized] extends Foo[T, Int], Foo$sp$Any$Int
+</span><span line-number="2" class=""><span class="tooltip-container"></span>inline trait Foo$sp$Any$Int extends Foo[Any, Int]
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait Foo$sp$Boolean$Int extends Foo[Boolean, Int]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>inline trait Bar$sp$Boolean extends Bar[Int], Foo$sp$Boolean$Int
+</span><span line-number="5" class=""><span class="tooltip-container"></span>class Baz extends Foo, Bar, Foo$sp$Boolean$Int, Bar$sp$Boolean
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+</section>
+<section id="specialized-instance-class-traits-definition">
+ <h3 class="h400"><a href="#specialized-instance-class-traits-definition" class="anchor"></a>Specialized instance class traits definition</h3>
+ <p>A specialized instance class for an inline trait <code>A</code> at specialized argument <code>S</code></p>
+ <ul>
+  <li>repeats the value parameters of inline trait <code>A</code></li>
+  <li>extends <code>A[S]</code> with these parameters</li>
+  <li>extends the corresponding <code>$sp$</code> trait</li>
+ </ul>
+ <p>For example, here is the specialized instance class for <code>Vec</code> at <code>Int</code>:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class Vec$impl$Int(elems: Array[T]) extends Vec$sp$Int, Vec[Int](elems)
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>The bodies of the interface traits and instance classes are completed by inlining from the inline traits that they extend.</p>
+</section>
+<section id="relationship-to-other-language-features">
+ <h2 class="h500"><a href="#relationship-to-other-language-features" class="anchor"></a>Relationship to other language features</h2>
+</section>
+<section id="variance-and-specialized-traits">
+ <h3 class="h400"><a href="#variance-and-specialized-traits" class="anchor"></a>Variance and Specialized Traits</h3>
+ <p>Specialized traits may define variance parameters e.g.:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait MyFunction1[-T1: Specialized, +R: Specialized]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>However, variance works in Scala because type parameters are erased, and so we can freely cast e.g. List[Lion] to List[Animal] at runtime. Because specialized traits have a special erasure (and necessarily, because this is how we get the specialization), a couple of variance patterns that are possible with standard traits are not possible with specialized traits. This concerns the top classes and <code>Nothing</code>.</p>
+ <p>In the contravariance case:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait RecyclingBin[-T: Specialized]:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>    def recycle(x: T) = println(s"Recycling ${x}")
+</span><span line-number="3" class=""><span class="tooltip-container"></span>
+</span><span line-number="4" class=""><span class="tooltip-container"></span>def recycleAnInteger(rbin: RecyclingBin[Int]) = 
+</span><span line-number="5" class=""><span class="tooltip-container"></span>    rbin.recycle(100)
+</span><span line-number="6" class=""><span class="tooltip-container"></span>
+</span><span line-number="7" class=""><span class="tooltip-container"></span>recycleAnInteger(new RecyclingBin[Any]() {})    // RecyclingBin[Any] can be interpreted as RecyclingBin[Int] due to contravariance
+</span><span line-number="8" class=""><span class="tooltip-container"></span>recycleAnInteger(new RecyclingBin[AnyVal]() {}) // RecyclingBin[AnyVal] can be interpreted as RecyclingBin[Int] due to contravariance
+</span><span line-number="9" class=""><span class="tooltip-container"></span>
+</span><span line-number="10" class=""><span class="tooltip-container"></span>// Yet, this erases to:
+</span><span line-number="11" class=""><span class="tooltip-container"></span>def recycleAnInteger(rbin: RecyclingBin$sp$Int) = 
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    rbin.recycle(100)
+</span><span line-number="13" class=""><span class="tooltip-container"></span>
+</span><span line-number="14" class=""><span class="tooltip-container"></span>recycleAnInteger(RecyclingBin$impl().asInstanceOf[RecyclingBin$sp$Int]) // RecyclingBin$impl cannot be cast to RecyclingBin$sp$Int; Any and Int live in different erasure "buckets" so their erased types are unrelated
+</span><span line-number="15" class=""><span class="tooltip-container"></span>recycleAnInteger(RecyclingBin$impl{}.asInstanceOf[RecyclingBin$sp$Int]) // RecyclingBin$impl cannot be cast to RecyclingBin$sp$Int
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Therefore we have the following issues:</p>
+ <ul>
+  <li><code>RecyclingBin[Any]</code>, <code>RecyclingBin[AnyVal]</code> may not be passed to <code>RecyclingBin[Int]</code> whereas normally they would be able to be passed</li>
+  <li><code>RecyclingBin[Any]</code>, <code>RecyclingBin[Object / AnyRef]</code> may not be passed to <code>RecyclingBin[Paper]</code> whereas normally they would.</li>
+ </ul>
+ <p>These uses of contravariance can never succeed. Rather than allowing them to always fail at runtime, we reject them at compilation time. We impose an additional restriction on contravariance with specialized parameters:</p>
+ <ul>
+  <li>If (when <code>F1 &gt;:&gt; F2</code>) <code>A[F1]</code> is to be interpreted as <code>A[F2]</code> under <code>A[-T: Specialized]</code>, we require that <code>SpecType(F1) = SpecType(F2)</code>. Given <code>F1 &gt;:&gt; F2</code> and looking at the definition of <code>SpecType</code> this means concretely:
+   <ul>
+    <li><code>RecyclingBin[Any]</code>, <code>RecyclingBin[AnyVal]</code> may not be passed to <code>RecyclingBin[Int]</code> whereas normally they would</li>
+    <li><code>RecyclingBin[Any]</code>, <code>RecyclingBin[Object / AnyRef]</code> may not be passed to <code>RecyclingBin[Paper]</code> whereas normally they would.</li>
+    <li><code>RecyclingBin[Any]</code> may be passed to <code>RecyclingBin[Object]</code>, <code>RecyclingBin[AnyRef]</code>, <code>RecyclingBin[AnyVal]</code> as these all erase to <code>RecyclingBin</code>.</li>
+   </ul></li>
+ </ul>
+ <p>Covariance has a similar problem:</p>
+ <ul>
+  <li>In general covariance works fine because it corresponds to interpreting <code>A[F1]</code> as <code>A[F2]</code> where <code>F1 &lt;:&lt; F2</code>. Either<code>A[F1]</code> and <code>A[F2]</code> both erase to the same type (<code>A$sp$SpecType(F2)</code>, or <code>A</code> if <code>F1</code> and <code>F2</code> are both top classes), or <code>A[F1]</code> erases to <code>A$sp$F1</code> and <code>A[F2]</code> erases to <code>A</code> (<code>F2</code> is a top class while <code>F1</code> is not). But <code>A$sp$F1</code> is a subtype of <code>A</code> by definition so the upcast will succeed (and upcasts are generally cheap compared to downcasts on the JVM so this is acceptable from a performance perspective).</li>
+  <li>The only exception is with <code>Nothing</code>, because we want to interpret <code>A[Nothing]</code> as e.g. <code>A[Int]</code>, but we erase <code>A[Nothing]</code> to <code>A</code>. <code>A &gt;:&gt; A$sp$Int</code> so this doesn't work and so we also have to reject covariance using <code>Nothing</code>. To implement this correctly would require a specialization <code>A$sp$Nothing</code> which extends every single specialization in the program, and this was deemed infeasible. The lack of covariance with <code>Nothing</code> makes the code less ergonomic in some cases. For example <code>case object Nil extends List[Nothing]</code> has to become <code>inline trait Nil[T: Specialized] extends List[T]</code> and <code>inline def apply[T: Specialized] = new Nil[T] () {}</code>, but we don't lose too much expressivity.</li>
+ </ul>
+</section>
+<section id="sealed-specialized-traits">
+ <h3 class="h400"><a href="#sealed-specialized-traits" class="anchor"></a><code>sealed</code> Specialized traits</h3>
+ <p>Like other traits, specialized traits may be <code>sealed</code>, but this requires some thought. In particular, the generated <code>$sp$</code> traits and <code>$impl$</code> classes extend the <code>sealed</code> specialized trait potentially from another file without the user being aware that this is happening behind the scenes. We want to allow for example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>// (1)
+</span><span line-number="2" class=""><span class="tooltip-container"></span>// A.scala
+</span><span line-number="3" class=""><span class="tooltip-container"></span>sealed inline trait Foo[T: Specialized]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>// B.scala
+</span><span line-number="6" class=""><span class="tooltip-container"></span>def foo(x: Foo[String])
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>because this would be allowed with ordinary traits, but the desugaring creates <code>Foo$sp$String</code> which is arguably an illegal child of the sealed <code>Foo[String]</code> as it's produced only when compiling B.scala.</p>
+ <p>We are also faced with the question of whether we should allow the following:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>// (2)
+</span><span line-number="2" class=""><span class="tooltip-container"></span>// A.scala
+</span><span line-number="3" class=""><span class="tooltip-container"></span>sealed inline trait Foo[T: Specialized]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>val x = new Foo[Int]() {} // Forces creation of Foo$sp$Int and Foo$impl$Int
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>// B.scala
+</span><span line-number="7" class=""><span class="tooltip-container"></span>val y = new Foo[Int]() {}
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In the bytecode <code>x</code> and <code>y</code> may or may not point to the same <code>Foo$impl$Int</code> depending on if we share the generated specialized classes, but in the source code <code>y</code> extends <code>Foo[Int]</code> illegally.</p>
+ <p>In both cases we essentially opt for the "source code" interpretation as this seems clearest for users. In particular we allow example (1) but not example (2). This happens automatically because <code>sealed</code> trait inheritance checking is done before specialized trait desugaring / erasure, so it is unaware of the <code>$sp$</code> traits and <code>$impl$</code> classes.</p>
+ <p>It is tempting to think that since the <code>$impl$</code> classes do not exist in source we may be able to allow the second example, but this is dangerous for exhaustivity checking:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>// A.scala
+</span><span line-number="2" class=""><span class="tooltip-container"></span>sealed inline trait Foo[T: Specialized]
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait Bar[T: Specialized] extends Foo[T]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>def foo(x: Foo[Int]) = x match {
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    case y: Bar[Int] =&gt; println("All good!")
+</span><span line-number="7" class=""><span class="tooltip-container"></span>}
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>// B.scala
+</span><span line-number="10" class=""><span class="tooltip-container"></span>val y = new Foo[Int]() {} // Bad; A.scala compiled with no warnings as exhaustivity checker assumed this was impossible
+</span><span line-number="11" class=""><span class="tooltip-container"></span>foo(y)
+</span><span line-number="12" class=""><span class="tooltip-container"></span>val z = new Bar[Int]() {} // Ok: We allow this because Bar is not sealed so the exhaustivity checking in A.scala was correct. 
+</span><span line-number="13" class=""><span class="tooltip-container"></span>foo(z)
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In terms of exhaustivity checking, we also want this to work within a single file. Consider:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>sealed inline trait List[+T: Specialized]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>sealed inline trait Nil[T: Specialized] extends List[T]
+</span><span line-number="3" class=""><span class="tooltip-container"></span>sealed inline trait :+:[T: Specialized](h: T, t: List[T]) extends List[T]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>val xs: List[Double] = new Nil[Double]() {}
+</span><span line-number="6" class=""><span class="tooltip-container"></span>
+</span><span line-number="7" class=""><span class="tooltip-container"></span>def foo(x: List[Double]): Unit = x match {
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  case xs: :+:[_] =&gt; println("Cons case")
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  case _: Nil[_] =&gt;  println("Nil case")
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  // warning: non-exhaustive pattern match, missing case _: List[Double]
+</span><span line-number="11" class=""><span class="tooltip-container"></span>}
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Without any changes, the anonymous class <code>Nil[Double]</code> also extends the <code>List[Double]</code> interface (because anonymous class instances mixin all ancestor traits if there are parameters to pass), so pattern match exhaustivity checking on <code>List[Double]</code> requires <code>_: List[Double]</code> because the List trait has anonymous class children and so we are unable to decompose <code>_: List[Double]</code> to children in space checking. This occurs because we don't do the <code>$impl$</code> class replacements until erasure so the anonymous class is still around. For that reason we exempt anonymous classes extending specialized traits from being treated as children for pattern match exhaustivity checking, but we do treat the <code>$impl$</code> classes as children (the fact that they are defined even if unused suffices for them to be taken into account). This is correct because the anonymous classes will not exist at runtime when the pattern matches run, rather having been replaced by the <code>$impl$</code> classes.</p>
+ <p>Furthermore, the generated <code>List$sp$Double</code> trait also interferes. After we fix this issue:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def foo(x: List[Double]): Unit = x match {
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  case xs: :+:[_] =&gt; println("Cons case")
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  case _: Nil[_] =&gt;  println("Nil case")
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  // warning: non-exhaustive pattern match, missing case _: List[Double] &amp; List$sp$Double
+</span><span line-number="5" class=""><span class="tooltip-container"></span>}
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>There are two potential solutions to this:</p>
+ <ul>
+  <li>make <code>$sp$</code> traits inherit <code>sealed</code> if the original specialized trait is <code>sealed</code>, but this may make future sharing of specializations challenging if we want to extend the specialized traits from another file.</li>
+  <li>don't register the <code>$sp$</code> traits as children of the original specialized trait for exhaustivity checking. This is safe because these traits are synthetic and we have the invariant that <code>T &lt;:&lt; Foo[Int] &lt;=&gt; T &lt;:&lt; Foo$sp$Int</code>, so users cannot match on <code>Foo$sp$Int</code> or <code>Foo[Int] minus Foo$sp$Int</code> (the latter being empty)</li>
+ </ul>
+ <p>We opt for the latter.</p>
+</section>
+<section id="other-implementation-restrictions-on-specialized-traits">
+ <h3 class="h400"><a href="#other-implementation-restrictions-on-specialized-traits" class="anchor"></a>Other implementation restrictions on specialized traits</h3>
+ <p>These could be lifted with additional work.</p>
+ <table>
+  <thead>
+   <tr>
+    <th>Behaviour</th>
+    <th>Limitation</th>
+    <th>Chance of fixing / limited by</th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td>Use of <code>?</code> bounds</td>
+    <td>May not be used for Specialized parameters; however may be used for non-Specialized parameters in specialized traits.</td>
+    <td>It was thought that this would be challenging because it would require bridge methods that "despecialize" to ensure that <code>A$sp$Int</code> implements <code>A</code>'s interface. In the end these bridge methods have been implements, so it should be very possible to lift this restriction as future work.</td>
+   </tr>
+   <tr>
+    <td>Defining specialized traits inside traits/classes/objects</td>
+    <td>May define specialized traits inside <code>object</code>s. May not define them inside <code>class</code>es or <code>trait</code>s.</td>
+    <td>Limited by the way we flatten the owners of generated <code>$impl$</code> classes and <code>$sp$</code> traits. We really want to build the <code>Foo$impl$</code> class directly next to <code>Foo</code>. For a single CU this would be possible if we walked the entire tree and found where these belong; for multiple CUs it is more complicated as the tree may not exist in the current CU. The case of path dependent specialized traits was deemed niche enough to not be high priority, and for multiple CUs seems very tricky.</td>
+   </tr>
+  </tbody>
+ </table>
+</section>
+<section id="a-larger-case-study">
+ <h2 class="h500"><a href="#a-larger-case-study" class="anchor"></a>A Larger Case Study</h2>
+ <p>As an example of a hierarchy of specialized traits, consider the following small group of specialized collection traits:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Iterator[T: Specialized]:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def hasNext: Boolean
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  def next(): T
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>inline trait ArrayIterator[T: Specialized](elems: Array[T]) extends Iterator[T]:
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  private var current = 0
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  def hasNext: Boolean = current &lt; elems.length
+</span><span line-number="8" class=""><span class="tooltip-container"></span>  def next(): T = try elems(current) finally current += 1
+</span><span line-number="9" class=""><span class="tooltip-container"></span>
+</span><span line-number="10" class=""><span class="tooltip-container"></span>inline trait Iterable[T: Specialized]:
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  def iterator: Iterator[T]
+</span><span line-number="12" class=""><span class="tooltip-container"></span>  def forall(f: T =&gt; Unit): Unit =
+</span><span line-number="13" class=""><span class="tooltip-container"></span>    val it = iterator
+</span><span line-number="14" class=""><span class="tooltip-container"></span>    while it.hasNext do f(it.next())
+</span><span line-number="15" class=""><span class="tooltip-container"></span>
+</span><span line-number="16" class=""><span class="tooltip-container"></span>inline trait Seq[T: Specialized](elems: Array[T]) extends Iterable[T]:
+</span><span line-number="17" class=""><span class="tooltip-container"></span>  def length: Int           = elems.length
+</span><span line-number="18" class=""><span class="tooltip-container"></span>  def apply(i: Int): T      = elems(i)
+</span><span line-number="19" class=""><span class="tooltip-container"></span>  def iterator: Iterator[T] = new ArrayIterator[T](elems) {}
+</span><span line-number="20" class=""><span class="tooltip-container"></span>
+</span><span line-number="21" class=""><span class="tooltip-container"></span>val x = new Seq[Int](Array(1, 2, 3)) {}
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>This generates the following interface traits (after inlining, conversion to pure interfaces and erasure):</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Iterator$sp$Int extends Iterator:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def hasNext: Boolean
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  def next(): Int
+</span><span line-number="4" class=""><span class="tooltip-container"></span>
+</span><span line-number="5" class=""><span class="tooltip-container"></span>inline trait ArrayIterator$sp$Int extends ArrayIterator, Iterator$sp$Int:
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  def hasNext(): Boolean
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  def next(): Int
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>inline trait Iterable$sp$Int extends Iterable:
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  def iterator: Iterator$sp$Int
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  def forall(f: Int =&gt; Unit): Unit
+</span><span line-number="12" class=""><span class="tooltip-container"></span>
+</span><span line-number="13" class=""><span class="tooltip-container"></span>inline trait Seq$sp$Int extends Seq, Iterable$sp$Int:
+</span><span line-number="14" class=""><span class="tooltip-container"></span>  def forall(f: Function1): Unit
+</span><span line-number="15" class=""><span class="tooltip-container"></span>  def length(): Int
+</span><span line-number="16" class=""><span class="tooltip-container"></span>  def apply(i: Int): Int
+</span><span line-number="17" class=""><span class="tooltip-container"></span>  def iterator(): Iterator$sp$Int
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Note that these traits repeat the parent types of their corresponding inline traits (but with specialization added). For instance, <code>ArrayIterator$sp$Int</code> extends the specialized version of its parent <code>Iterator$sp$Int</code>, so the specialized trait may be used in contexts expecting:</p>
+ <ul>
+  <li>The specialized trait <code>ArrayIterator$sp$Int</code> itself (i.e. <code>ArrayIterator[Int]</code> in source code)</li>
+  <li>A generic <code>ArrayIterator</code> (i.e. <code>ArrayIterator[?]</code> in source code)</li>
+  <li>Specialized traits higher in the specialized hierarchy for example <code>Iterator$sp$Int</code>.</li>
+ </ul>
+ <p>The specialized implementation classes for <code>ArrayIterator</code> and <code>Seq</code> are as follows (since <code>new Seq[Int] {}</code> is found in the program. This triggers creation of <code>Seq$sp$Int</code> which triggers the need for <code>ArrayIterator$sp$Int</code>):</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>class ArrayIterator$impl$Int(elems: Int[]) extends ArrayIterator$sp$Int, ArrayIterator(elems):
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  private var current = 0
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  override def hasNext: Boolean =
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    current &lt; elems.length
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  override def next(): Int =
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    try elems(current) finally current += 1
+</span><span line-number="7" class=""><span class="tooltip-container"></span>
+</span><span line-number="8" class=""><span class="tooltip-container"></span>class Seq$impl$Int(elems: Int[]) extends Seq$sp$Int, Seq(elems):
+</span><span line-number="9" class=""><span class="tooltip-container"></span>  override def iterator: Iterator$sp$Int = new ArrayIterator$impl$Int(elems)
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  override def forall(f: Int =&gt; Unit): Unit =
+</span><span line-number="11" class=""><span class="tooltip-container"></span>    val it: Iterator$$sp$Int = this.iterator()
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    while it.hasNext do f.apply$mcVI$sp(it.next())
+</span><span line-number="13" class=""><span class="tooltip-container"></span>  override def length: Int = elems.length
+</span><span line-number="14" class=""><span class="tooltip-container"></span>  override def apply(i: Int): Int = elems(i)
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Here, <code>f.apply$mcVI$sp</code> is the specialized apply method of <code>Function1</code> at type <code>Int =&gt; Unit</code>. This method is generated by Scala 2's function specialization which is also adopted by Scala 3.</p>
+ <p>Erasure also adds some bridge methods which are necessary to maintain interface compatibility. For example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>// in class Seq$impl$Int
+</span><span line-number="2" class=""><span class="tooltip-container"></span>override def iterator(): Iterator = this.iterator()
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>This is especially important in the case where the specialized trait appears as a method parameter. For example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait Foo[T: Specialized]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait A[T: Specialized]:
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  def foo(x: Foo[T]): Int
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>class B extends A[Int]:
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  override def foo(x: Foo[Int]) = 10
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>// erases to:
+</span><span line-number="10" class=""><span class="tooltip-container"></span>inline trait A: 
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  def foo(x: Foo): Int
+</span><span line-number="12" class=""><span class="tooltip-container"></span>class B extends A A$sp$Int:
+</span><span line-number="13" class=""><span class="tooltip-container"></span>  override def foo(x: Foo$sp$Int): Int = 10
+</span><span line-number="14" class=""><span class="tooltip-container"></span>  override def foo(x: Foo): Int = this.foo(x.asInstanceOf[Foo$sp$Int]) // Bridge method maintains interface compatibility with A
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>This cast is fine because of the invariant that <code>T &lt;:&lt; Foo[Int] &lt;=&gt; T &lt;:&lt; Foo$sp$Int</code>, since the method was typechecked under <code>Foo[Int]</code>.</p>
+</section>
+<section id="transportation-of-specialized-through-generic-code">
+ <h2 class="h500"><a href="#transportation-of-specialized-through-generic-code" class="anchor"></a>Transportation of Specialized through generic code</h2>
+ <p>The <code>Specialized</code> Type Class is erased at runtime. Instances of <code>Specialized[T]</code> are created automatically for types that do not contain type variables.</p>
+ <p>It may surprise you to note that the following is valid. The <code>Numeric</code> constraint on <code>T</code> is only checked when a concrete type is provided for <code>S</code> (and by extension <code>T</code>) when instantiating <code>T2</code>.</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait T1[T: Numeric]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>inline trait T2[S] extends T1[S]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>In constrast, we do not allow this type of behaviour for <code>Specialized</code>. This is largely to avoid confusion. In particular:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait T1[T: Specialized]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>inline trait T2[S] extends T1[S]
+</span><span line-number="3" class=""><span class="tooltip-container"></span>val x = new T2[Int]() {}
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Should <code>x</code> be a Specialized <code>$impl$</code> instance or a normal anonymous class? If we naively look at just <code>S</code>'s definition we would say an anonymous class, but this is complicated by the fact that the generated anonymous class will also mixin <code>T1</code> directly as well as <code>T2</code>. Could we specialize just for <code>T1</code>? This is hard to imagine. Furthermore if we don't specialize, this is also counter intuitive because T1 is then never specialized to Int, because we have no specialized instance of trait <code>T2</code> to inline into.</p>
+ <p>Therefore we require users to explicitly transport <code>Specialized</code> through their code. If a type is used in the right hand side of an <code>extends</code> clause then it must also be specialized at its definition. This also applies to type variables appearing deeper inside types.</p>
+ <p>Furthermore, a specialized method taking a type parameter <code>T</code> and invoking specialized traits or calling other specialized methods using <code>T</code> must declare this <code>T</code> as specialized. This ensures that a specialized 'slot' can only be filled by a concrete type or a type defined in terms of specialized type parameters.</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait T1[T: Specialized]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait T2[S] extends T1[S]                                // error: S should be specialized
+</span><span line-number="4" class=""><span class="tooltip-container"></span>inline trait T3 extends T1[List[Int]]                           // ok
+</span><span line-number="5" class=""><span class="tooltip-container"></span>inline trait T4[S] extends T1[List[S]]                          // error: S should be specialized
+</span><span line-number="6" class=""><span class="tooltip-container"></span>inline trait T5[S: Specialized] extends T1[List[S]]             // ok
+</span><span line-number="7" class=""><span class="tooltip-container"></span>inline trait T6[T[_], S] extends T1[T[S]]                       // error: T should be specialized // error: S should be specialized
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>inline def foo1[S](x: T1[S]): Int = 10                          // error: S should be specialized
+</span><span line-number="10" class=""><span class="tooltip-container"></span>inline def foo2[S](x: T1[List[S]]): Int = 10                    // error: S should be specialized
+</span><span line-number="11" class=""><span class="tooltip-container"></span>inline def foo3[S: Specialized](x: T1[List[S]]): Int = 10       // ok
+</span><span line-number="12" class=""><span class="tooltip-container"></span>
+</span><span line-number="13" class=""><span class="tooltip-container"></span>inline def bar1[S] = new T1[S]() {}                             // error: S should be specialized
+</span><span line-number="14" class=""><span class="tooltip-container"></span>inline def bar2[S] = new T1[List[S]]() {}                       // error: S should be specialized
+</span><span line-number="15" class=""><span class="tooltip-container"></span>inline def bar3[S: Specialized] = new T1[List[List[S]]]() {}    // ok
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Note that in the cases with <code>List</code> this restriction is imposed not because of the definition of <code>List</code>, but rather simply because we have a type variable <code>S</code> which is not marked as Specialized which appears 'somewhere inside' a type in a Specialized position. Again this is done to avoid confusion. A user extending <code>T1[List[S]]</code> would likely expect some degree of specialization to given the definition of <code>T1</code>, but this is not possible if <code>S</code> is not marked as <code>Specialized</code>. In practice <code>specType(List[_])</code> is <code>Any</code> however.</p>
+</section>
+<section id="specialized-traits-in-the-compiler">
+ <h2 class="h500"><a href="#specialized-traits-in-the-compiler" class="anchor"></a>Specialized Traits in the Compiler</h2>
+ <p>We introduce a new phase <code>desugarSpecializedTraits</code> responsible for detecting specializations, generating the necessary <code>$sp$</code> and <code>$impl$</code> classes for these specializations, and inlining into them.</p>
+ <p>The replacement of references to e.g. <code>Vec[Int]</code> with <code>Vec$sp$Int</code> and <code>new Vec[Int] {}</code> with <code>Vec$impl$Int()</code> is done at erasure, because we cannot change signatures before then, and doing it afterwards would not prevent the boxing that we seek to avoid.</p>
+ <p>Specialized traits rely on the semantics and implementation of inline traits, so it may seem logical that <code>desugarSpecializedTraits</code> would merely generate the prototypes for the classes, and allow <code>specializeInlineTraits</code> to inline the bodies. We <em>do not</em> do this. Rather, the phase <code>desugarSpecializedTraits</code> directly performs inlining of the parent traits (<code>Vec[Int]</code> in the above example) into the generated <code>$sp$</code> traits and <code>$impl$</code> classes, sharing the relevant code with the <code>specializeInlineTraits</code> phase through the <code>Inlines.scala</code> file.</p>
+ <p>This is done because while we want to keep the two phases separate and avoid coupling where possible (thus allowing e.g. specialized traits to be disabled while maintaining inline traits), implementing specialized traits requires being able to alternate between the inlining and specializing steps in some cases. Consider the following example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait D[R: Specialized]
+</span><span line-number="2" class=""><span class="tooltip-container"></span>
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait C[S: Specialized]:
+</span><span line-number="4" class=""><span class="tooltip-container"></span>   def w(y: D[S]): Unit = println("w")
+</span><span line-number="5" class=""><span class="tooltip-container"></span>
+</span><span line-number="6" class=""><span class="tooltip-container"></span>inline trait A[T: Specialized]:
+</span><span line-number="7" class=""><span class="tooltip-container"></span>   def x(y: C[T]): Unit = println("x")
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>class B extends A[Char]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>If we run just the specialization part of the specialized trait processing (without the inlining yet), we get:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait A$sp$Char extends A[Char]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Inlining the body of <code>A</code> results in:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait A$sp$Char extends A[Char]:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def x(y: C[Char]): Unit = println("x")
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Notice that this generates a reference to <code>C[Char]</code> which ought to be specialized, given that <code>S</code> is marked as <code>Specialized</code> in the definition of <code>C</code>. Therefore we need to run the specialization process again. This time we will generate:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait C$sp$Char extends C[Char]
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Inlining the body of <code>C</code> into this trait will create a reference to <code>D[Char]</code>, which also ought to be specialized. Thus it is clear that it is possible to create arbitrarily long chains requiring alternating between specialized trait generation and inline trait inlining. We note that this problem arises not only with the <code>$sp$</code> traits, but also the <code>$impl$</code> classes (see <code>specialized-trait-inlining-causes-implementation-required.scala</code>).</p>
+ <p>To resolve this problem without alternating between and looping the <code>specializeInlineTraits</code> and <code>desugarSpecializedTraits</code> phases in an inconvenient way, we opt to make:</p>
+ <ul>
+  <li><code>specializeInlineTraits</code> responsible for inlining inline traits written directly in user code:
+   <ul>
+    <li>If a specialized trait creates an inline trait inlining opportunity which is not <code>specialized</code>, this is dealt with by <code>specializeInlineTraits</code>.</li>
+    <li>Further if a user writes <code>class Bar extends Foo[Int]</code> where Foo is declared Specialized, <code>specializeInlineTraits</code> will do the inlining.</li>
+   </ul></li>
+  <li><code>desugarSpecializedTraits</code> responsible for finding specializations and generating the required <code>$sp$</code> traits and <code>$impl$</code> classes, inlining the parent specialized traits into these traits/classes, and repeating until no more inlining can be performed and no more <code>$sp$</code> traits and <code>$impl$</code> classes are needed.</li>
+ </ul>
+ <p>This decouples the responsibilities of the two phases, but given that <code>desugarSpecializedTraits</code> could produce a reference that requires inline trait inlining in the child class (e.g. <code>tests/run/specialized-trait-requires-inline-trait-inlining.scala</code>) we need to run <code>desugarSpecializedTraits</code> first.</p>
+ <p>We also need to introduce a miniphase <code>pruneSpecializedMethods</code> which removes specialized methods. These methods are inline so they would be removed later anyway, but we need to remove them before <code>pruneInlineTraits</code> to avoid potentially creating dangling references.</p>
+</section>
+<section id="1-why-are-the-generated-traits-inline">
+ <h2 class="h500"><a href="#1-why-are-the-generated-traits-inline" class="anchor"></a>[1] Why are the generated traits inline?</h2>
+ <p>Consider the following:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait A[T]:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>	def foo = "Hello World"
+</span><span line-number="3" class=""><span class="tooltip-container"></span>inline trait B extends A[Int]
+</span><span line-number="4" class=""><span class="tooltip-container"></span>class C extends B
+</span><span line-number="5" class=""><span class="tooltip-container"></span>// inlines to:
+</span><span line-number="6" class=""><span class="tooltip-container"></span>class C extends B:
+</span><span line-number="7" class=""><span class="tooltip-container"></span>	def foo = "Hello World"
+</span><span line-number="8" class=""><span class="tooltip-container"></span>
+</span><span line-number="9" class=""><span class="tooltip-container"></span>// vs...
+</span><span line-number="10" class=""><span class="tooltip-container"></span>
+</span><span line-number="11" class=""><span class="tooltip-container"></span>inline trait A[T: Specialized]:
+</span><span line-number="12" class=""><span class="tooltip-container"></span>	def foo = "Hello World"
+</span><span line-number="13" class=""><span class="tooltip-container"></span>inline trait B extends A[Int]
+</span><span line-number="14" class=""><span class="tooltip-container"></span>class C extends B
+</span><span line-number="15" class=""><span class="tooltip-container"></span>// would expand to:
+</span><span line-number="16" class=""><span class="tooltip-container"></span>trait A$sp$Int:
+</span><span line-number="17" class=""><span class="tooltip-container"></span>	def foo = "Hello World"
+</span><span line-number="18" class=""><span class="tooltip-container"></span>inline trait B extends A$sp$Int
+</span><span line-number="19" class=""><span class="tooltip-container"></span>class C extends B
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>We consider the fact that the location of the inlined <code>foo</code> method changes with only a simple addition of <code>Specialized</code> to be inconsistent / confusing. Furthermore it would violate the rule that ordinary traits may not extend specialized traits.</p>
+ <p>Because we make the generated traits inline, we modify the behaviour of inline traits relative to the original semantics from Timothée's thesis, such that inline traits extended by other inline traits are still inlined (instead of inlining only at the first ordinary class extending the family of inline traits). This is necessary so that <code>A$sp$S$Int</code> can be made inline and still contain the specialized declarations which we need when we use it as an interface. The original argument for only inlining at the bottom of the hierarchy was to reduce code generation, and that this was sufficient when we only have inline traits, however the additional code generation is only linear in the number of traits in the sequence (<em>and limited to the interfaces since the implementations are pruned</em>) as we do not inline multiple copies. We consider this acceptable in order to implement specialized.</p>
+</section>
+<section id="future-work">
+ <h2 class="h500"><a href="#future-work" class="anchor"></a>Future Work</h2>
+</section>
+<section id="caching-of-specialized-traits-and-classes">
+ <h3 class="h400"><a href="#caching-of-specialized-traits-and-classes" class="anchor"></a>Caching of Specialized Traits and Classes</h3>
+ <p>To avoid redundant repeated code generation of the same traits and classes, specialized instance traits and classes could be cached. The compiler would put their tasty and classfile artifacts in a special directory on the class path. Each artifact would contain in an annotation a hash of the contents of the trait from which the instance was derived. Before creating a new specialized instance, the compiler would consult this directory to see whether an instance with the given name exists and whether its hash matches. In that case, the artifacts can be re-used.</p>
+</section>
+<section id="improve-existing-class-hierarchies">
+ <h3 class="h400"><a href="#improve-existing-class-hierarchies" class="anchor"></a>Improve Existing Class Hierarchies</h3>
+ <p>We have shown that we can formulate an alternative version of a collection-like class hierarchy that is fully specialized. But can we retro-fit this idea even to existing collections? The direct approach would clearly not work since an existing collection like <code>Vector[T]</code> can be created from anywhere whereas a specialized collection can be created only in a monomorphic context where we know the type instance of <code>T</code>. So specialized collections come with a tax in expressiveness which pays for their superior performance.</p>
+ <p>But it turns out we can gain a lot of flexibility with three additional tweaks to the language and compiler.</p>
+</section>
+<section id="1-adapt-overloading-to-specialization">
+ <h4 class="h300"><a href="#1-adapt-overloading-to-specialization" class="anchor"></a>1. Adapt Overloading to Specialization</h4>
+ <p>More flexibility could be gained if we allowed method overloading between specialized inline methods and normal methods with matching type signatures. For instance, the <code>Vector</code> implementation above seriously restricts <code>map</code> by requiring that its <code>B</code> type parameter is also <code>Specialized</code>. Thus <code>map</code> cannot be used to map a specialized collection to another collection if the result element type is not statically known. But we could alleviate the problem by allowing a second, overloaded <code>map</code> operation like this:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span><span class="hideable">  </span>def map[B](f: A =&gt; B): collection.immutable.Vector[B] =
+</span><span line-number="2" class=""><span class="tooltip-container"></span><span class="hideable">  </span>  new collection.immutable.Vector[B](elems.map(f))
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>The second implementation of <code>map</code> will return an unspecialized vector if the new element type is not statically known. If overloads like this were allowed, they could be resolved by picking the specialized inline version if a <code>Specialized</code> instance can be synthesized for the actual type argument, and picking the unspecialized version otherwise.</p>
+ <p>We can do even better if we allow some additions of the existing collections. In that case, we can add definitions like the inline <code>map</code> above to the original collections. That means, whenever we have a collection <code>xs</code> with a type such as <code>Vector[A]</code> and a function <code>f</code> with a statically known result type <code>B</code>, then <code>xs.map(f)</code> returns a specialized collection. So we can get specialized collections out of normal collections as long as the element type of the created collection is statically known.</p>
+ <p>This can be generalized. In particular, all <code>apply</code> methods of <code>Vector</code> should be split into methods taking specialized types and unrestricted methods. For instance:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>object Vector:
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  def apply[T](xs: T*): Vector[T] = ...
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  inline def apply[T: Specialized](xs: T*): faster.Vector[T] = ...
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>The same holds for all collection methods such as <code>map</code> that return a new collection of a different element type.</p>
+</section>
+<section id="2-automate-the-boilerplate-with-specializedby">
+ <h4 class="h300"><a href="#2-automate-the-boilerplate-with-specializedby" class="anchor"></a>2. Automate the Boilerplate with <code>specializedBy</code></h4>
+ <p>The described scheme would entail some amount of code duplication. We could automate this with a new annotation that is put on a class and states that the class has a specialized variant. Example:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>@specializedBy[faster.Vector] class Vector[+T] ...
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>If a class carries such an annotation the specialized inline functions described above could be added automatically.</p>
+</section>
+<section id="3-optimize-use-sites-by-path-splitting">
+ <h4 class="h300"><a href="#3-optimize-use-sites-by-path-splitting" class="anchor"></a>3. Optimize Use Sites by Path Splitting</h4>
+ <p>One remaining problem is that specialization is a compile-time operation. Without putting in additional work, we cannot immediately exploit the situation where a runtime type is a specialized collection but the static type is unspecialized. For instance, consider this use of <code>Vector</code>:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def sumElems(xs: Vector[Int]): Int =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  var i = 0
+</span><span line-number="3" class=""><span class="tooltip-container"></span>  var sum = 0
+</span><span line-number="4" class=""><span class="tooltip-container"></span>  while i &lt; xs.length do
+</span><span line-number="5" class=""><span class="tooltip-container"></span>    sum += xs(i)
+</span><span line-number="6" class=""><span class="tooltip-container"></span>    i += 1
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  sum
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>Here, the problem is that, even though we know that <code>xs</code> is a <code>Vector</code> of <code>Int</code>, we cannot deduce that has been specialized to a <code>faster.Vector[Int]</code>. Therefore, <code>xs(i)</code> goes through the <code>apply</code> method of <code>Vector</code>. If the runtime class of <code>Vector</code> is indeed specialized this would box the <code>Int</code> element to <code>Object</code> in a bridge method and unbox it again to <code>Int</code> at the call site. This could lose a lot of performance, unless the JVM manages to optimize the box/unbox pair away (so far, experience shows that the JVM is not very good at this). The performance could be even worse than working with an unspecialized <code>Vector</code> where elements are held in boxed form so they don't have to be boxed each time they are accessed.</p>
+ <p>Of course, we can narrow the type of <code>sumElems</code> to</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def sumElems(xs: faster.Vector[Int]): Int
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>but that would make it less generally usable. Another alternative is to optimize <code>sumElems</code> by path splitting. We could detect at runtime whether <code>xs</code> is a <code>faster.Vector</code> and optimize the code if it is. For instance, like this:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def sumElems(xs: Vector[Int]): Int =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  val faster: faster.Vector[Int] | Null = xs match
+</span><span line-number="3" class=""><span class="tooltip-container"></span>    case xs: faster.Vector[_] =&gt; xs
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    case _ =&gt; null
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  var i = 0
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  var sum = 0
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  while i &lt; xs.length do
+</span><span line-number="8" class=""><span class="tooltip-container"></span>    sum += (if faster != null then faster(i) else xs(i))
+</span><span line-number="9" class=""><span class="tooltip-container"></span>    i += 1
+</span><span line-number="10" class=""><span class="tooltip-container"></span>  sum
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>That would avoid the boxing at the cost of a type test in the computation of <code>faster</code> and a null test in the call of <code>apply</code>. The type test would be amortized over possibly many calls in the loop. We could do even better by generating a bit more code, splitting the whole loop:</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>def sumElems(xs: Vector[Int]): Int =
+</span><span line-number="2" class=""><span class="tooltip-container"></span>  val faster: faster.Vector[Int] | Null = xs match
+</span><span line-number="3" class=""><span class="tooltip-container"></span>    case xs: faster.Vector[_] =&gt; xs
+</span><span line-number="4" class=""><span class="tooltip-container"></span>    case _ =&gt; null
+</span><span line-number="5" class=""><span class="tooltip-container"></span>  var i = 0
+</span><span line-number="6" class=""><span class="tooltip-container"></span>  var sum = 0
+</span><span line-number="7" class=""><span class="tooltip-container"></span>  if faster != null then
+</span><span line-number="8" class=""><span class="tooltip-container"></span>    while i &lt; xs.length do
+</span><span line-number="9" class=""><span class="tooltip-container"></span>      sum += faster(i)
+</span><span line-number="10" class=""><span class="tooltip-container"></span>      i += 1
+</span><span line-number="11" class=""><span class="tooltip-container"></span>  else
+</span><span line-number="12" class=""><span class="tooltip-container"></span>    while i &lt; xs.length do
+</span><span line-number="13" class=""><span class="tooltip-container"></span>      sum += xs(i)
+</span><span line-number="14" class=""><span class="tooltip-container"></span>      i += 1
+</span><span line-number="15" class=""><span class="tooltip-container"></span>  sum
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>The example has shown that one can write code over possibly specialized collections that is both general and highly performant. But it does require a lot of hand-written boiler-plate.</p>
+ <p>The boilerplate could be generated automatically by an optimization phase in the compiler. Essentially, when compiling methods that take parameters whose type is a class annotated with <code>specializedBy</code>, we can do the path splitting automatically in an optimization step. The optimization would first analyze the body of the method to decide which path splitting strategy to apply.</p>
+ <p>We believe the three tweaks we have outlined could overcome most of the performance penalties imposed by existing unspecialized class hierarchies like collections, making their performance comparable to languages that use global monomorphization.</p>
+</section>
+<section id="specializing-tuples">
+ <h3 class="h400"><a href="#specializing-tuples" class="anchor"></a>Specializing Tuples</h3>
+ <p>The same optimizations can also avoid boxing for tuple elements, and with it extractor-based pattern matching. Scala 3 does not currently specialize tuples at all. Scala 2 specializes pairs but not tuples of higher arity. But it uses a scheme quite different from the one proposed here.</p>
+ <p>Scala 2 pre-generates pair classes for all combinations of primitive types and Object. Each pair class inherits or implements access methods for all primitive types and Object. This allows to arrange it so that access always goes through a specialized method that does not involve boxing. No path splitting is needed to achieve that. On the other hand, the exponentially growing amount of code that needs to be generated restricts the scheme to pairs only. Also, specialization is not done for reference types, access to fields of (say) <code>String</code> type still need a cast from <code>Object</code> to <code>String</code>.</p>
+ <p>We could adopt the Scala 2 specialization scheme for pairs. This is not hard, since no new classes need to be generated, we simply re-use the Scala 2 classes. Then the new specialization scheme would apply to tuples of higher arities. Or we forego Scala 2 specialization altogether and specialize all tuples with the new scheme.</p>
+ <p>The situation with functions is a bit different. Here, Scala 2 specializes functions with up to two parameters, and Scala 3 re-uses these specializations. Going beyond that requires some adaptations since functions are not implemented as classes but as lambdas that are directly supported by the JVM. So Scala 3 specialization would have to be extended to the definition of these lambdas.</p>
+</section>
+<section id="hand-written-specializations">
+ <h3 class="h400"><a href="#hand-written-specializations" class="anchor"></a>Hand-written Specializations</h3>
+ <p>Additional improvements could be gained if we allowed the programmer to pick their own implementations for specialized class instances. For example, we could have a</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait HashMap[K: Specialized, +V: Specialized] ...
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>and an optimized sub-trait</p>
+ <div class="snippet mono-small-block" scala-snippet="">
+  <pre><code class="language-scala"><span line-number="1" class=""><span class="tooltip-container"></span>inline trait IntHashMap[+V: Specialized] extends HashMap[Int, V] ...
+</span></code></pre>
+  <div class="buttons"></div>
+ </div>
+ <p>The implementation in <code>IntHashMap</code> could exploit that fact that the key type <code>K</code> is known to be <code>Int</code> to pick a more performant algorithm, for instance.</p>
+ <p>It would be great if we could use <code>IntHashMap</code> each time a specialized HashMap such as <code>HashMap$sp$Int$String</code> is referred to or created. In other words, <code>IntHashMap</code> should act as a drop-in replacement for <code>HashMap$sp$Int$String</code> that is selected automatically. A detailed proposal for this is left for future work.</p>
+</section></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#specialized-traits">Specialized Traits</a><ul><li><a href="#example">Example</a></li><li><a href="#creating-specialized-trait-instances">Creating Specialized Trait Instances</a></li><li><a href="#specialized-traits-expansion-specification">Specialized Traits Expansion Specification</a><ul><li><a href="#expansion-of-specialized-traits">Expansion of Specialized Traits</a></li><li><a href="#specialized-interface-traits-definition">Specialized interface traits definition</a></li><li><a href="#specialized-instance-class-traits-definition">Specialized instance class traits definition</a></li></ul></li><li><a href="#relationship-to-other-language-features">Relationship to other language features</a><ul><li><a href="#variance-and-specialized-traits">Variance and Specialized Traits</a></li><li><a href="#sealed-specialized-traits">sealed Specialized traits</a></li><li><a href="#other-implementation-restrictions-on-specialized-traits">Other implementation restrictions on specialized traits</a></li></ul></li><li><a href="#a-larger-case-study">A Larger Case Study</a></li><li><a href="#transportation-of-specialized-through-generic-code">Transportation of Specialized through generic code</a></li><li><a href="#specialized-traits-in-the-compiler">Specialized Traits in the Compiler</a></li><li><a href="#1-why-are-the-generated-traits-inline">[1] Why are the generated traits inline?</a></li><li><a href="#future-work">Future Work</a><ul><li><a href="#caching-of-specialized-traits-and-classes">Caching of Specialized Traits and Classes</a></li><li><a href="#improve-existing-class-hierarchies">Improve Existing Class Hierarchies</a><ul><li><a href="#1-adapt-overloading-to-specialization">1. Adapt Overloading to Specialization</a></li><li><a href="#2-automate-the-boilerplate-with-specializedby">2. Automate the Boilerplate with specializedBy</a></li><li><a href="#3-optimize-use-sites-by-path-splitting">3. Optimize Use Sites by Path Splitting</a></li></ul></li><li><a href="#specializing-tuples">Specializing Tuples</a></li><li><a href="#hand-written-specializations">Hand-written Specializations</a></li></ul></li></ul></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/scala/scala3"><button class="icon-button gh"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><div class="text">Copyright (c) 2002-2026, LAMP/EPFL</div></div><div class="text-mobile">Copyright (c) 2002-2026, LAMP/EPFL</div></div></div></div></body></html>
