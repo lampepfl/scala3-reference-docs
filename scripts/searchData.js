@@ -410,4 +410,7 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"Scala 3 Reference","t":"Scala 
 {"l":"preview/better-fors.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"preview/named-tuples.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"other-new-features/named-typeargs.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
+{"l":"experimental/cc.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
+{"l":"experimental/cc-advanced.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
+{"l":"experimental/capture-checking/scoped-caps.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""},
 {"l":"preview/runtimeChecked.html#","e":false,"i":"","n":"redirect","t":"redirect","d":"","k":"static","x":""}];
